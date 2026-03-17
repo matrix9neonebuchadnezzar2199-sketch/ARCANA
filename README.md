@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/tools-57-brightgreen.svg" alt="57 Tools">
+  <img src="https://img.shields.io/badge/tools-202-brightgreen.svg" alt="57 Tools">
   <img src="https://img.shields.io/badge/unity-2022.3%2B-black.svg" alt="Unity 2022.3+">
   <img src="https://img.shields.io/badge/node-18%2B-green.svg" alt="Node 18+">
   <img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible">
@@ -27,7 +27,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 
 ## Features
 
-- **57 Tools** across 16 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, and environment
+- **202 Tools** across 16 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, and environment
 - **Natural Language Control** - Describe what you want, AI executes it in Unity/Blender
 - **Any AI Client** - Works with Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
 - **SuperSave Mode** - 4 meta-tools dynamically load all tools, reducing token usage by ~98%
@@ -41,7 +41,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 ![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
 
 
-## Tool List (57 tools)
+## Tool List (202 tools)
 
 ### Scene (3)
 | Tool ID | Description |
@@ -169,7 +169,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 
 ## SuperSave Mode
 
-Instead of registering all 57 tools in the AI context, SuperSave exposes only 4 meta-tools:
+Instead of registering all 202 tools in the AI context, SuperSave exposes only 4 meta-tools:
 
 | Meta-Tool | Purpose |
 |-----------|---------|
@@ -216,8 +216,8 @@ Tell your AI assistant:
 
 | Phase | Status | Content |
 |-------|--------|---------|
-| 1 | Done | Core server, SuperSave, 57 Unity tools |
-| 2 | Next | Navigation, PostProcessing, Script generation |
+| 1 | Done | Core server, SuperSave, 202 Unity tools |
+| 2 | Done | Navigation, PostProcessing, Script, VRChat, Cinemachine, ProBuilder, Debug, Profiler |
 | 3 | Planned | Blender addon, 50+ Blender tools |
 | 4 | Planned | Unreal Engine support |
 | 5 | Planned | 400+ tools, community contributions |
