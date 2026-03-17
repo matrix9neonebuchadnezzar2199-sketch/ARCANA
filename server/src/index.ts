@@ -33,6 +33,12 @@ import { constraintTools } from "./tools/constraint";
 import { buildTools } from "./tools/build";
 import { meshTools } from "./tools/mesh";
 import { timelineTools } from "./tools/timeline";
+import { cinemachineTools } from "./tools/cinemachine";
+import { probuilderTools } from "./tools/probuilder";
+import { inputTools } from "./tools/input";
+import { shaderTools } from "./tools/shader";
+import { networkingTools } from "./tools/networking";
+import { twodTools } from "./tools/twod";
 
 // Register all tools
 const allTools = [
@@ -43,13 +49,14 @@ const allTools = [
   ...navigationTools, ...postProcessingTools, ...scriptTools,
   ...renderTools, ...assetTools, ...editorTools,
   ...selectionTools, ...constraintTools, ...buildTools,
-  ...meshTools, ...timelineTools
+  ...meshTools, ...timelineTools,
+  ...cinemachineTools, ...probuilderTools, ...inputTools, ...shaderTools, ...networkingTools, ...twodTools
 ];
 
 allTools.forEach(tool => globalRegistry.register(tool));
 console.log(`[ARCANA] ${allTools.length} tools registered across ${new Set(allTools.map(t => t.category)).size} categories`);
 
-const server = new Server({ name: "arcana-mcp-server", version: "0.7.0" }, { capabilities: { tools: {} } });
+const server = new Server({ name: "arcana-mcp-server", version: "1.0.0" }, { capabilities: { tools: {} } });
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
@@ -77,7 +84,7 @@ async function main() {
   unityBridge.connect().catch(() => console.log("[ARCANA] Unity not connected yet - will retry on first tool call"));
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP Server running (v0.7.0 - 110 tools)");
+  console.log("[ARCANA] MCP Server running (v1.0.0 - 152 tools)");
 }
 
 main().catch(console.error);
