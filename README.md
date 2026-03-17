@@ -38,10 +38,8 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 
 ## Architecture
 
-```
 ![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
 
-```
 
 ## Tool List (57 tools)
 
