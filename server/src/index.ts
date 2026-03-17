@@ -8,10 +8,28 @@ import {
 import { globalRegistry } from "./core/registry";
 import { superSave } from "./core/supersave";
 import { sceneTools } from "./tools/scene";
+import { transformTools } from "./tools/transform";
+import { materialTools } from "./tools/material";
+import { lightingTools } from "./tools/lighting";
+import { terrainTools } from "./tools/terrain";
+import { audioTools } from "./tools/audio";
+import { cameraTools } from "./tools/camera";
+import { physicsTools } from "./tools/physics";
 import { unityBridge } from "./bridge/unity-bridge";
 
 // Register all tools
-for (const tool of sceneTools) {
+const allTools = [
+  ...sceneTools,
+  ...transformTools,
+  ...materialTools,
+  ...lightingTools,
+  ...terrainTools,
+  ...audioTools,
+  ...cameraTools,
+  ...physicsTools
+];
+
+for (const tool of allTools) {
   globalRegistry.register(tool);
 }
 
