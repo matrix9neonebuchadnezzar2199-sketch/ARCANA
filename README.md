@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/tools-252-brightgreen.svg" alt="57 Tools">
+  <img src="https://img.shields.io/badge/tools-302-brightgreen.svg" alt="57 Tools">
   <img src="https://img.shields.io/badge/unity-2022.3%2B-black.svg" alt="Unity 2022.3+">
   <img src="https://img.shields.io/badge/node-18%2B-green.svg" alt="Node 18+">
   <img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible">
@@ -27,7 +27,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 
 ## Features
 
-- **252 Tools** across 38 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, environment, navigation, postprocessing, script, selection, constraint, build, render, asset, editor, mesh, timeline, cinemachine, probuilder, input system, shader, networking, 2D, XR/VR, AI/nav, spline, visual scripting, ragdoll, cloth, decal, VRChat, addressables, localization, debug, testing, and profiler
+- **302 Tools** across 46 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, environment, navigation, postprocessing, script, selection, constraint, build, render, asset, editor, mesh, timeline, cinemachine, probuilder, input system, shader, networking, 2D, XR/VR, AI/nav, spline, visual scripting, ragdoll, cloth, decal, VRChat, addressables, localization, debug, testing, profiler, LOD, gizmo, reflection probe, lightmap, occlusion culling, streaming, tag manager, and screenshot
 - **Natural Language Control** - Describe what you want, AI executes it in Unity/Blender
 - **Any AI Client** - Works with Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
 - **SuperSave Mode** - 4 meta-tools dynamically load all tools, reducing token usage by ~98%
@@ -41,7 +41,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 ![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
 
 
-## Tool List (252 tools)
+## Tool List (302 tools)
 
 ### Scene (3)
 | Tool ID | Description |
@@ -476,9 +476,85 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 | `decal_set_opacity` | Set decal opacity |
 | `decal_remove` | Remove decal |
 
+### LOD (6)
+| Tool ID | Description |
+|---------|-------------|
+| `lod_create_group` | Create LOD Group component |
+| `lod_set_transitions` | Set LOD transition distances |
+| `lod_assign_renderer` | Assign renderer to LOD level |
+| `lod_set_fade_mode` | Set fade mode (None/CrossFade/SpeedTree) |
+| `lod_get_info` | Get LOD Group information |
+| `lod_remove` | Remove LOD Group |
+
+### Gizmo (6)
+| Tool ID | Description |
+|---------|-------------|
+| `gizmo_draw_sphere` | Draw wire sphere gizmo |
+| `gizmo_draw_cube` | Draw wire cube gizmo |
+| `gizmo_draw_line` | Draw line gizmo |
+| `gizmo_draw_ray` | Draw ray gizmo |
+| `gizmo_draw_label` | Draw text label in scene |
+| `gizmo_clear_all` | Clear all custom gizmos |
+
+### Reflection Probe (6)
+| Tool ID | Description |
+|---------|-------------|
+| `probe_create` | Create Reflection Probe |
+| `probe_set_size` | Set probe bounding box size |
+| `probe_set_resolution` | Set cubemap resolution |
+| `probe_set_intensity` | Set reflection intensity |
+| `probe_bake` | Bake Reflection Probe |
+| `probe_remove` | Remove Reflection Probe |
+
+### Lightmap (6)
+| Tool ID | Description |
+|---------|-------------|
+| `lightmap_bake` | Bake lightmaps |
+| `lightmap_set_resolution` | Set texels per unit |
+| `lightmap_set_max_size` | Set max atlas size |
+| `lightmap_set_object_scale` | Set object lightmap scale |
+| `lightmap_clear` | Clear baked lightmaps |
+| `lightmap_get_info` | Get lightmap settings |
+
+### Occlusion Culling (6)
+| Tool ID | Description |
+|---------|-------------|
+| `occlusion_bake` | Bake occlusion culling |
+| `occlusion_set_occluder` | Set Occluder Static |
+| `occlusion_set_occludee` | Set Occludee Static |
+| `occlusion_set_params` | Set occlusion parameters |
+| `occlusion_clear` | Clear occlusion data |
+| `occlusion_visualize` | Toggle occlusion visualization |
+
+### Streaming (6)
+| Tool ID | Description |
+|---------|-------------|
+| `streaming_load_scene` | Load scene asynchronously |
+| `streaming_unload_scene` | Unload scene asynchronously |
+| `streaming_set_active_scene` | Set active scene |
+| `streaming_get_loaded_scenes` | List loaded scenes |
+| `streaming_preload` | Preload scene without activating |
+| `streaming_get_progress` | Get loading progress |
+
+### Tag Manager (4)
+| Tool ID | Description |
+|---------|-------------|
+| `tagmgr_add_tag` | Add custom tag |
+| `tagmgr_add_layer` | Add custom layer |
+| `tagmgr_add_sorting_layer` | Add sorting layer |
+| `tagmgr_list_all` | List all tags and layers |
+
+### Screenshot (4)
+| Tool ID | Description |
+|---------|-------------|
+| `screenshot_game_view` | Capture Game View |
+| `screenshot_scene_view` | Capture Scene View |
+| `screenshot_camera` | Capture from specific camera |
+| `screenshot_360` | Capture 360 panorama |
+
 ## SuperSave Mode
 
-Instead of registering all 252 tools in the AI context, SuperSave exposes only 4 meta-tools:
+Instead of registering all 302 tools in the AI context, SuperSave exposes only 4 meta-tools:
 
 | Meta-Tool | Purpose |
 |-----------|---------|
@@ -525,8 +601,8 @@ Tell your AI assistant:
 
 | Phase | Status | Content |
 |-------|--------|---------|
-| 1 | Done | Core server, SuperSave, 252 Unity tools |
-| 2 | Done | Navigation, PostProcessing, Script, Selection, Constraint, Build, Render, Asset, Editor, Mesh, Timeline, Cinemachine, ProBuilder, Input, Shader, Networking, 2D, VRChat, Addressables, Localization, Debug, Testing, Profiler, XR, AI, Spline, VisualScripting, Ragdoll, Cloth, Decal |
+| 1 | Done | Core server, SuperSave, 302 Unity tools |
+| 2 | Done | Navigation, PostProcessing, Script, Selection, Constraint, Build, Render, Asset, Editor, Mesh, Timeline, Cinemachine, ProBuilder, Input, Shader, Networking, 2D, VRChat, Addressables, Localization, Debug, Testing, Profiler, XR, AI, Spline, VisualScripting, Ragdoll, Cloth, Decal, LOD, Gizmo, ReflectionProbe, Lightmap, OcclusionCulling, Streaming, TagManager, Screenshot |
 | 3 | Planned | Blender addon, 50+ Blender tools |
 | 4 | Planned | Unreal Engine support |
 | 5 | Planned | 400+ tools, community contributions |
