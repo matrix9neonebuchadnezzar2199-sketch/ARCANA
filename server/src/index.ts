@@ -39,6 +39,12 @@ import { inputTools } from "./tools/input";
 import { shaderTools } from "./tools/shader";
 import { networkingTools } from "./tools/networking";
 import { twodTools } from "./tools/twod";
+import { vrchatTools } from "./tools/vrchat";
+import { addressablesTools } from "./tools/addressables";
+import { localizationTools } from "./tools/localization";
+import { debugTools } from "./tools/debug";
+import { testingTools } from "./tools/testing";
+import { profilerTools } from "./tools/profiler";
 
 // Register all tools
 const allTools = [
@@ -50,13 +56,14 @@ const allTools = [
   ...renderTools, ...assetTools, ...editorTools,
   ...selectionTools, ...constraintTools, ...buildTools,
   ...meshTools, ...timelineTools,
-  ...cinemachineTools, ...probuilderTools, ...inputTools, ...shaderTools, ...networkingTools, ...twodTools
+  ...cinemachineTools, ...probuilderTools, ...inputTools, ...shaderTools, ...networkingTools, ...twodTools,
+  ...vrchatTools, ...addressablesTools, ...localizationTools, ...debugTools, ...testingTools, ...profilerTools
 ];
 
 allTools.forEach(tool => globalRegistry.register(tool));
 console.log(`[ARCANA] ${allTools.length} tools registered across ${new Set(allTools.map(t => t.category)).size} categories`);
 
-const server = new Server({ name: "arcana-mcp-server", version: "1.0.0" }, { capabilities: { tools: {} } });
+const server = new Server({ name: "arcana-mcp-server", version: "2.0.0" }, { capabilities: { tools: {} } });
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
@@ -84,7 +91,7 @@ async function main() {
   unityBridge.connect().catch(() => console.log("[ARCANA] Unity not connected yet - will retry on first tool call"));
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP Server running (v1.0.0 - 152 tools)");
+  console.log("[ARCANA] MCP Server running (v2.0.0 - 202 tools)");
 }
 
 main().catch(console.error);
