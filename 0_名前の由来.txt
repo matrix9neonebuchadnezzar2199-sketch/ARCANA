@@ -1,0 +1,4 @@
+1. ARCANA
+— Advanced Runtime for Creative AI & Natural-language Automation —
+
+略称そのまま「ARCANA（アルカナ）」。タロットの「秘儀」を意味し、「かつて専門家だけが扱えた秘密の技術を、言葉の力で誰にでも開放する」というプロジェクトの思想とぴったり重なります。Unity/Blender向けMCPで「ARCANA」を名乗るプロジェクトは現時点で存在しません。

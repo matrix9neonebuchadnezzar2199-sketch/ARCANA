@@ -1,0 +1,19 @@
+﻿{
+  "name": "com.arcana.mcp-plugin",
+  "version": "0.1.0",
+  "displayName": "ARCANA - AI Natural Language Control",
+  "description": "Control Unity with natural language via MCP. Free and open source.",
+  "unity": "2022.3",
+  "author": {
+    "name": "ARCANA Contributors",
+    "url": "https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "mcp",
+    "natural-language",
+    "automation",
+    "vrchat"
+  ]
+}
