@@ -24,7 +24,6 @@
 
 ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity Editor and Blender via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). Instead of clicking through menus and adjusting parameters manually, you describe what you want in plain language and ARCANA executes it.
 
-![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
 
 ## Features
 
@@ -40,16 +39,8 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 ## Architecture
 
 ```
-AI Client (Claude, ChatGPT, etc.)
-        |
-    MCP JSON-RPC (stdio / HTTP)
-        |
-ARCANA MCP Server (Node.js)
-    /           \
-WebSocket     WebSocket
-  |               |
-Unity Plugin   Blender Addon
-(C# Editor)   (Python bpy)
+![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
+
 ```
 
 ## Tool List (57 tools)
