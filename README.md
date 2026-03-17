@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="TOP.png" alt="ARCANA Banner" width="100%">
+  <img src="image/TOP.png" alt="ARCANA Banner" width="100%">
 </p>
 
 <h1 align="center">ARCANA</h1>
