@@ -15,6 +15,10 @@ import { terrainTools } from "./tools/terrain";
 import { audioTools } from "./tools/audio";
 import { cameraTools } from "./tools/camera";
 import { physicsTools } from "./tools/physics";
+import { vfxTools } from "./tools/vfx";
+import { animationTools } from "./tools/animation";
+import { uiTools } from "./tools/ui";
+import { optimizationTools } from "./tools/optimization";
 import { unityBridge } from "./bridge/unity-bridge";
 
 // Register all tools
@@ -26,7 +30,11 @@ const allTools = [
   ...terrainTools,
   ...audioTools,
   ...cameraTools,
-  ...physicsTools
+  ...physicsTools,
+  ...vfxTools,
+  ...animationTools,
+  ...uiTools,
+  ...optimizationTools
 ];
 
 for (const tool of allTools) {
@@ -37,7 +45,7 @@ console.log(`[ARCANA] ${globalRegistry.count()} tools registered`);
 
 // Create MCP server
 const server = new Server(
-  { name: "arcana", version: "0.1.0" },
+  { name: "arcana", version: "0.2.0" },
   { capabilities: { tools: {} } }
 );
 
@@ -137,7 +145,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
 // Start server
 async function main() {
-  console.log("[ARCANA] Starting MCP server...");
+  console.log("[ARCANA] Starting MCP server v0.2.0...");
 
   // Try connecting to Unity (non-blocking)
   unityBridge.connect().catch(() => {
@@ -146,7 +154,7 @@ async function main() {
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP server running on stdio");
+  console.log("[ARCANA] MCP server running on stdio - 44 tools available");
 }
 
 main().catch(console.error);
