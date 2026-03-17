@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/tools-202-brightgreen.svg" alt="57 Tools">
+  <img src="https://img.shields.io/badge/tools-252-brightgreen.svg" alt="57 Tools">
   <img src="https://img.shields.io/badge/unity-2022.3%2B-black.svg" alt="Unity 2022.3+">
   <img src="https://img.shields.io/badge/node-18%2B-green.svg" alt="Node 18+">
   <img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible">
@@ -27,7 +27,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 
 ## Features
 
-- **202 Tools** across 16 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, and environment
+- **252 Tools** across 38 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, environment, navigation, postprocessing, script, selection, constraint, build, render, asset, editor, mesh, timeline, cinemachine, probuilder, input system, shader, networking, 2D, XR/VR, AI/nav, spline, visual scripting, ragdoll, cloth, decal, VRChat, addressables, localization, debug, testing, and profiler
 - **Natural Language Control** - Describe what you want, AI executes it in Unity/Blender
 - **Any AI Client** - Works with Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
 - **SuperSave Mode** - 4 meta-tools dynamically load all tools, reducing token usage by ~98%
@@ -41,7 +41,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 ![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
 
 
-## Tool List (202 tools)
+## Tool List (252 tools)
 
 ### Scene (3)
 | Tool ID | Description |
@@ -167,9 +167,318 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 | `env_set_fog` | Configure fog (linear/exponential) |
 | `env_set_reflection` | Set reflection source and intensity |
 
+### Navigation (4)
+| Tool ID | Description |
+|---------|-------------|
+| `nav_bake` | Bake NavMesh |
+| `nav_add_agent` | Add NavMeshAgent |
+| `nav_add_obstacle` | Add NavMeshObstacle |
+| `nav_add_link` | Add OffMeshLink |
+
+### PostProcessing (5)
+| Tool ID | Description |
+|---------|-------------|
+| `post_set_bloom` | Set Bloom effect |
+| `post_set_color_adjust` | Set Color Adjustments |
+| `post_set_dof` | Set Depth of Field |
+| `post_set_vignette` | Set Vignette |
+| `post_set_motion_blur` | Set Motion Blur |
+
+### Script (4)
+| Tool ID | Description |
+|---------|-------------|
+| `script_create` | Create a new C# script |
+| `script_attach` | Attach script to GameObject |
+| `script_set_variable` | Set a public variable on a script |
+| `script_invoke_method` | Invoke a method on a script |
+
+### Selection (4)
+| Tool ID | Description |
+|---------|-------------|
+| `select_object` | Select a GameObject in the editor |
+| `select_all` | Select all GameObjects |
+| `select_none` | Deselect all |
+| `select_invert` | Invert current selection |
+
+### Constraint (4)
+| Tool ID | Description |
+|---------|-------------|
+| `constraint_position` | Add Position Constraint |
+| `constraint_rotation` | Add Rotation Constraint |
+| `constraint_scale` | Add Scale Constraint |
+| `constraint_aim` | Add Aim Constraint |
+
+### Build (6)
+| Tool ID | Description |
+|---------|-------------|
+| `build_set_platform` | Set build target platform |
+| `build_add_scene` | Add scene to build settings |
+| `build_set_player` | Set player settings |
+| `build_execute` | Execute build |
+| `build_get_settings` | Get current build settings |
+| `build_clean` | Clean build cache |
+
+### Render (4)
+| Tool ID | Description |
+|---------|-------------|
+| `render_screenshot` | Take a screenshot |
+| `render_set_resolution` | Set game resolution |
+| `render_set_quality` | Set quality level |
+| `render_capture_cubemap` | Capture cubemap |
+
+### Asset (5)
+| Tool ID | Description |
+|---------|-------------|
+| `asset_import` | Import asset from file |
+| `asset_delete` | Delete asset |
+| `asset_rename` | Rename asset |
+| `asset_move` | Move asset to folder |
+| `asset_refresh` | Refresh AssetDatabase |
+
+### Editor (5)
+| Tool ID | Description |
+|---------|-------------|
+| `editor_play_mode` | Toggle Play/Stop mode |
+| `editor_save_scene` | Save current scene |
+| `editor_load_scene` | Load a scene |
+| `editor_undo_redo` | Undo or Redo |
+| `editor_clear_console` | Clear console |
+
+### Mesh (6)
+| Tool ID | Description |
+|---------|-------------|
+| `mesh_combine` | Combine meshes |
+| `mesh_separate` | Separate mesh |
+| `mesh_set_vertices` | Set vertex positions |
+| `mesh_recalculate` | Recalculate normals/bounds |
+| `mesh_export` | Export mesh to OBJ/FBX |
+| `mesh_get_info` | Get mesh information |
+
+### Timeline (6)
+| Tool ID | Description |
+|---------|-------------|
+| `timeline_create` | Create Timeline asset |
+| `timeline_add_track` | Add track to timeline |
+| `timeline_add_clip` | Add clip to track |
+| `timeline_set_duration` | Set timeline duration |
+| `timeline_bind_object` | Bind object to track |
+| `timeline_play` | Play timeline |
+
+### Cinemachine (6)
+| Tool ID | Description |
+|---------|-------------|
+| `cm_create` | Create Cinemachine virtual camera |
+| `cm_set_follow` | Set follow target |
+| `cm_set_look_at` | Set look-at target |
+| `cm_set_blend` | Set camera blend |
+| `cm_set_noise` | Set camera noise profile |
+| `cm_create_freelook` | Create FreeLook camera |
+
+### ProBuilder (6)
+| Tool ID | Description |
+|---------|-------------|
+| `pb_create_shape` | Create ProBuilder shape |
+| `pb_extrude_face` | Extrude face |
+| `pb_set_material` | Set face material |
+| `pb_merge` | Merge objects |
+| `pb_subdivide` | Subdivide mesh |
+| `pb_export` | Export to OBJ |
+
+### Input System (6)
+| Tool ID | Description |
+|---------|-------------|
+| `input_create_action` | Create input action |
+| `input_add_binding` | Add binding to action |
+| `input_enable` | Enable/disable action |
+| `input_create_map` | Create action map |
+| `input_read_value` | Read input value |
+| `input_remove_binding` | Remove binding |
+
+### Shader (6)
+| Tool ID | Description |
+|---------|-------------|
+| `shader_create_graph` | Create Shader Graph |
+| `shader_add_node` | Add node to graph |
+| `shader_connect` | Connect shader nodes |
+| `shader_set_property` | Set shader property |
+| `shader_compile` | Compile shader |
+| `shader_assign` | Assign shader to material |
+
+### Networking (6)
+| Tool ID | Description |
+|---------|-------------|
+| `net_setup` | Setup networking |
+| `net_spawn` | Spawn networked object |
+| `net_send_rpc` | Send RPC |
+| `net_sync_var` | Sync variable |
+| `net_connect` | Connect to server |
+| `net_disconnect` | Disconnect |
+
+### 2D (6)
+| Tool ID | Description |
+|---------|-------------|
+| `2d_create_sprite` | Create sprite object |
+| `2d_set_sorting_layer` | Set sorting layer and order |
+| `2d_create_tilemap` | Create tilemap |
+| `2d_set_tile` | Place tile on tilemap |
+| `2d_add_collider` | Add 2D collider |
+| `2d_add_animator` | Add 2D animator |
+
+### VRChat (10)
+| Tool ID | Description |
+|---------|-------------|
+| `vrc_setup_avatar` | Setup VRChat avatar |
+| `vrc_add_mirror` | Add VRC mirror |
+| `vrc_add_pickup` | Add VRC pickup |
+| `vrc_set_spawn` | Set spawn point |
+| `vrc_add_portal` | Add world portal |
+| `vrc_setup_station` | Setup station/chair |
+| `vrc_add_trigger` | Add VRC trigger |
+| `vrc_set_layer` | Set VRC layer |
+| `vrc_optimize` | Optimize for VRChat |
+| `vrc_validate` | Validate avatar/world |
+
+### Addressables (6)
+| Tool ID | Description |
+|---------|-------------|
+| `addr_mark` | Mark asset as addressable |
+| `addr_create_group` | Create addressable group |
+| `addr_set_address` | Set asset address |
+| `addr_build` | Build addressables |
+| `addr_load` | Load addressable at runtime |
+| `addr_release` | Release addressable |
+
+### Localization (6)
+| Tool ID | Description |
+|---------|-------------|
+| `loc_create_table` | Create string table |
+| `loc_add_entry` | Add localized entry |
+| `loc_add_locale` | Add locale |
+| `loc_set_active` | Set active locale |
+| `loc_export` | Export localization |
+| `loc_import` | Import localization |
+
+### Debug (10)
+| Tool ID | Description |
+|---------|-------------|
+| `debug_log` | Log message |
+| `debug_draw_ray` | Draw debug ray |
+| `debug_draw_line` | Draw debug line |
+| `debug_draw_sphere` | Draw debug sphere |
+| `debug_break` | Pause editor |
+| `debug_clear` | Clear debug draws |
+| `debug_time_scale` | Set time scale |
+| `debug_fps` | Show FPS overlay |
+| `debug_bounds` | Show object bounds |
+| `debug_hierarchy` | Print hierarchy tree |
+
+### Testing (8)
+| Tool ID | Description |
+|---------|-------------|
+| `test_create` | Create test class |
+| `test_run` | Run tests |
+| `test_assert` | Add assertion |
+| `test_mock` | Create mock object |
+| `test_perf` | Performance test |
+| `test_coverage` | Check coverage |
+| `test_report` | Generate report |
+| `test_cleanup` | Cleanup test data |
+
+### Profiler (10)
+| Tool ID | Description |
+|---------|-------------|
+| `prof_cpu_start` | Start CPU profiling |
+| `prof_cpu_stop` | Stop CPU profiling |
+| `prof_mem_snapshot` | Memory snapshot |
+| `prof_gpu` | GPU profiling |
+| `prof_frame` | Frame analysis |
+| `prof_bottleneck` | Detect bottlenecks |
+| `prof_drawcalls` | Analyze draw calls |
+| `prof_batches` | Analyze batches |
+| `prof_heap` | Heap analysis |
+| `prof_save` | Save profiler data |
+
+### XR / VR (10)
+| Tool ID | Description |
+|---------|-------------|
+| `xr_setup` | Setup XR environment |
+| `xr_tracking` | Configure tracking |
+| `xr_controller` | Setup controller |
+| `xr_haptics` | Send haptic feedback |
+| `xr_teleport` | Setup teleportation |
+| `xr_grab` | Enable grab interaction |
+| `xr_ray_interaction` | Setup ray interaction |
+| `xr_ui` | Setup XR UI canvas |
+| `xr_passthrough` | Toggle passthrough |
+| `xr_boundary` | Set play boundary |
+
+### AI / NavAgent (8)
+| Tool ID | Description |
+|---------|-------------|
+| `ai_set_destination` | Set agent destination |
+| `ai_patrol` | Set patrol waypoints |
+| `ai_chase` | Chase target |
+| `ai_flee` | Flee from threat |
+| `ai_idle` | Set idle state |
+| `ai_set_speed` | Set agent speed |
+| `ai_avoidance` | Set avoidance priority |
+| `ai_visualize_path` | Visualize nav path |
+
+### Spline (8)
+| Tool ID | Description |
+|---------|-------------|
+| `spline_create` | Create spline container |
+| `spline_add_knot` | Add control point |
+| `spline_remove_knot` | Remove control point |
+| `spline_set_tangent` | Set knot tangent |
+| `spline_animate` | Animate along spline |
+| `spline_extrude` | Extrude mesh along spline |
+| `spline_evaluate` | Evaluate point on spline |
+| `spline_get_length` | Get spline length |
+
+### Visual Scripting (8)
+| Tool ID | Description |
+|---------|-------------|
+| `vs_create_graph` | Create visual script graph |
+| `vs_add_node` | Add node to graph |
+| `vs_connect_nodes` | Connect graph nodes |
+| `vs_set_variable` | Set graph variable |
+| `vs_add_event` | Add event node |
+| `vs_remove_node` | Remove node |
+| `vs_add_subgraph` | Embed subgraph |
+| `vs_list_nodes` | List all nodes |
+
+### Ragdoll (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ragdoll_create` | Create ragdoll setup |
+| `ragdoll_enable` | Enable/disable ragdoll |
+| `ragdoll_set_joint_limits` | Set joint limits |
+| `ragdoll_add_force` | Apply force to bone |
+| `ragdoll_set_collision` | Set collision mode |
+| `ragdoll_remove` | Remove ragdoll |
+
+### Cloth (5)
+| Tool ID | Description |
+|---------|-------------|
+| `cloth_add` | Add Cloth component |
+| `cloth_set_params` | Set cloth parameters |
+| `cloth_set_gravity` | Set cloth gravity |
+| `cloth_add_collider` | Add cloth collider |
+| `cloth_remove` | Remove cloth |
+
+### Decal (5)
+| Tool ID | Description |
+|---------|-------------|
+| `decal_create` | Create decal projector |
+| `decal_set_size` | Set decal size |
+| `decal_set_material` | Set decal material |
+| `decal_set_opacity` | Set decal opacity |
+| `decal_remove` | Remove decal |
+
 ## SuperSave Mode
 
-Instead of registering all 202 tools in the AI context, SuperSave exposes only 4 meta-tools:
+Instead of registering all 252 tools in the AI context, SuperSave exposes only 4 meta-tools:
 
 | Meta-Tool | Purpose |
 |-----------|---------|
@@ -216,8 +525,8 @@ Tell your AI assistant:
 
 | Phase | Status | Content |
 |-------|--------|---------|
-| 1 | Done | Core server, SuperSave, 202 Unity tools |
-| 2 | Done | Navigation, PostProcessing, Script, VRChat, Cinemachine, ProBuilder, Debug, Profiler |
+| 1 | Done | Core server, SuperSave, 252 Unity tools |
+| 2 | Done | Navigation, PostProcessing, Script, Selection, Constraint, Build, Render, Asset, Editor, Mesh, Timeline, Cinemachine, ProBuilder, Input, Shader, Networking, 2D, VRChat, Addressables, Localization, Debug, Testing, Profiler, XR, AI, Spline, VisualScripting, Ragdoll, Cloth, Decal |
 | 3 | Planned | Blender addon, 50+ Blender tools |
 | 4 | Planned | Unreal Engine support |
 | 5 | Planned | 400+ tools, community contributions |
