@@ -1,4 +1,4 @@
-﻿<p align="center">
+<p align="center">
   <img src="TOP.png" alt="ARCANA Banner" width="100%">
 </p>
 

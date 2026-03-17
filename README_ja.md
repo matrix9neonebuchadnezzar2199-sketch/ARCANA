@@ -1,6 +1,6 @@
 <div align="center">
 
-![ARCANA Banner](TOP.png)
+![ARCANA Banner](image/TOP.png)
 
 **Advanced Runtime for Creative AI & Natural-language Automation**
 
