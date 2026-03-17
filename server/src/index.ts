@@ -39,6 +39,13 @@ import { inputTools } from "./tools/input";
 import { shaderTools } from "./tools/shader";
 import { networkingTools } from "./tools/networking";
 import { twodTools } from "./tools/twod";
+import { splineTools } from "./tools/spline";
+import { visualScriptingTools } from "./tools/visualscripting";
+import { ragdollTools } from "./tools/ragdoll";
+import { clothTools } from "./tools/cloth";
+import { decalTools } from "./tools/decal";
+import { xrTools } from "./tools/xr";
+import { aiTools } from "./tools/ai";
 import { vrchatTools } from "./tools/vrchat";
 import { addressablesTools } from "./tools/addressables";
 import { localizationTools } from "./tools/localization";
@@ -57,6 +64,13 @@ const allTools = [
   ...selectionTools, ...constraintTools, ...buildTools,
   ...meshTools, ...timelineTools,
   ...cinemachineTools, ...probuilderTools, ...inputTools, ...shaderTools, ...networkingTools, ...twodTools,
+  ...splineTools,
+  ...visualScriptingTools,
+  ...ragdollTools,
+  ...clothTools,
+  ...decalTools,
+  ...xrTools,
+  ...aiTools,
   ...vrchatTools, ...addressablesTools, ...localizationTools, ...debugTools, ...testingTools, ...profilerTools
 ];
 
@@ -91,7 +105,7 @@ async function main() {
   unityBridge.connect().catch(() => console.log("[ARCANA] Unity not connected yet - will retry on first tool call"));
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP Server running (v2.0.0 - 202 tools)");
+  console.log("[ARCANA] MCP Server running (v3.0.0 - 252 tools)");
 }
 
 main().catch(console.error);
