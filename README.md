@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/tools-302-brightgreen.svg" alt="57 Tools">
+  <img src="https://img.shields.io/badge/tools-438-brightgreen.svg" alt="57 Tools">
   <img src="https://img.shields.io/badge/unity-2022.3%2B-black.svg" alt="Unity 2022.3+">
   <img src="https://img.shields.io/badge/node-18%2B-green.svg" alt="Node 18+">
   <img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible">
@@ -27,7 +27,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 
 ## Features
 
-- **302 Tools** across 46 categories, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, environment, navigation, postprocessing, script, selection, constraint, build, render, asset, editor, mesh, timeline, cinemachine, probuilder, input system, shader, networking, 2D, XR/VR, AI/nav, spline, visual scripting, ragdoll, cloth, decal, VRChat, addressables, localization, debug, testing, profiler, LOD, gizmo, reflection probe, lightmap, occlusion culling, streaming, tag manager, and screenshot
+- **438 Tools** across 66 categories — Unity, Unreal Engine, and Blender, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, environment, navigation, postprocessing, script, selection, constraint, build, render, asset, editor, mesh, timeline, cinemachine, probuilder, input system, shader, networking, 2D, XR/VR, AI/nav, spline, visual scripting, ragdoll, cloth, decal, VRChat, addressables, localization, debug, testing, profiler, LOD, gizmo, reflection probe, lightmap, occlusion culling, streaming, tag manager, and screenshot
 - **Natural Language Control** - Describe what you want, AI executes it in Unity/Blender
 - **Any AI Client** - Works with Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
 - **SuperSave Mode** - 4 meta-tools dynamically load all tools, reducing token usage by ~98%
@@ -41,7 +41,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 ![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
 
 
-## Tool List (302 tools)
+## Tool List (438 tools)
 
 ### Scene (3)
 | Tool ID | Description |
@@ -552,9 +552,225 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity 
 | `screenshot_camera` | Capture from specific camera |
 | `screenshot_360` | Capture 360 panorama |
 
+---
+
+## Unreal Engine Tools (136 tools)
+
+### UE Scene (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_scene_list_actors` | List all actors in level |
+| `ue_scene_spawn_actor` | Spawn actor (Cube, Sphere, etc.) |
+| `ue_scene_delete_actor` | Delete actor by name |
+| `ue_scene_duplicate_actor` | Duplicate actor |
+| `ue_scene_rename_actor` | Rename actor |
+| `ue_scene_get_actor_info` | Get actor details |
+
+### UE Transform (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_transform_set_location` | Set actor world location |
+| `ue_transform_set_rotation` | Set actor rotation (pitch/yaw/roll) |
+| `ue_transform_set_scale` | Set actor 3D scale |
+| `ue_transform_attach` | Attach actor to parent |
+| `ue_transform_detach` | Detach actor |
+| `ue_transform_snap_to_grid` | Snap to grid |
+
+### UE Material (8)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_material_create` | Create material asset |
+| `ue_material_set_color` | Set base color |
+| `ue_material_set_metallic` | Set metallic value |
+| `ue_material_set_roughness` | Set roughness value |
+| `ue_material_set_emissive` | Set emissive color/intensity |
+| `ue_material_set_texture` | Set texture parameter |
+| `ue_material_set_opacity` | Set opacity and blend mode |
+| `ue_material_assign` | Assign material to actor |
+
+### UE Lighting (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_light_create` | Create light (Point/Spot/Directional/Rect) |
+| `ue_light_set_color` | Set light color |
+| `ue_light_set_intensity` | Set intensity (lumens/candela) |
+| `ue_light_set_shadow` | Set shadow settings |
+| `ue_light_set_attenuation` | Set attenuation radius |
+| `ue_light_set_temperature` | Set color temperature (Kelvin) |
+
+### UE Landscape (8)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_landscape_create` | Create landscape actor |
+| `ue_landscape_sculpt` | Sculpt landscape height |
+| `ue_landscape_paint` | Paint material layer |
+| `ue_landscape_add_layer` | Add paint layer |
+| `ue_landscape_import_heightmap` | Import heightmap |
+| `ue_landscape_export_heightmap` | Export heightmap |
+| `ue_landscape_set_material` | Set landscape material |
+| `ue_landscape_get_info` | Get landscape info |
+
+### UE Audio (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_audio_add_component` | Add AudioComponent |
+| `ue_audio_set_volume` | Set volume |
+| `ue_audio_set_pitch` | Set pitch |
+| `ue_audio_set_spatial` | Set 3D spatialization |
+| `ue_audio_add_ambient` | Add AmbientSound actor |
+| `ue_audio_add_reverb` | Add reverb volume |
+
+### UE Camera (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_camera_create` | Create CameraActor |
+| `ue_camera_set_fov` | Set field of view |
+| `ue_camera_set_active` | Set active camera |
+| `ue_camera_set_postprocess` | Set post-process settings |
+| `ue_camera_set_aspect` | Set aspect ratio |
+| `ue_camera_look_at` | Point camera at target |
+
+### UE Mesh (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_mesh_import` | Import static mesh (FBX/OBJ) |
+| `ue_mesh_set_collision` | Set mesh collision |
+| `ue_mesh_set_lod` | Configure mesh LOD |
+| `ue_mesh_merge` | Merge meshes |
+| `ue_mesh_get_info` | Get mesh info |
+| `ue_mesh_set_nanite` | Enable/disable Nanite (UE5) |
+
+### UE Blueprint (10)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_bp_create` | Create Blueprint class |
+| `ue_bp_add_component` | Add component to BP |
+| `ue_bp_add_variable` | Add variable to BP |
+| `ue_bp_add_function` | Add custom function |
+| `ue_bp_add_event` | Add event node |
+| `ue_bp_add_node` | Add graph node |
+| `ue_bp_connect_nodes` | Connect BP nodes |
+| `ue_bp_compile` | Compile Blueprint |
+| `ue_bp_spawn` | Spawn BP actor |
+| `ue_bp_get_info` | Get BP info |
+
+### UE Niagara (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_niagara_create` | Create Niagara system |
+| `ue_niagara_set_param` | Set Niagara parameter |
+| `ue_niagara_set_spawn_rate` | Set spawn rate |
+| `ue_niagara_set_lifetime` | Set particle lifetime |
+| `ue_niagara_set_color` | Set particle color |
+| `ue_niagara_activate` | Activate/deactivate system |
+
+### UE Animation (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_anim_import` | Import animation (FBX) |
+| `ue_anim_play` | Play animation montage |
+| `ue_anim_create_blendspace` | Create blend space |
+| `ue_anim_create_montage` | Create montage |
+| `ue_anim_set_bp` | Set Animation Blueprint |
+| `ue_anim_retarget` | Retarget animation |
+
+### UE UI / UMG (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_ui_create_widget` | Create Widget Blueprint |
+| `ue_ui_add_text` | Add TextBlock |
+| `ue_ui_add_button` | Add Button |
+| `ue_ui_add_image` | Add Image |
+| `ue_ui_add_progress_bar` | Add ProgressBar |
+| `ue_ui_show_widget` | Show/hide widget |
+
+### UE AI (8)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_ai_create_bt` | Create Behavior Tree |
+| `ue_ai_create_bb` | Create Blackboard |
+| `ue_ai_add_bb_key` | Add Blackboard key |
+| `ue_ai_add_bt_task` | Add BT task node |
+| `ue_ai_add_bt_decorator` | Add BT decorator |
+| `ue_ai_set_controller` | Set AI Controller |
+| `ue_ai_run_bt` | Run Behavior Tree |
+| `ue_ai_add_eqs` | Create EQS query |
+
+### UE Physics (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_physics_enable` | Enable physics simulation |
+| `ue_physics_set_mass` | Set mass (kg) |
+| `ue_physics_add_force` | Apply force/impulse |
+| `ue_physics_set_damping` | Set damping |
+| `ue_physics_add_constraint` | Add physics constraint |
+| `ue_physics_set_collision_profile` | Set collision profile |
+
+### UE Sequencer (8)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_seq_create` | Create Level Sequence |
+| `ue_seq_add_track` | Add track |
+| `ue_seq_add_keyframe` | Add keyframe |
+| `ue_seq_set_duration` | Set duration |
+| `ue_seq_play` | Play sequence |
+| `ue_seq_add_camera_cut` | Add camera cut |
+| `ue_seq_render_movie` | Render to video |
+| `ue_seq_get_info` | Get sequence info |
+
+### UE Build (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_build_set_platform` | Set target platform |
+| `ue_build_set_config` | Set build configuration |
+| `ue_build_package` | Package project |
+| `ue_build_cook` | Cook content |
+| `ue_build_lightmaps` | Build lightmaps |
+| `ue_build_get_status` | Get build status |
+
+### UE Level (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_level_create` | Create new level |
+| `ue_level_open` | Open level |
+| `ue_level_save` | Save level |
+| `ue_level_add_sublevel` | Add streaming sublevel |
+| `ue_level_set_gamemode` | Set level GameMode |
+| `ue_level_get_info` | Get level info |
+
+### UE Foliage (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_foliage_add_type` | Add foliage type |
+| `ue_foliage_paint` | Paint foliage |
+| `ue_foliage_erase` | Erase foliage |
+| `ue_foliage_set_settings` | Set foliage settings |
+| `ue_foliage_to_static` | Convert to static mesh |
+| `ue_foliage_get_info` | Get foliage info |
+
+### UE PCG (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_pcg_create_graph` | Create PCG graph |
+| `ue_pcg_add_node` | Add PCG node |
+| `ue_pcg_connect_nodes` | Connect PCG nodes |
+| `ue_pcg_set_param` | Set PCG parameter |
+| `ue_pcg_execute` | Execute PCG graph |
+| `ue_pcg_add_volume` | Add PCG Volume |
+
+### UE MetaHuman (6)
+| Tool ID | Description |
+|---------|-------------|
+| `ue_mh_spawn` | Spawn MetaHuman |
+| `ue_mh_set_body` | Set body type |
+| `ue_mh_set_face` | Adjust facial features |
+| `ue_mh_set_clothing` | Set clothing |
+| `ue_mh_set_animation` | Set animation |
+| `ue_mh_set_livelink` | Enable Live Link capture |
+
 ## SuperSave Mode
 
-Instead of registering all 302 tools in the AI context, SuperSave exposes only 4 meta-tools:
+Instead of registering all 438 tools in the AI context, SuperSave exposes only 4 meta-tools:
 
 | Meta-Tool | Purpose |
 |-----------|---------|
@@ -601,11 +817,11 @@ Tell your AI assistant:
 
 | Phase | Status | Content |
 |-------|--------|---------|
-| 1 | Done | Core server, SuperSave, 302 Unity tools |
+| 1 | Done | Core server, SuperSave, 302 Unity + 136 Unreal Engine tools |
 | 2 | Done | Navigation, PostProcessing, Script, Selection, Constraint, Build, Render, Asset, Editor, Mesh, Timeline, Cinemachine, ProBuilder, Input, Shader, Networking, 2D, VRChat, Addressables, Localization, Debug, Testing, Profiler, XR, AI, Spline, VisualScripting, Ragdoll, Cloth, Decal, LOD, Gizmo, ReflectionProbe, Lightmap, OcclusionCulling, Streaming, TagManager, Screenshot |
-| 3 | Planned | Blender addon, 50+ Blender tools |
-| 4 | Planned | Unreal Engine support |
-| 5 | Planned | 400+ tools, community contributions |
+| 3 | Next | Blender addon, 100+ Blender tools |
+| 4 | Done | Unreal Engine 136 tools (20 categories) |
+| 5 | Planned | 600+ tools, cross-editor workflows, community contributions |
 
 ## Contributing
 
