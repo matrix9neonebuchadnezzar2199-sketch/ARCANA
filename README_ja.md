@@ -410,8 +410,8 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 5. 制作開始！ .................... Step 5（AIと対話して3Dシーンを構築）
 ```
 
-Step 1: Claude Desktop をインストール
-claude.com/download からダウンロードしてインストール。 Anthropic のアカウントがなければ無料で作成してください。
+#### #### Step 1: Claude Desktop をインストール
+[claude.com/download](https://claude.com/download) からダウンロードしてインストール。 Anthropic のアカウントがなければ無料で作成してください。
 ```
 
 #### Step 2: ARCANA をダウンロード＆ビルド
@@ -434,16 +434,23 @@ $configDir = "$env:APPDATA\Claude"
 if (!(Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force }
 $json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\ARCANA\\server\\dist\\index.js"],"timeout":30000}}}'
 [System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
+```
 
-Windows（PowerShell）— Microsoft Store版:
+****Windows（PowerShell）— Microsoft Store版:**
+
+```powershell
 $configDir = "$env:LOCALAPPDATA\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude"
 if (!(Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force }
 $json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\ARCANA\\server\\dist\\index.js"],"timeout":30000}}}'
 [System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
+```
 
-Mac / Linux:
+**Mac / Linux:**
+
+```bash
 mkdir -p ~/Library/Application\ Support/Claude
 echo '{"mcpServers":{"arcana":{"command":"node","args":["/full/path/to/ARCANA/server/dist/index.js"],"timeout":30000}}}' > ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
 
 パスは実際のARCANAディレクトリに置き換えてください。保存後、Claude Desktop を完全に再起動してください（ウィンドウを閉じるだけでなく、終了して再度開く）。
 
@@ -506,7 +513,6 @@ MCPツールが表示されない: パスが dist/index.js（src/index.ts では
 #### Step 5: 話しかけるだけ！
 
 Claude Desktop で新しいチャットを開いて話しかけるだけ:
-```
 > 座標(2,0,0)に赤いキューブを作って
 > 雪原と夕焼けのFPSシーンを作って
 > 160cmのアニメ風女性キャラを作って、目は大きめ、髪はアッシュブロンド
@@ -565,9 +571,11 @@ npm run build
     }
   }
 }
-```
-Gemini CLI:
+**Gemini CLI:**
+
+```bash
 gemini mcp add arcana -- node /full/path/to/ARCANA/server/dist/index.js
+```
 ---
 設定例はリポジトリのルートにもあります: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json`
 

@@ -411,12 +411,13 @@ Setup Flow:
 5.Start Creating! ................ Step 5 (Talk to AI, build 3D scenes)
 ```
 
-Step 1: Install Claude Desktop
-Download from claude.com/download and install. Create a free Anthropic account if you don't have one.
+#### Step 1: Install Claude Desktop
+Download from [claude.com/download](https://claude.com/download) and install. Create a free Anthropic account if you don't have one.
 
 ```
 
-Step 2: Download and Build ARCANA
+#### Step 2: Download and Build ARCANA
+
 
 ```bash
 git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
@@ -436,16 +437,23 @@ $configDir = "$env:APPDATA\Claude"
 if (!(Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force }
 $json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\ARCANA\\server\\dist\\index.js"],"timeout":30000}}}'
 [System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
+```
 
-Windows (PowerShell) — Microsoft Store install:
+****Windows (PowerShell) — Microsoft Store install:**
+
+```powershell
 $configDir = "$env:LOCALAPPDATA\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude"
 if (!(Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force }
 $json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\ARCANA\\server\\dist\\index.js"],"timeout":30000}}}'
 [System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
+```
 
-Mac / Linux:
+**Mac / Linux:**
+
+```bash
 mkdir -p ~/Library/Application\ Support/Claude
 echo '{"mcpServers":{"arcana":{"command":"node","args":["/full/path/to/ARCANA/server/dist/index.js"],"timeout":30000}}}' > ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
 
 Replace the path with your actual ARCANA directory. After saving, restart Claude Desktop completely (quit and reopen).
 
@@ -508,8 +516,6 @@ Troubleshooting:
 
 #### Step 5: Start Creating!
 
-```
-
 Open a new chat in Claude Desktop and just talk:
 
 ```
@@ -544,8 +550,6 @@ npm run build
 
 Copy the config for your client. Replace `PATH_TO` with your actual ARCANA path.
 
-```
-
 **Cursor** (`.cursor/mcp.json`):
 
 ```json
@@ -574,9 +578,11 @@ Copy the config for your client. Replace `PATH_TO` with your actual ARCANA path.
     }
   }
 }
-```
-Gemini CLI:
+**Gemini CLI:**
+
+```bash
 gemini mcp add arcana -- node /full/path/to/ARCANA/server/dist/index.js
+```
 
 
 See also: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json` in the repository root.
