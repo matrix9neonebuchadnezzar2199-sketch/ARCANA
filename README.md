@@ -503,11 +503,10 @@ You should see:
 
    ![Install from Disk Step 1](image/install-from-disk-1.png)
    ![Install from Disk Step 2](image/install-from-disk-2.png)
-   ![Install from Disk Step 3](image/install-from-disk-3.png)
 5. Enable **ARCANA Bridge** by checking the box
    - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section
 
-   ![Enable ARCANA Bridge](image/install-from-disk-4.png)
+   ![Enable ARCANA Bridge](image/install-from-disk-3.png)
 6. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
 
    ![ARCANA Tab in Blender](image/arcana-tab.png)
