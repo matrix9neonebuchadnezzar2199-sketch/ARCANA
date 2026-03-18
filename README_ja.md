@@ -357,8 +357,6 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 ### Step 0: 事前にインストールするもの（全部無料）
 
-始める前に、以下をインストールしてください。すべて無料です。
-
 ```
 セットアップの流れ:
 
@@ -402,7 +400,7 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 > **費用: 0円。** Gemini CLI は Google の無料AIターミナルツールで、MCP に対応しています。
 > ARCANA と組み合わせれば、完全無料で AI から 3D を操作できます。
 >
-> **無料枠: 1日1,000リクエスト / 1分60リクエスト** --- シーンやキャラクターを作るには十分すぎる量です。
+> **無料枠: 1日1,000リクエスト / 1分60リクエスト** — シーンやキャラクターを作るには十分すぎる量です。
 
 #### Step 1: Gemini CLI をインストール
 
@@ -416,13 +414,31 @@ npm install -g @google/gemini-cli
 gemini --version
 ```
 
-#### Step 2: Google アカウントで認証（無料）
+#### Step 2: API キーを取得する（無料）
 
-```bash
-gemini
+1. [Google AI Studio](https://aistudio.google.com/app/apikey) にアクセスし、Google アカウントでログイン
+2. **「API キーを作成」** をクリック
+3. 生成されたキーをコピー
+
+環境変数を設定：
+
+**Windows（PowerShell）:**
+```powershell
+$env:GEMINI_API_KEY = "ここにAPIキーを貼り付け"
 ```
 
-ブラウザが自動で開きます。Google アカウント（Gmail でOK）でログインすれば認証完了です。APIキーもクレジットカードもサブスクリプションも不要です。
+> **永続化したい場合：**
+> ```powershell
+> [System.Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "ここにAPIキーを貼り付け", "User")
+> ```
+> 設定後、ターミナルを再起動してください。
+
+**Mac / Linux:**
+```bash
+export GEMINI_API_KEY="ここにAPIキーを貼り付け"
+```
+
+> **永続化：** `~/.bashrc` や `~/.zshrc` に追記してください。
 
 #### Step 3: ARCANA をダウンロード＆ビルド
 
@@ -435,50 +451,105 @@ npm run build
 
 #### Step 4: Gemini CLI に ARCANA を登録
 
-**Windows（PowerShell）の場合:**
+> **注意:** `index.d.ts` ではなく **`index.js`** を指定してください。**フルパス（絶対パス）** を使ってください。
+
+**Windows（PowerShell）:**
 
 ```powershell
-gemini mcp add arcana node -- C:\あなたのパス\ARCANA\server\dist\index.js
+gemini mcp add arcana -- node C:\あなたのパス\ARCANA\server\dist\index.js
 ```
 
-**Mac / Linux の場合:**
+**Mac / Linux:**
 
 ```bash
-gemini mcp add arcana node -- /あなたのパス/ARCANA/server/dist/index.js
+gemini mcp add arcana -- node /あなたのパス/ARCANA/server/dist/index.js
 ```
-
-> パスは ARCANA を実際にインストールした場所に置き換えてください。
 
 登録確認:
 
 ```bash
-gemini mcp list
+gemini
 ```
 
-`arcana` が `Connected` と表示されれば成功です。
+Gemini が起動したら:
+
+```
+/mcp
+```
+
+以下が表示されれば成功です:
+```
+🟢 arcana - Ready (5 tools)
+```
+
+> **うまくいかない場合:** `GEMINI_API_KEY` が同じターミナルで設定されているか確認してください。設定後に `gemini mcp add` をやり直せば解決します。
 
 #### Step 5: エディタにプラグインをインストール
 
-**Blender（初心者おすすめ）:**
+<details>
+<summary><strong>Blender（初心者おすすめ）— クリックして展開</strong></summary>
 
-1. Blender を起動
-2. **Edit > Preferences > Add-ons** を開く
-3. **Install...** をクリック → ARCANA の `blender-plugin` フォルダを選択
-4. **ARCANA Bridge** のチェックボックスをONにして有効化
-5. 3Dビューポートで **N キー** を押してサイドバーを開く
-6. **ARCANA** タブをクリック → **Connect** を押す
+> **Blender 4.2以降 / 5.x をお使いの方へ:** アドオンのインストール方法が変わっています。以下の手順を正確に実行してください。
 
-**Unity:**
+**手動インストール（全 Blender バージョンで確実に動きます）**
+
+1. Blender のアドオンフォルダを探す:
+   - **Windows:** `C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\`
+   - **Mac:** `~/Library/Application Support/Blender/<バージョン>/scripts/addons/`
+   - **Linux:** `~/.config/blender/<バージョン>/scripts/addons/`
+
+2. そのフォルダの中に `arcana_bridge` フォルダを作成
+
+3. ARCANA の `blender-plugin/` 内の **全ファイル** をコピー:
+   ```
+   arcana_bridge/
+   ├── __init__.py
+   ├── arcana_bridge.py
+   ├── handlers/
+   └── utils/
+   ```
+
+4. **重要:** `__init__.py` が **BOMなしUTF-8** で保存されていることを確認してください。
+   - PowerShell や一部のエディタで編集すると、BOM（バイトオーダーマーク）が付加され、Blender が `bl_info` を認識できなくなります。
+   - 確認＆修正方法（PowerShell）:
+     ```powershell
+     $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\__init__.py"
+     $text = [System.IO.File]::ReadAllText($path)
+     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+     [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
+     ```
+
+5. Blender を再起動
+
+6. **Edit > Preferences > Add-ons** を開く
+   - **Blender 4.2以降/5.x:** **「旧アドオン」** セクションの中を確認
+   - **「ARCANA」** で検索
+
+7. **ARCANA Bridge** のチェックボックスをONにして有効化
+
+8. 3Dビューポートで **N キー** → **ARCANA** タブ → **接続（Connect）** をクリック
+
+> **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は Gemini 起動時に自動で立ち上がります。単体で使う場合は `cd ARCANA/server && node dist/index.js` を実行してください。
+
+</details>
+
+<details>
+<summary><strong>Unity</strong></summary>
 
 1. Unity でプロジェクトを開く
 2. `unity-plugin` フォルダを Assets にドラッグ＆ドロップ
 3. メニューの **Tools > ARCANA > Setup** をクリック
 
-**Unreal Engine:**
+</details>
+
+<details>
+<summary><strong>Unreal Engine</strong></summary>
 
 1. `ue-plugin/ARCANA` フォルダをプロジェクトの Plugins ディレクトリにコピー
 2. UE を起動 → **Edit > Plugins** → ARCANA を有効化
 3. エディタを再起動
+
+</details>
 
 #### Step 6: 話しかけるだけ！
 
@@ -489,11 +560,15 @@ gemini
 あとは自然言語で指示するだけ:
 
 ```
-> 赤いキューブを原点に作って
+> 座標(2,0,0)に赤いキューブを作って
 > 雪原と夕焼けのFPSシーンを作って
 > 160cmのアニメ風女性キャラを作って、目は大きめ、髪はアッシュブロンド
-> [イラストを貼り付けて] この場面を3Dで再現して
 ```
+
+> **ヒント:** Gemini がファイルを読みにいって MCP ツールを使わない場合は、明示的に指示してください:
+> ```
+> arcana_execute を使って bl_object_create を実行して。パラメータは {"type": "CUBE", "name": "MyCube", "location": [2, 0, 0]}
+> ```
 
 **無料AI + 無料エディタ + 無料ARCANA = 無限の創造力。**
 
@@ -514,9 +589,9 @@ npm run build
 
 #### Step 2: AIクライアントの設定
 
-お使いのクライアントの設定ファイルに以下を追加してください。`PATH_TO` は実際のARCANAパスに置き換えてください。
+お使いのクライアントの設定ファイルに以下を追加。`PATH_TO` は実際のARCANAパスに置き換えてください。
 
-**Claude Desktop** (`~/.config/claude/claude_desktop_config.json`):
+**Claude Desktop** (`~/.config/claude/claude_desktop_config.json` または `%APPDATA%\Claude\claude_desktop_config.json`):
 
 ```json
 {
@@ -559,11 +634,11 @@ npm run build
 }
 ```
 
-設定ファイルの例はリポジトリのルートにもあります: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json`
+設定例はリポジトリのルートにもあります: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json`
 
 #### Step 3: エディタにプラグインをインストール
 
-Option A の Step 5 と同じ手順です。お使いのエディタ（Blender / Unity / UE）のプラグインをインストールしてください。
+Option A の Step 5 と同じ手順です。
 
 #### Step 4: 試してみる
 
@@ -579,7 +654,6 @@ Option A の Step 5 と同じ手順です。お使いのエディタ（Blender /
 ```
 "身長175cm、アスレチック体型のキャラクターを作って"
 "髪をウェーブ、30cm、アッシュカラーにラベンダーのハイライトで"
-"目を大きくして、紫色の瞳にして"
 ```
 
 **2Dから3D:**

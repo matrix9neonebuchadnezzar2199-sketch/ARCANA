@@ -357,8 +357,6 @@ Token usage reduced by approximately **98%**.
 
 ### Step 0: Prerequisites (All Free)
 
-Before you begin, install the following. Everything is free.
-
 ```
 Setup Flow:
 
@@ -403,7 +401,7 @@ Setup Flow:
 > **Cost: $0.** Gemini CLI is Google's free AI terminal tool with built-in MCP support.
 > Combined with ARCANA, you get a fully working AI-to-3D pipeline at zero cost.
 >
-> **Free tier: 1,000 requests/day and 60 requests/min** --- more than enough to build entire scenes and characters.
+> **Free tier: 1,000 requests/day and 60 requests/min** — more than enough to build entire scenes and characters.
 
 #### Step 1: Install Gemini CLI
 
@@ -417,13 +415,31 @@ Verify:
 gemini --version
 ```
 
-#### Step 2: Sign In with Google (Free)
+#### Step 2: Get Your API Key (Free)
 
-```bash
-gemini
+1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey) and sign in with your Google account
+2. Click **"Create API Key"**
+3. Copy the generated key
+
+Set the environment variable:
+
+**Windows (PowerShell):**
+```powershell
+$env:GEMINI_API_KEY = "your-api-key-here"
 ```
 
-Your browser opens automatically. Sign in with your Google account (Gmail is fine). No API key, no credit card, no subscription needed.
+> **Tip:** To make this permanent, run:
+> ```powershell
+> [System.Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "your-api-key-here", "User")
+> ```
+> Then restart your terminal.
+
+**Mac / Linux:**
+```bash
+export GEMINI_API_KEY="your-api-key-here"
+```
+
+> **Tip:** Add to `~/.bashrc` or `~/.zshrc` to make permanent.
 
 #### Step 3: Download and Build ARCANA
 
@@ -436,50 +452,105 @@ npm run build
 
 #### Step 4: Register ARCANA in Gemini CLI
 
+> **Important:** Use `index.js`, not `index.d.ts`. Use the **full absolute path**.
+
 **Windows (PowerShell):**
 
 ```powershell
-gemini mcp add arcana node -- C:\full\path\to\ARCANA\server\dist\index.js
+gemini mcp add arcana -- node C:\full\path\to\ARCANA\server\dist\index.js
 ```
 
 **Mac / Linux:**
 
 ```bash
-gemini mcp add arcana node -- /full/path/to/ARCANA/server/dist/index.js
+gemini mcp add arcana -- node /full/path/to/ARCANA/server/dist/index.js
 ```
-
-> Replace the path with your actual ARCANA installation location.
 
 Verify:
 
 ```bash
-gemini mcp list
+gemini
 ```
 
-You should see `arcana` with status `Connected`.
+Then inside Gemini:
+
+```
+/mcp
+```
+
+You should see:
+```
+🟢 arcana - Ready (5 tools)
+```
+
+> **Troubleshooting:** If you see `No MCP servers configured`, make sure `GEMINI_API_KEY` is set in the same terminal session, then run `gemini mcp add` again.
 
 #### Step 5: Set Up Your Editor Plugin
 
-**Blender (Recommended for beginners):**
+<details>
+<summary><strong>Blender (Recommended for beginners) — Click to expand</strong></summary>
 
-1. Open Blender
-2. Go to **Edit > Preferences > Add-ons**
-3. Click **Install...** and select the `blender-plugin` folder from ARCANA
-4. Enable **ARCANA Bridge** by checking the box
-5. In the 3D Viewport, press **N** to open the sidebar
-6. Click the **ARCANA** tab and press **Connect**
+> **Important for Blender 4.2+ / 5.x users:** The add-on install process has changed. Follow these steps carefully.
 
-**Unity:**
+**Method: Manual Install (works on all Blender versions)**
+
+1. Find your Blender add-ons directory:
+   - **Windows:** `C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\`
+   - **Mac:** `~/Library/Application Support/Blender/<version>/scripts/addons/`
+   - **Linux:** `~/.config/blender/<version>/scripts/addons/`
+
+2. Create a folder called `arcana_bridge` inside the addons directory
+
+3. Copy **all files** from ARCANA's `blender-plugin/` into that folder:
+   ```
+   arcana_bridge/
+   ├── __init__.py
+   ├── arcana_bridge.py
+   ├── handlers/
+   └── utils/
+   ```
+
+4. **Critical:** Make sure `__init__.py` is saved as **UTF-8 without BOM**.
+   - If you edited the file with PowerShell or Notepad, it may have a BOM (Byte Order Mark) that prevents Blender from reading `bl_info`.
+   - To check and fix (PowerShell):
+     ```powershell
+     $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\__init__.py"
+     $text = [System.IO.File]::ReadAllText($path)
+     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+     [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
+     ```
+
+5. Restart Blender
+
+6. Go to **Edit > Preferences > Add-ons**
+   - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section (旧アドオン)
+   - Search for **"ARCANA"**
+
+7. Enable **ARCANA Bridge** by checking the box
+
+8. In the 3D Viewport, press **N** to open the sidebar → Click the **ARCANA** tab → Press **Connect**
+
+> **Note:** ARCANA's MCP server must be running for Connect to work. If you're using Gemini CLI, the server starts automatically when Gemini launches. If not, run `node dist/index.js` from the server directory.
+
+</details>
+
+<details>
+<summary><strong>Unity</strong></summary>
 
 1. Open your Unity project
 2. Drag the `unity-plugin` folder into your project's Assets folder
 3. Go to **Tools > ARCANA > Setup**
 
-**Unreal Engine:**
+</details>
+
+<details>
+<summary><strong>Unreal Engine</strong></summary>
 
 1. Copy `ue-plugin/ARCANA` into your project's Plugins directory
 2. Open UE > **Edit > Plugins** > Enable ARCANA
 3. Restart the editor
+
+</details>
 
 #### Step 6: Start Creating!
 
@@ -490,11 +561,15 @@ gemini
 Just talk to it:
 
 ```
-> Create a red cube at the origin
+> Create a red cube at position 2, 0, 0
 > Build an FPS scene with snowy terrain and sunset lighting
 > Create a 160cm anime-style female character with large eyes and ash blonde hair
-> Show me this illustration as a 3D scene [paste image]
 ```
+
+> **Tip:** If Gemini reads files instead of calling MCP tools, be explicit:
+> ```
+> Use arcana_execute to run bl_object_create with params {"type": "CUBE", "name": "MyCube", "location": [2, 0, 0]}
+> ```
 
 **Free AI + Free Editor + Free ARCANA = Unlimited creativity.**
 
@@ -517,7 +592,7 @@ npm run build
 
 Copy the config for your client. Replace `PATH_TO` with your actual ARCANA path.
 
-**Claude Desktop** (`~/.config/claude/claude_desktop_config.json`):
+**Claude Desktop** (`~/.config/claude/claude_desktop_config.json` or `%APPDATA%\Claude\claude_desktop_config.json`):
 
 ```json
 {
