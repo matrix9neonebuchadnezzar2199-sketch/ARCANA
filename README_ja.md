@@ -503,6 +503,8 @@ Gemini が起動したら:
    - **Blender 4.2+/5.x:** **「旧アドオン（Legacy Add-ons）」** セクションを探す
 6. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
 
+   ![ARCANA タブ](image/arcana-tab.png)
+
 
 > **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は自動で起動します。単体の場合は `cd ARCANA/server && node dist/index.js` を実行してください。
 

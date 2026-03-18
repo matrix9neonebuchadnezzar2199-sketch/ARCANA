@@ -504,6 +504,8 @@ You should see:
    - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section
 6. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
 
+   ![ARCANA Tab in Blender](image/arcana-tab.png)
+
 
 > **Note:** ARCANA's MCP server must be running for Connect to work. If you use Gemini CLI, the server starts automatically. Otherwise run `node dist/index.js` from the server directory.
 
