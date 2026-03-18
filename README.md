@@ -4,790 +4,173 @@
 
 <h1 align="center">ARCANA</h1>
 <p align="center"><strong>Advanced Runtime for Creative AI & Natural-language Automation</strong></p>
-<p align="center">Control Unity and Blender with natural language. Free and open source, forever.</p>
+<p align="center">Control <b>Unity</b>, <b>Unreal Engine</b>, and <b>Blender</b> with natural language.<br>Free and open source, forever.</p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/tools-438-brightgreen.svg" alt="57 Tools">
-  <img src="https://img.shields.io/badge/unity-2022.3%2B-black.svg" alt="Unity 2022.3+">
-  <img src="https://img.shields.io/badge/node-18%2B-green.svg" alt="Node 18+">
-  <img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/Tools-438-brightgreen.svg" alt="438 Tools">
+  <img src="https://img.shields.io/badge/Categories-66-orange.svg" alt="66 Categories">
+  <img src="https://img.shields.io/badge/Unity-2022.3+-black?logo=unity" alt="Unity 2022.3+">
+  <img src="https://img.shields.io/badge/Unreal_Engine-5.x-black?logo=unrealengine" alt="UE 5.x">
+  <img src="https://img.shields.io/badge/Blender-3.6+-orange?logo=blender" alt="Blender 3.6+">
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white" alt="Node 18+">
+  <img src="https://img.shields.io/badge/MCP-Compatible-purple" alt="MCP Compatible">
 </p>
 
-<p align="center">
-  <a href="README_ja.md">日本語</a> | English
-</p>
+<p align="center"><a href="README_ja.md">日本語</a> | English</p>
 
 ---
+
+## Why ARCANA?
+
+Most MCP editor tools support one editor with 20-60 tools.
+ARCANA provides **438 tools across 3 editors and 66 categories** from a single server.
+
+| | ARCANA | Unity-MCP | Blender-MCP | Unreal-MCP |
+|---|---|---|---|---|
+| **Tools** | **438** | ~20 | ~15 | ~30 |
+| **Editors** | Unity + UE + Blender | Unity | Blender | UE |
+| **SuperSave** | 4 meta-tools | - | - | - |
 
 ## What is ARCANA?
 
-ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, etc.) to Unity Editor and Blender via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). Instead of clicking through menus and adjusting parameters manually, you describe what you want in plain language and ARCANA executes it.
+ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Unity**, **Unreal Engine**, and **Blender** via the [Model Context Protocol](https://modelcontextprotocol.io/). Describe what you want in plain language and ARCANA executes it.
 
+## Key Features
 
-## Features
-
-- **438 Tools** across 66 categories — Unity, Unreal Engine, and Blender, covering scene, transform, material, lighting, terrain, audio, camera, physics, VFX, animation, UI, optimization, component, prefab, layer/tag, environment, navigation, postprocessing, script, selection, constraint, build, render, asset, editor, mesh, timeline, cinemachine, probuilder, input system, shader, networking, 2D, XR/VR, AI/nav, spline, visual scripting, ragdoll, cloth, decal, VRChat, addressables, localization, debug, testing, profiler, LOD, gizmo, reflection probe, lightmap, occlusion culling, streaming, tag manager, and screenshot
-- **Natural Language Control** - Describe what you want, AI executes it in Unity/Blender
-- **Any AI Client** - Works with Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
-- **SuperSave Mode** - 4 meta-tools dynamically load all tools, reducing token usage by ~98%
-- **Unity + Blender** - One server controls both editors simultaneously
-- **Open Source** - MIT License, free forever, community-driven
-- **Bilingual** - English and Japanese support
-- **Undo Safe** - Every tool supports Unity Undo/Redo
+- **438 Tools / 66 Categories** - Unity 302, Unreal Engine 136, Blender planned
+- **3 Editor Support** - One server controls Unity, UE, and Blender
+- **Natural Language** - Describe what you want, AI does it
+- **Any AI Client** - Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
+- **SuperSave Mode** - 4 meta-tools reduce token usage ~98%
+- **Bridge Architecture** - WebSocket per editor (Unity :9877, UE :9878, Blender :9879)
+- **Open Source** - MIT, free forever
+- **Bilingual** - English + Japanese
+- **Undo Safe** - Unity tools support Undo/Redo
 
 ## Architecture
 
-![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
-
-
-## Tool List (438 tools)
-
-### Scene (3)
-| Tool ID | Description |
-|---------|-------------|
-| `scene_list_objects` | List all GameObjects in the scene |
-| `scene_create_gameobject` | Create a new GameObject with optional primitive, position, color |
-| `scene_delete_gameobject` | Delete a GameObject by name |
-
-### Transform (5)
-| Tool ID | Description |
-|---------|-------------|
-| `transform_set_position` | Set world position |
-| `transform_set_rotation` | Set rotation in euler angles |
-| `transform_set_scale` | Set local scale |
-| `transform_set_parent` | Set parent-child relationship |
-| `transform_look_at` | Make object face a target position |
-
-### Material (5)
-| Tool ID | Description |
-|---------|-------------|
-| `material_set_color` | Set main color |
-| `material_set_transparency` | Set alpha with automatic render mode |
-| `material_set_emission` | Enable emission with color and intensity |
-| `material_set_shader` | Change shader |
-| `material_set_texture` | Set main texture from file |
-
-### Lighting (5)
-| Tool ID | Description |
-|---------|-------------|
-| `lighting_create_light` | Create Directional/Point/Spot/Area light |
-| `lighting_set_color` | Change light color |
-| `lighting_set_intensity` | Change light intensity |
-| `lighting_set_shadow` | Set shadow mode (None/Hard/Soft) |
-| `lighting_set_ambient` | Set ambient light color and intensity |
-
-### Terrain (4)
-| Tool ID | Description |
-|---------|-------------|
-| `terrain_create` | Create terrain with custom size |
-| `terrain_set_height` | Set height at normalized position |
-| `terrain_add_texture` | Add texture layer |
-| `terrain_add_trees` | Place tree instances |
-
-### Audio (3)
-| Tool ID | Description |
-|---------|-------------|
-| `audio_add_source` | Add AudioSource with clip, loop, volume |
-| `audio_set_volume` | Set volume |
-| `audio_set_spatial` | Configure 3D spatial audio |
-
-### Camera (3)
-| Tool ID | Description |
-|---------|-------------|
-| `camera_create` | Create camera with position and FOV |
-| `camera_set_fov` | Set field of view |
-| `camera_set_background` | Set background color and clear flags |
-
-### Physics (3)
-| Tool ID | Description |
-|---------|-------------|
-| `physics_add_rigidbody` | Add Rigidbody with mass, gravity, kinematic |
-| `physics_add_collider` | Add Box/Sphere/Capsule/Mesh collider |
-| `physics_set_gravity` | Set global scene gravity |
-
-### VFX (4)
-| Tool ID | Description |
-|---------|-------------|
-| `vfx_create_particle` | Create particle system |
-| `vfx_set_color` | Set particle start color |
-| `vfx_set_speed` | Set particle speed and lifetime |
-| `vfx_set_shape` | Set emission shape |
-
-### Animation (4)
-| Tool ID | Description |
-|---------|-------------|
-| `anim_add_animator` | Add Animator with controller |
-| `anim_set_parameter` | Set Animator parameter (float/int/bool/trigger) |
-| `anim_play` | Play animation state |
-| `anim_create_clip` | Create animation clip with position keyframes |
-
-### UI (4)
-| Tool ID | Description |
-|---------|-------------|
-| `ui_create_canvas` | Create Canvas with render mode |
-| `ui_create_text` | Create text element |
-| `ui_create_button` | Create button with label |
-| `ui_create_image` | Create image element |
-
-### Optimization (4)
-| Tool ID | Description |
-|---------|-------------|
-| `opt_get_scene_stats` | Get object/triangle/material counts |
-| `opt_set_static` | Set static flags for batching |
-| `opt_add_lod_group` | Add LOD Group |
-| `opt_remove_missing_scripts` | Remove all missing scripts |
-
-### Component (4)
-| Tool ID | Description |
-|---------|-------------|
-| `component_add` | Add any component by type name |
-| `component_remove` | Remove component by type name |
-| `component_set_enabled` | Enable/disable component |
-| `component_list` | List all components on object |
-
-### Prefab (3)
-| Tool ID | Description |
-|---------|-------------|
-| `prefab_create` | Save GameObject as prefab |
-| `prefab_instantiate` | Instantiate prefab into scene |
-| `prefab_unpack` | Unpack prefab instance |
-
-### Layer / Tag (3)
-| Tool ID | Description |
-|---------|-------------|
-| `layertag_set_layer` | Set layer with optional children |
-| `layertag_set_tag` | Set tag |
-| `layertag_rename` | Rename GameObject |
-
-### Environment (3)
-| Tool ID | Description |
-|---------|-------------|
-| `env_set_skybox` | Set skybox material |
-| `env_set_fog` | Configure fog (linear/exponential) |
-| `env_set_reflection` | Set reflection source and intensity |
-
-### Navigation (4)
-| Tool ID | Description |
-|---------|-------------|
-| `nav_bake` | Bake NavMesh |
-| `nav_add_agent` | Add NavMeshAgent |
-| `nav_add_obstacle` | Add NavMeshObstacle |
-| `nav_add_link` | Add OffMeshLink |
-
-### PostProcessing (5)
-| Tool ID | Description |
-|---------|-------------|
-| `post_set_bloom` | Set Bloom effect |
-| `post_set_color_adjust` | Set Color Adjustments |
-| `post_set_dof` | Set Depth of Field |
-| `post_set_vignette` | Set Vignette |
-| `post_set_motion_blur` | Set Motion Blur |
-
-### Script (4)
-| Tool ID | Description |
-|---------|-------------|
-| `script_create` | Create a new C# script |
-| `script_attach` | Attach script to GameObject |
-| `script_set_variable` | Set a public variable on a script |
-| `script_invoke_method` | Invoke a method on a script |
-
-### Selection (4)
-| Tool ID | Description |
-|---------|-------------|
-| `select_object` | Select a GameObject in the editor |
-| `select_all` | Select all GameObjects |
-| `select_none` | Deselect all |
-| `select_invert` | Invert current selection |
-
-### Constraint (4)
-| Tool ID | Description |
-|---------|-------------|
-| `constraint_position` | Add Position Constraint |
-| `constraint_rotation` | Add Rotation Constraint |
-| `constraint_scale` | Add Scale Constraint |
-| `constraint_aim` | Add Aim Constraint |
-
-### Build (6)
-| Tool ID | Description |
-|---------|-------------|
-| `build_set_platform` | Set build target platform |
-| `build_add_scene` | Add scene to build settings |
-| `build_set_player` | Set player settings |
-| `build_execute` | Execute build |
-| `build_get_settings` | Get current build settings |
-| `build_clean` | Clean build cache |
-
-### Render (4)
-| Tool ID | Description |
-|---------|-------------|
-| `render_screenshot` | Take a screenshot |
-| `render_set_resolution` | Set game resolution |
-| `render_set_quality` | Set quality level |
-| `render_capture_cubemap` | Capture cubemap |
-
-### Asset (5)
-| Tool ID | Description |
-|---------|-------------|
-| `asset_import` | Import asset from file |
-| `asset_delete` | Delete asset |
-| `asset_rename` | Rename asset |
-| `asset_move` | Move asset to folder |
-| `asset_refresh` | Refresh AssetDatabase |
-
-### Editor (5)
-| Tool ID | Description |
-|---------|-------------|
-| `editor_play_mode` | Toggle Play/Stop mode |
-| `editor_save_scene` | Save current scene |
-| `editor_load_scene` | Load a scene |
-| `editor_undo_redo` | Undo or Redo |
-| `editor_clear_console` | Clear console |
-
-### Mesh (6)
-| Tool ID | Description |
-|---------|-------------|
-| `mesh_combine` | Combine meshes |
-| `mesh_separate` | Separate mesh |
-| `mesh_set_vertices` | Set vertex positions |
-| `mesh_recalculate` | Recalculate normals/bounds |
-| `mesh_export` | Export mesh to OBJ/FBX |
-| `mesh_get_info` | Get mesh information |
-
-### Timeline (6)
-| Tool ID | Description |
-|---------|-------------|
-| `timeline_create` | Create Timeline asset |
-| `timeline_add_track` | Add track to timeline |
-| `timeline_add_clip` | Add clip to track |
-| `timeline_set_duration` | Set timeline duration |
-| `timeline_bind_object` | Bind object to track |
-| `timeline_play` | Play timeline |
-
-### Cinemachine (6)
-| Tool ID | Description |
-|---------|-------------|
-| `cm_create` | Create Cinemachine virtual camera |
-| `cm_set_follow` | Set follow target |
-| `cm_set_look_at` | Set look-at target |
-| `cm_set_blend` | Set camera blend |
-| `cm_set_noise` | Set camera noise profile |
-| `cm_create_freelook` | Create FreeLook camera |
-
-### ProBuilder (6)
-| Tool ID | Description |
-|---------|-------------|
-| `pb_create_shape` | Create ProBuilder shape |
-| `pb_extrude_face` | Extrude face |
-| `pb_set_material` | Set face material |
-| `pb_merge` | Merge objects |
-| `pb_subdivide` | Subdivide mesh |
-| `pb_export` | Export to OBJ |
-
-### Input System (6)
-| Tool ID | Description |
-|---------|-------------|
-| `input_create_action` | Create input action |
-| `input_add_binding` | Add binding to action |
-| `input_enable` | Enable/disable action |
-| `input_create_map` | Create action map |
-| `input_read_value` | Read input value |
-| `input_remove_binding` | Remove binding |
-
-### Shader (6)
-| Tool ID | Description |
-|---------|-------------|
-| `shader_create_graph` | Create Shader Graph |
-| `shader_add_node` | Add node to graph |
-| `shader_connect` | Connect shader nodes |
-| `shader_set_property` | Set shader property |
-| `shader_compile` | Compile shader |
-| `shader_assign` | Assign shader to material |
-
-### Networking (6)
-| Tool ID | Description |
-|---------|-------------|
-| `net_setup` | Setup networking |
-| `net_spawn` | Spawn networked object |
-| `net_send_rpc` | Send RPC |
-| `net_sync_var` | Sync variable |
-| `net_connect` | Connect to server |
-| `net_disconnect` | Disconnect |
-
-### 2D (6)
-| Tool ID | Description |
-|---------|-------------|
-| `2d_create_sprite` | Create sprite object |
-| `2d_set_sorting_layer` | Set sorting layer and order |
-| `2d_create_tilemap` | Create tilemap |
-| `2d_set_tile` | Place tile on tilemap |
-| `2d_add_collider` | Add 2D collider |
-| `2d_add_animator` | Add 2D animator |
-
-### VRChat (10)
-| Tool ID | Description |
-|---------|-------------|
-| `vrc_setup_avatar` | Setup VRChat avatar |
-| `vrc_add_mirror` | Add VRC mirror |
-| `vrc_add_pickup` | Add VRC pickup |
-| `vrc_set_spawn` | Set spawn point |
-| `vrc_add_portal` | Add world portal |
-| `vrc_setup_station` | Setup station/chair |
-| `vrc_add_trigger` | Add VRC trigger |
-| `vrc_set_layer` | Set VRC layer |
-| `vrc_optimize` | Optimize for VRChat |
-| `vrc_validate` | Validate avatar/world |
-
-### Addressables (6)
-| Tool ID | Description |
-|---------|-------------|
-| `addr_mark` | Mark asset as addressable |
-| `addr_create_group` | Create addressable group |
-| `addr_set_address` | Set asset address |
-| `addr_build` | Build addressables |
-| `addr_load` | Load addressable at runtime |
-| `addr_release` | Release addressable |
-
-### Localization (6)
-| Tool ID | Description |
-|---------|-------------|
-| `loc_create_table` | Create string table |
-| `loc_add_entry` | Add localized entry |
-| `loc_add_locale` | Add locale |
-| `loc_set_active` | Set active locale |
-| `loc_export` | Export localization |
-| `loc_import` | Import localization |
-
-### Debug (10)
-| Tool ID | Description |
-|---------|-------------|
-| `debug_log` | Log message |
-| `debug_draw_ray` | Draw debug ray |
-| `debug_draw_line` | Draw debug line |
-| `debug_draw_sphere` | Draw debug sphere |
-| `debug_break` | Pause editor |
-| `debug_clear` | Clear debug draws |
-| `debug_time_scale` | Set time scale |
-| `debug_fps` | Show FPS overlay |
-| `debug_bounds` | Show object bounds |
-| `debug_hierarchy` | Print hierarchy tree |
-
-### Testing (8)
-| Tool ID | Description |
-|---------|-------------|
-| `test_create` | Create test class |
-| `test_run` | Run tests |
-| `test_assert` | Add assertion |
-| `test_mock` | Create mock object |
-| `test_perf` | Performance test |
-| `test_coverage` | Check coverage |
-| `test_report` | Generate report |
-| `test_cleanup` | Cleanup test data |
-
-### Profiler (10)
-| Tool ID | Description |
-|---------|-------------|
-| `prof_cpu_start` | Start CPU profiling |
-| `prof_cpu_stop` | Stop CPU profiling |
-| `prof_mem_snapshot` | Memory snapshot |
-| `prof_gpu` | GPU profiling |
-| `prof_frame` | Frame analysis |
-| `prof_bottleneck` | Detect bottlenecks |
-| `prof_drawcalls` | Analyze draw calls |
-| `prof_batches` | Analyze batches |
-| `prof_heap` | Heap analysis |
-| `prof_save` | Save profiler data |
-
-### XR / VR (10)
-| Tool ID | Description |
-|---------|-------------|
-| `xr_setup` | Setup XR environment |
-| `xr_tracking` | Configure tracking |
-| `xr_controller` | Setup controller |
-| `xr_haptics` | Send haptic feedback |
-| `xr_teleport` | Setup teleportation |
-| `xr_grab` | Enable grab interaction |
-| `xr_ray_interaction` | Setup ray interaction |
-| `xr_ui` | Setup XR UI canvas |
-| `xr_passthrough` | Toggle passthrough |
-| `xr_boundary` | Set play boundary |
-
-### AI / NavAgent (8)
-| Tool ID | Description |
-|---------|-------------|
-| `ai_set_destination` | Set agent destination |
-| `ai_patrol` | Set patrol waypoints |
-| `ai_chase` | Chase target |
-| `ai_flee` | Flee from threat |
-| `ai_idle` | Set idle state |
-| `ai_set_speed` | Set agent speed |
-| `ai_avoidance` | Set avoidance priority |
-| `ai_visualize_path` | Visualize nav path |
-
-### Spline (8)
-| Tool ID | Description |
-|---------|-------------|
-| `spline_create` | Create spline container |
-| `spline_add_knot` | Add control point |
-| `spline_remove_knot` | Remove control point |
-| `spline_set_tangent` | Set knot tangent |
-| `spline_animate` | Animate along spline |
-| `spline_extrude` | Extrude mesh along spline |
-| `spline_evaluate` | Evaluate point on spline |
-| `spline_get_length` | Get spline length |
-
-### Visual Scripting (8)
-| Tool ID | Description |
-|---------|-------------|
-| `vs_create_graph` | Create visual script graph |
-| `vs_add_node` | Add node to graph |
-| `vs_connect_nodes` | Connect graph nodes |
-| `vs_set_variable` | Set graph variable |
-| `vs_add_event` | Add event node |
-| `vs_remove_node` | Remove node |
-| `vs_add_subgraph` | Embed subgraph |
-| `vs_list_nodes` | List all nodes |
-
-### Ragdoll (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ragdoll_create` | Create ragdoll setup |
-| `ragdoll_enable` | Enable/disable ragdoll |
-| `ragdoll_set_joint_limits` | Set joint limits |
-| `ragdoll_add_force` | Apply force to bone |
-| `ragdoll_set_collision` | Set collision mode |
-| `ragdoll_remove` | Remove ragdoll |
-
-### Cloth (5)
-| Tool ID | Description |
-|---------|-------------|
-| `cloth_add` | Add Cloth component |
-| `cloth_set_params` | Set cloth parameters |
-| `cloth_set_gravity` | Set cloth gravity |
-| `cloth_add_collider` | Add cloth collider |
-| `cloth_remove` | Remove cloth |
-
-### Decal (5)
-| Tool ID | Description |
-|---------|-------------|
-| `decal_create` | Create decal projector |
-| `decal_set_size` | Set decal size |
-| `decal_set_material` | Set decal material |
-| `decal_set_opacity` | Set decal opacity |
-| `decal_remove` | Remove decal |
-
-### LOD (6)
-| Tool ID | Description |
-|---------|-------------|
-| `lod_create_group` | Create LOD Group component |
-| `lod_set_transitions` | Set LOD transition distances |
-| `lod_assign_renderer` | Assign renderer to LOD level |
-| `lod_set_fade_mode` | Set fade mode (None/CrossFade/SpeedTree) |
-| `lod_get_info` | Get LOD Group information |
-| `lod_remove` | Remove LOD Group |
-
-### Gizmo (6)
-| Tool ID | Description |
-|---------|-------------|
-| `gizmo_draw_sphere` | Draw wire sphere gizmo |
-| `gizmo_draw_cube` | Draw wire cube gizmo |
-| `gizmo_draw_line` | Draw line gizmo |
-| `gizmo_draw_ray` | Draw ray gizmo |
-| `gizmo_draw_label` | Draw text label in scene |
-| `gizmo_clear_all` | Clear all custom gizmos |
-
-### Reflection Probe (6)
-| Tool ID | Description |
-|---------|-------------|
-| `probe_create` | Create Reflection Probe |
-| `probe_set_size` | Set probe bounding box size |
-| `probe_set_resolution` | Set cubemap resolution |
-| `probe_set_intensity` | Set reflection intensity |
-| `probe_bake` | Bake Reflection Probe |
-| `probe_remove` | Remove Reflection Probe |
-
-### Lightmap (6)
-| Tool ID | Description |
-|---------|-------------|
-| `lightmap_bake` | Bake lightmaps |
-| `lightmap_set_resolution` | Set texels per unit |
-| `lightmap_set_max_size` | Set max atlas size |
-| `lightmap_set_object_scale` | Set object lightmap scale |
-| `lightmap_clear` | Clear baked lightmaps |
-| `lightmap_get_info` | Get lightmap settings |
-
-### Occlusion Culling (6)
-| Tool ID | Description |
-|---------|-------------|
-| `occlusion_bake` | Bake occlusion culling |
-| `occlusion_set_occluder` | Set Occluder Static |
-| `occlusion_set_occludee` | Set Occludee Static |
-| `occlusion_set_params` | Set occlusion parameters |
-| `occlusion_clear` | Clear occlusion data |
-| `occlusion_visualize` | Toggle occlusion visualization |
-
-### Streaming (6)
-| Tool ID | Description |
-|---------|-------------|
-| `streaming_load_scene` | Load scene asynchronously |
-| `streaming_unload_scene` | Unload scene asynchronously |
-| `streaming_set_active_scene` | Set active scene |
-| `streaming_get_loaded_scenes` | List loaded scenes |
-| `streaming_preload` | Preload scene without activating |
-| `streaming_get_progress` | Get loading progress |
-
-### Tag Manager (4)
-| Tool ID | Description |
-|---------|-------------|
-| `tagmgr_add_tag` | Add custom tag |
-| `tagmgr_add_layer` | Add custom layer |
-| `tagmgr_add_sorting_layer` | Add sorting layer |
-| `tagmgr_list_all` | List all tags and layers |
-
-### Screenshot (4)
-| Tool ID | Description |
-|---------|-------------|
-| `screenshot_game_view` | Capture Game View |
-| `screenshot_scene_view` | Capture Scene View |
-| `screenshot_camera` | Capture from specific camera |
-| `screenshot_360` | Capture 360 panorama |
-
----
-
-## Unreal Engine Tools (136 tools)
-
-### UE Scene (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_scene_list_actors` | List all actors in level |
-| `ue_scene_spawn_actor` | Spawn actor (Cube, Sphere, etc.) |
-| `ue_scene_delete_actor` | Delete actor by name |
-| `ue_scene_duplicate_actor` | Duplicate actor |
-| `ue_scene_rename_actor` | Rename actor |
-| `ue_scene_get_actor_info` | Get actor details |
-
-### UE Transform (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_transform_set_location` | Set actor world location |
-| `ue_transform_set_rotation` | Set actor rotation (pitch/yaw/roll) |
-| `ue_transform_set_scale` | Set actor 3D scale |
-| `ue_transform_attach` | Attach actor to parent |
-| `ue_transform_detach` | Detach actor |
-| `ue_transform_snap_to_grid` | Snap to grid |
-
-### UE Material (8)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_material_create` | Create material asset |
-| `ue_material_set_color` | Set base color |
-| `ue_material_set_metallic` | Set metallic value |
-| `ue_material_set_roughness` | Set roughness value |
-| `ue_material_set_emissive` | Set emissive color/intensity |
-| `ue_material_set_texture` | Set texture parameter |
-| `ue_material_set_opacity` | Set opacity and blend mode |
-| `ue_material_assign` | Assign material to actor |
-
-### UE Lighting (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_light_create` | Create light (Point/Spot/Directional/Rect) |
-| `ue_light_set_color` | Set light color |
-| `ue_light_set_intensity` | Set intensity (lumens/candela) |
-| `ue_light_set_shadow` | Set shadow settings |
-| `ue_light_set_attenuation` | Set attenuation radius |
-| `ue_light_set_temperature` | Set color temperature (Kelvin) |
-
-### UE Landscape (8)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_landscape_create` | Create landscape actor |
-| `ue_landscape_sculpt` | Sculpt landscape height |
-| `ue_landscape_paint` | Paint material layer |
-| `ue_landscape_add_layer` | Add paint layer |
-| `ue_landscape_import_heightmap` | Import heightmap |
-| `ue_landscape_export_heightmap` | Export heightmap |
-| `ue_landscape_set_material` | Set landscape material |
-| `ue_landscape_get_info` | Get landscape info |
-
-### UE Audio (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_audio_add_component` | Add AudioComponent |
-| `ue_audio_set_volume` | Set volume |
-| `ue_audio_set_pitch` | Set pitch |
-| `ue_audio_set_spatial` | Set 3D spatialization |
-| `ue_audio_add_ambient` | Add AmbientSound actor |
-| `ue_audio_add_reverb` | Add reverb volume |
-
-### UE Camera (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_camera_create` | Create CameraActor |
-| `ue_camera_set_fov` | Set field of view |
-| `ue_camera_set_active` | Set active camera |
-| `ue_camera_set_postprocess` | Set post-process settings |
-| `ue_camera_set_aspect` | Set aspect ratio |
-| `ue_camera_look_at` | Point camera at target |
-
-### UE Mesh (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_mesh_import` | Import static mesh (FBX/OBJ) |
-| `ue_mesh_set_collision` | Set mesh collision |
-| `ue_mesh_set_lod` | Configure mesh LOD |
-| `ue_mesh_merge` | Merge meshes |
-| `ue_mesh_get_info` | Get mesh info |
-| `ue_mesh_set_nanite` | Enable/disable Nanite (UE5) |
-
-### UE Blueprint (10)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_bp_create` | Create Blueprint class |
-| `ue_bp_add_component` | Add component to BP |
-| `ue_bp_add_variable` | Add variable to BP |
-| `ue_bp_add_function` | Add custom function |
-| `ue_bp_add_event` | Add event node |
-| `ue_bp_add_node` | Add graph node |
-| `ue_bp_connect_nodes` | Connect BP nodes |
-| `ue_bp_compile` | Compile Blueprint |
-| `ue_bp_spawn` | Spawn BP actor |
-| `ue_bp_get_info` | Get BP info |
-
-### UE Niagara (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_niagara_create` | Create Niagara system |
-| `ue_niagara_set_param` | Set Niagara parameter |
-| `ue_niagara_set_spawn_rate` | Set spawn rate |
-| `ue_niagara_set_lifetime` | Set particle lifetime |
-| `ue_niagara_set_color` | Set particle color |
-| `ue_niagara_activate` | Activate/deactivate system |
-
-### UE Animation (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_anim_import` | Import animation (FBX) |
-| `ue_anim_play` | Play animation montage |
-| `ue_anim_create_blendspace` | Create blend space |
-| `ue_anim_create_montage` | Create montage |
-| `ue_anim_set_bp` | Set Animation Blueprint |
-| `ue_anim_retarget` | Retarget animation |
-
-### UE UI / UMG (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_ui_create_widget` | Create Widget Blueprint |
-| `ue_ui_add_text` | Add TextBlock |
-| `ue_ui_add_button` | Add Button |
-| `ue_ui_add_image` | Add Image |
-| `ue_ui_add_progress_bar` | Add ProgressBar |
-| `ue_ui_show_widget` | Show/hide widget |
-
-### UE AI (8)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_ai_create_bt` | Create Behavior Tree |
-| `ue_ai_create_bb` | Create Blackboard |
-| `ue_ai_add_bb_key` | Add Blackboard key |
-| `ue_ai_add_bt_task` | Add BT task node |
-| `ue_ai_add_bt_decorator` | Add BT decorator |
-| `ue_ai_set_controller` | Set AI Controller |
-| `ue_ai_run_bt` | Run Behavior Tree |
-| `ue_ai_add_eqs` | Create EQS query |
-
-### UE Physics (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_physics_enable` | Enable physics simulation |
-| `ue_physics_set_mass` | Set mass (kg) |
-| `ue_physics_add_force` | Apply force/impulse |
-| `ue_physics_set_damping` | Set damping |
-| `ue_physics_add_constraint` | Add physics constraint |
-| `ue_physics_set_collision_profile` | Set collision profile |
-
-### UE Sequencer (8)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_seq_create` | Create Level Sequence |
-| `ue_seq_add_track` | Add track |
-| `ue_seq_add_keyframe` | Add keyframe |
-| `ue_seq_set_duration` | Set duration |
-| `ue_seq_play` | Play sequence |
-| `ue_seq_add_camera_cut` | Add camera cut |
-| `ue_seq_render_movie` | Render to video |
-| `ue_seq_get_info` | Get sequence info |
-
-### UE Build (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_build_set_platform` | Set target platform |
-| `ue_build_set_config` | Set build configuration |
-| `ue_build_package` | Package project |
-| `ue_build_cook` | Cook content |
-| `ue_build_lightmaps` | Build lightmaps |
-| `ue_build_get_status` | Get build status |
-
-### UE Level (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_level_create` | Create new level |
-| `ue_level_open` | Open level |
-| `ue_level_save` | Save level |
-| `ue_level_add_sublevel` | Add streaming sublevel |
-| `ue_level_set_gamemode` | Set level GameMode |
-| `ue_level_get_info` | Get level info |
-
-### UE Foliage (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_foliage_add_type` | Add foliage type |
-| `ue_foliage_paint` | Paint foliage |
-| `ue_foliage_erase` | Erase foliage |
-| `ue_foliage_set_settings` | Set foliage settings |
-| `ue_foliage_to_static` | Convert to static mesh |
-| `ue_foliage_get_info` | Get foliage info |
-
-### UE PCG (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_pcg_create_graph` | Create PCG graph |
-| `ue_pcg_add_node` | Add PCG node |
-| `ue_pcg_connect_nodes` | Connect PCG nodes |
-| `ue_pcg_set_param` | Set PCG parameter |
-| `ue_pcg_execute` | Execute PCG graph |
-| `ue_pcg_add_volume` | Add PCG Volume |
-
-### UE MetaHuman (6)
-| Tool ID | Description |
-|---------|-------------|
-| `ue_mh_spawn` | Spawn MetaHuman |
-| `ue_mh_set_body` | Set body type |
-| `ue_mh_set_face` | Adjust facial features |
-| `ue_mh_set_clothing` | Set clothing |
-| `ue_mh_set_animation` | Set animation |
-| `ue_mh_set_livelink` | Enable Live Link capture |
-
+```
+AI Client           MCP            ARCANA Server        Editors
+Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
+ChatGPT, etc.    stdio/SSE    438 tools / 66 cat  ----> UE 5    :9878
+                                                  ----> Blender :9879
+```
+## Tool Overview
+
+### Unity Tools (302 tools / 46 categories)
+
+<details>
+<summary>Click to expand Unity tool list</summary>
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| Scene | 3 | scene_list_objects, scene_create_gameobject, scene_delete_gameobject |
+| Transform | 5 | transform_set_position, transform_set_rotation, transform_set_scale |
+| Material | 5 | material_set_color, material_set_transparency, material_set_emission |
+| Lighting | 5 | lighting_create_light, lighting_set_color, lighting_set_intensity |
+| Terrain | 4 | terrain_create, terrain_set_height, terrain_add_texture |
+| Audio | 3 | audio_add_source, audio_set_volume, audio_set_spatial |
+| Camera | 3 | camera_create, camera_set_fov, camera_set_background |
+| Physics | 3 | physics_add_rigidbody, physics_add_collider, physics_set_gravity |
+| VFX | 4 | vfx_create_particle, vfx_set_color, vfx_set_speed |
+| Animation | 4 | anim_add_animator, anim_set_parameter, anim_play |
+| UI | 4 | ui_create_canvas, ui_create_text, ui_create_button |
+| Optimization | 4 | opt_get_scene_stats, opt_set_static, opt_add_lod_group |
+| Component | 4 | component_add, component_remove, component_set_enabled |
+| Prefab | 3 | prefab_create, prefab_instantiate, prefab_unpack |
+| Layer / Tag | 3 | layertag_set_layer, layertag_set_tag, layertag_rename |
+| Environment | 3 | env_set_skybox, env_set_fog, env_set_reflection |
+| Navigation | 4 | nav_bake, nav_add_agent, nav_add_obstacle |
+| PostProcessing | 5 | post_set_bloom, post_set_color_adjust, post_set_dof |
+| Script | 4 | script_create, script_attach, script_set_variable |
+| Selection | 4 | select_object, select_all, select_none |
+| Constraint | 4 | constraint_position, constraint_rotation, constraint_scale |
+| Build | 6 | build_set_platform, build_add_scene, build_execute |
+| Render | 4 | render_screenshot, render_set_resolution, render_set_quality |
+| Asset | 5 | asset_import, asset_delete, asset_rename |
+| Editor | 5 | editor_play_mode, editor_save_scene, editor_load_scene |
+| Mesh | 6 | mesh_combine, mesh_separate, mesh_export |
+| Timeline | 6 | timeline_create, timeline_add_track, timeline_add_clip |
+| Cinemachine | 6 | cm_create, cm_set_follow, cm_set_look_at |
+| ProBuilder | 6 | pb_create_shape, pb_extrude_face, pb_set_material |
+| Input System | 6 | input_create_action, input_add_binding, input_enable |
+| Shader | 6 | shader_create_graph, shader_add_node, shader_connect |
+| Networking | 6 | net_setup, net_spawn, net_send_rpc |
+| 2D | 6 | 2d_create_sprite, 2d_set_sorting_layer, 2d_create_tilemap |
+| VRChat | 10 | vrc_setup_avatar, vrc_add_mirror, vrc_add_pickup |
+| Addressables | 6 | addr_mark, addr_create_group, addr_build |
+| Localization | 6 | loc_create_table, loc_add_entry, loc_add_locale |
+| Debug | 10 | debug_log, debug_draw_ray, debug_draw_line |
+| Testing | 8 | test_create, test_run, test_assert |
+| Profiler | 10 | prof_cpu_start, prof_mem_snapshot, prof_gpu |
+| XR / VR | 10 | xr_setup, xr_tracking, xr_controller |
+| AI / NavAgent | 8 | ai_set_destination, ai_patrol, ai_chase |
+| Spline | 8 | spline_create, spline_add_knot, spline_animate |
+| Visual Scripting | 8 | vs_create_graph, vs_add_node, vs_connect_nodes |
+| Ragdoll | 6 | ragdoll_create, ragdoll_enable, ragdoll_set_joint_limits |
+| Cloth | 5 | cloth_add, cloth_set_params, cloth_set_gravity |
+| Decal | 5 | decal_create, decal_set_size, decal_set_material |
+| LOD | 6 | lod_create_group, lod_set_transitions, lod_assign_renderer |
+| Gizmo | 6 | gizmo_draw_sphere, gizmo_draw_cube, gizmo_draw_line |
+| Reflection Probe | 6 | probe_create, probe_set_size, probe_bake |
+| Lightmap | 6 | lightmap_bake, lightmap_set_resolution, lightmap_clear |
+| Occlusion | 6 | occlusion_bake, occlusion_set_occluder, occlusion_clear |
+| Streaming | 6 | streaming_load_scene, streaming_unload_scene, streaming_preload |
+| Tag Manager | 4 | tagmgr_add_tag, tagmgr_add_layer, tagmgr_list_all |
+| Screenshot | 4 | screenshot_game_view, screenshot_scene_view, screenshot_360 |
+
+</details>
+
+### Unreal Engine Tools (136 tools / 20 categories)
+
+<details>
+<summary>Click to expand Unreal Engine tool list</summary>
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| UE Scene | 6 | ue_scene_list_actors, ue_scene_spawn_actor, ue_scene_delete_actor |
+| UE Transform | 6 | ue_transform_set_location, ue_transform_set_rotation, ue_transform_set_scale |
+| UE Material | 8 | ue_material_create, ue_material_set_color, ue_material_set_metallic |
+| UE Lighting | 6 | ue_light_create, ue_light_set_color, ue_light_set_intensity |
+| UE Landscape | 8 | ue_landscape_create, ue_landscape_sculpt, ue_landscape_paint |
+| UE Audio | 6 | ue_audio_add_component, ue_audio_set_volume, ue_audio_set_spatial |
+| UE Camera | 6 | ue_camera_create, ue_camera_set_fov, ue_camera_set_active |
+| UE Mesh | 6 | ue_mesh_import, ue_mesh_set_collision, ue_mesh_set_nanite |
+| UE Blueprint | 10 | ue_bp_create, ue_bp_add_component, ue_bp_compile |
+| UE Niagara | 6 | ue_niagara_create, ue_niagara_set_param, ue_niagara_set_spawn_rate |
+| UE Animation | 6 | ue_anim_import, ue_anim_play, ue_anim_create_blendspace |
+| UE UI / UMG | 6 | ue_ui_create_widget, ue_ui_add_text, ue_ui_add_button |
+| UE AI | 8 | ue_ai_create_bt, ue_ai_create_bb, ue_ai_run_bt |
+| UE Physics | 6 | ue_physics_enable, ue_physics_set_mass, ue_physics_add_force |
+| UE Sequencer | 8 | ue_seq_create, ue_seq_add_track, ue_seq_render_movie |
+| UE Build | 6 | ue_build_set_platform, ue_build_package, ue_build_cook |
+| UE Level | 6 | ue_level_create, ue_level_open, ue_level_save |
+| UE Foliage | 6 | ue_foliage_add_type, ue_foliage_paint, ue_foliage_erase |
+| UE PCG | 6 | ue_pcg_create_graph, ue_pcg_add_node, ue_pcg_execute |
+| UE MetaHuman | 6 | ue_mh_spawn, ue_mh_set_body, ue_mh_set_face |
+
+</details>
 ## SuperSave Mode
 
-Instead of registering all 438 tools in the AI context, SuperSave exposes only 4 meta-tools:
+Instead of registering all 438 tools, SuperSave exposes only **4 meta-tools**:
 
 | Meta-Tool | Purpose |
-|-----------|---------|
-| `arcana.discover` | Search available tools by keyword or category |
-| `arcana.inspect` | Get full schema for a specific tool |
-| `arcana.execute` | Run any tool with parameters |
-| `arcana.compose` | Chain multiple tools in a pipeline |
+|---|---|
+| arcana.discover | Search tools by keyword or category |
+| arcana.inspect | Get full schema for a specific tool |
+| arcana.execute | Run any tool by ID with parameters |
+| arcana.compose | Chain multiple tools into a pipeline |
 
-This reduces token consumption by approximately 98%.
+Token usage reduced by approximately **98%**.
 
 ## Quick Start
 
 ### Requirements
 
 - Node.js 18+
-- Unity 2022.3+ or Blender 3.6+
-- An MCP-compatible AI client
+- Unity 2022.3+ / Unreal Engine 5.x / Blender 3.6+ (any combination)
+- MCP-compatible AI client (Claude Desktop, Cursor, VS Code, etc.)
 
 ### Installation
 
@@ -798,30 +181,43 @@ npm install
 npm run build
 ```
 
-Then import the `unity-plugin` folder into your Unity project.
+### Unity Setup
 
-Open Unity > Tools > ARCANA > Setup to configure your AI client automatically.
+1. Import the `unity-plugin` folder into your Unity project
+2. Open Unity > Tools > ARCANA > Setup
+3. WebSocket bridge starts on localhost:9877
 
-### Test It
+### Unreal Engine Setup
 
-Tell your AI assistant:
+1. Copy the `ue-plugin` folder into your project Plugins directory
+2. Enable ARCANA plugin in Edit > Plugins
+3. WebSocket bridge starts on localhost:9878
 
+### Try It
+
+**Unity:**
 ```
 "List all GameObjects in the current Unity scene"
 "Create a red cube at position (0, 5, 0)"
 "Add a point light above the cube with soft shadows"
-"Create a 500x500 terrain with grass texture and 200 trees"
+```
+
+**Unreal Engine:**
+```
+"List all actors in the current level"
+"Spawn a cube at location (0, 0, 200)"
+"Create a point light with 5000 lumens and warm temperature"
 ```
 
 ## Roadmap
 
 | Phase | Status | Content |
-|-------|--------|---------|
-| 1 | Done | Core server, SuperSave, 302 Unity + 136 Unreal Engine tools |
-| 2 | Done | Navigation, PostProcessing, Script, Selection, Constraint, Build, Render, Asset, Editor, Mesh, Timeline, Cinemachine, ProBuilder, Input, Shader, Networking, 2D, VRChat, Addressables, Localization, Debug, Testing, Profiler, XR, AI, Spline, VisualScripting, Ragdoll, Cloth, Decal, LOD, Gizmo, ReflectionProbe, Lightmap, OcclusionCulling, Streaming, TagManager, Screenshot |
-| 3 | Next | Blender addon, 100+ Blender tools |
-| 4 | Done | Unreal Engine 136 tools (20 categories) |
-| 5 | Planned | 600+ tools, cross-editor workflows, community contributions |
+|---|---|---|
+| 1 | Done | Core MCP server, SuperSave, Bridge architecture |
+| 2 | Done | Unity 302 tools (46 categories) |
+| 3 | Done | Unreal Engine 136 tools (20 categories) |
+| 4 | Next | Blender addon + 100-200 Blender tools |
+| 5 | Planned | Cross-editor workflows, 600+ tools, Recipe system |
 
 ## Contributing
 

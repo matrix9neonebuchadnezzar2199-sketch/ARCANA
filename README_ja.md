@@ -1,846 +1,144 @@
-<div align="center">
+<p align="center">
+  <img src="image/TOP.png" alt="ARCANA Banner" width="100%">
+</p>
 
-![ARCANA Banner](image/TOP.png)
+<h1 align="center">ARCANA</h1>
+<p align="center"><strong>Advanced Runtime for Creative AI & Natural-language Automation</strong></p>
+<p align="center"><b>Unity</b>・<b>Unreal Engine</b>・<b>Blender</b> を自然言語で操作。<br>オープンソース、永久無料。</p>
 
-**Advanced Runtime for Creative AI & Natural-language Automation**
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/Tools-438-brightgreen.svg" alt="438 Tools">
+  <img src="https://img.shields.io/badge/Categories-66-orange.svg" alt="66 Categories">
+  <img src="https://img.shields.io/badge/Unity-2022.3+-black?logo=unity" alt="Unity 2022.3+">
+  <img src="https://img.shields.io/badge/Unreal_Engine-5.x-black?logo=unrealengine" alt="UE 5.x">
+  <img src="https://img.shields.io/badge/Blender-3.6+-orange?logo=blender" alt="Blender 3.6+">
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white" alt="Node 18+">
+  <img src="https://img.shields.io/badge/MCP-Compatible-purple" alt="MCP Compatible">
+</p>
 
-Unity Blender
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![57 Tools](https://img.shields.io/badge/Tools-438-blue.svg)]()
-[![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3+-black.svg)]()
-[![Node 18+](https://img.shields.io/badge/Node.js-18+-339933.svg)]()
-[![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-purple.svg)]()
-
-[English](README.md) | 日本語
-
-</div>
+<p align="center">日本語 | <a href="README.md">English</a></p>
 
 ---
 
-## ARCANAとは？
+## なぜ ARCANA？
 
-ARCANAは、AIアシスタント（Claude、ChatGPT、Gemini、Copilotなど）を[Model Context Protocol (MCP)](https://modelcontextprotocol.io/)経由でUnity EditorおよびBlenderに接続するオープンソースブリッジです。
+既存のMCPエディタツールは1エディタ・20〜60ツール程度です。
+ARCANAは **3エディタ・66カテゴリ・438ツール** を1つのサーバーで提供します。
 
-メニューをクリックしてパラメータを手動調整する代わりに、やりたいことを自然言語で伝えるだけでARCANAが実行します。
+| | ARCANA | Unity-MCP | Blender-MCP | Unreal-MCP |
+|---|---|---|---|---|
+| **ツール数** | **438** | ~20 | ~15 | ~30 |
+| **エディタ** | Unity + UE + Blender | Unity | Blender | UE |
+| **SuperSave** | 4メタツール | - | - | - |
 
-## 特徴
+## ARCANA とは？
 
-- **438ツール** — 66カテゴリ（Unity + Unreal Engine + Blender）
-- **自然言語操作** — やりたいことを言葉で伝えるだけ。AIがUnity/Blenderで実行
-- **あらゆるAIクライアント対応** — Claude Desktop、Cursor、VS Code、ChatGPT、Gemini CLI
-- **SuperSaveモード** — 4つのメタツールで全ツールを動的ロード、トークン消費を約98%削減
-- **Unity + Blender** — 1つのサーバーで両エディタを同時制御
-- **オープンソース** — MITライセンス、永久無料、コミュニティ主導
-- **バイリンガル** — 英語・日本語対応
-- **Undo対応** — すべてのツールがUnityのUndo/Redoに対応
+ARCANAはAIアシスタント（Claude, ChatGPT, Gemini, Copilot, Cursor）を [Model Context Protocol](https://modelcontextprotocol.io/) 経由で **Unity**・**Unreal Engine**・**Blender** に接続します。メニュー操作やパラメータ調整の代わりに、自然言語で指示するだけでARCANAが実行します。
+
+## 主な特徴
+
+- **438ツール / 66カテゴリ** - Unity 302、Unreal Engine 136、Blender 予定
+- **3エディタ対応** - 1つのサーバーでUnity・UE・Blenderを同時制御
+- **自然言語操作** - やりたいことを言葉で伝えるだけ
+- **任意のAIクライアント** - Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
+- **SuperSaveモード** - 4つのメタツールでトークン使用量を約98%削減
+- **ブリッジアーキテクチャ** - エディタごとにWebSocket接続（Unity :9877, UE :9878, Blender :9879）
+- **オープンソース** - MIT、永久無料
+- **バイリンガル** - 英語・日本語完全対応
+- **Undo対応** - Unity全ツールがUndo/Redo対応
+
 ## アーキテクチャ
 
-![ARCANA to Unity and Blender](image/ARCANA%20to%20Unity%26Blender.png)
+```
+AIクライアント       MCP            ARCANAサーバー          エディタ
+Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
+ChatGPT 等       stdio/SSE    438ツール/66カテゴリ ----> UE 5    :9878
+                                                  ----> Blender :9879
+```
 
-## ツール一覧（438ツール）
+## ツール一覧
 
-### シーン（3）
+Unityツール（302）とUnreal Engineツール（136）の詳細は [英語版 README](README.md) を参照してください。
 
-| ツールID | 説明 |
-|---------|------|
-| scene_list_objects | シーン内の全GameObjectを一覧表示 |
-| scene_create_gameobject | プリミティブ・座標・色を指定してGameObjectを作成 |
-| scene_delete_gameobject | 名前を指定してGameObjectを削除 |
+## SuperSave モード
 
-### トランスフォーム（5）
-
-| ツールID | 説明 |
-|---------|------|
-| transform_set_position | ワールド座標を設定 |
-| transform_set_rotation | オイラー角で回転を設定 |
-| transform_set_scale | ローカルスケールを設定 |
-| transform_set_parent | 親子関係を設定 |
-| transform_look_at | 指定座標の方向を向かせる |
-
-### マテリアル（5）
-
-| ツールID | 説明 |
-|---------|------|
-| material_set_color | メインカラーを設定 |
-| material_set_transparency | アルファ値で透明度を自動設定 |
-| material_set_emission | 発光の色と強度を設定 |
-| material_set_shader | シェーダーを変更 |
-| material_set_texture | ファイルからメインテクスチャを設定 |
-
-### ライティング（5）
-
-| ツールID | 説明 |
-|---------|------|
-| lighting_create_light | Directional/Point/Spot/Areaライトを作成 |
-| lighting_set_color | ライトの色を変更 |
-| lighting_set_intensity | ライトの強度を変更 |
-| lighting_set_shadow | 影モードを設定（None/Hard/Soft） |
-| lighting_set_ambient | アンビエントライトの色と強度を設定 |
-
-### 地形（4）
-
-| ツールID | 説明 |
-|---------|------|
-| terrain_create | カスタムサイズの地形を作成 |
-| terrain_set_height | 正規化座標で高さを設定 |
-| terrain_add_texture | テクスチャレイヤーを追加 |
-| terrain_add_trees | 木のインスタンスを配置 |
-
-### オーディオ（3）
-
-| ツールID | 説明 |
-|---------|------|
-| audio_add_source | AudioSourceを追加（クリップ、ループ、音量） |
-| audio_set_volume | 音量を設定 |
-| audio_set_spatial | 3D空間オーディオを設定 |
-
-### カメラ（3）
-
-| ツールID | 説明 |
-|---------|------|
-| camera_create | 座標とFOVを指定してカメラを作成 |
-| camera_set_fov | 視野角を設定 |
-| camera_set_background | 背景色とクリアフラグを設定 |
-
-### 物理（3）
-
-| ツールID | 説明 |
-|---------|------|
-| physics_add_rigidbody | Rigidbodyを追加（質量、重力、キネマティック） |
-| physics_add_collider | Box/Sphere/Capsule/Meshコライダーを追加 |
-| physics_set_gravity | シーン全体の重力を設定 |
-### VFX（4）
-
-| ツールID | 説明 |
-|---------|------|
-| vfx_create_particle | パーティクルシステムを作成 |
-| vfx_set_color | パーティクルの開始色を設定 |
-| vfx_set_speed | パーティクルの速度と寿命を設定 |
-| vfx_set_shape | 発射形状を設定 |
-
-### アニメーション（4）
-
-| ツールID | 説明 |
-|---------|------|
-| anim_add_animator | Animatorをコントローラー付きで追加 |
-| anim_set_parameter | Animatorパラメータを設定（float/int/bool/trigger） |
-| anim_play | アニメーションステートを再生 |
-| anim_create_clip | 位置キーフレーム付きアニメーションクリップを作成 |
-
-### UI（4）
-
-| ツールID | 説明 |
-|---------|------|
-| ui_create_canvas | レンダーモード指定でCanvasを作成 |
-| ui_create_text | テキスト要素を作成 |
-| ui_create_button | ラベル付きボタンを作成 |
-| ui_create_image | 画像要素を作成 |
-
-### 最適化（4）
-
-| ツールID | 説明 |
-|---------|------|
-| opt_get_scene_stats | オブジェクト/三角形/マテリアル数を取得 |
-| opt_set_static | バッチング用にStaticフラグを設定 |
-| opt_add_lod_group | LOD Groupを追加 |
-| opt_remove_missing_scripts | 欠落スクリプトをすべて除去 |
-
-### コンポーネント（4）
-
-| ツールID | 説明 |
-|---------|------|
-| component_add | タイプ名で任意のコンポーネントを追加 |
-| component_remove | タイプ名でコンポーネントを削除 |
-| component_set_enabled | コンポーネントの有効/無効を切り替え |
-| component_list | オブジェクトの全コンポーネントを一覧表示 |
-
-### プレハブ（3）
-
-| ツールID | 説明 |
-|---------|------|
-| prefab_create | GameObjectをプレハブとして保存 |
-| prefab_instantiate | プレハブをシーンにインスタンス化 |
-| prefab_unpack | プレハブインスタンスをアンパック |
-
-### レイヤー / タグ（3）
-
-| ツールID | 説明 |
-|---------|------|
-| layertag_set_layer | レイヤーを設定（子オブジェクト含むオプション） |
-| layertag_set_tag | タグを設定 |
-| layertag_rename | GameObjectの名前を変更 |
-
-### 環境（3）
-
-| ツールID | 説明 |
-|---------|------|
-| env_set_skybox | スカイボックスマテリアルを設定 |
-| env_set_fog | フォグを設定（リニア/エクスポネンシャル） |
-| env_set_reflection | 反射ソースと強度を設定 |
-
-### ナビゲーション（4）
-| ツールID | 説明 |
-|---------|------|
-| nav_bake | NavMeshをベイク |
-| nav_add_agent | NavMeshAgentを追加 |
-| nav_add_obstacle | NavMeshObstacleを追加 |
-| nav_add_link | OffMeshLinkを追加 |
-
-### ポストプロセシング（5）
-| ツールID | 説明 |
-|---------|------|
-| post_set_bloom | Bloom効果を設定 |
-| post_set_color_adjust | カラー調整を設定 |
-| post_set_dof | 被写界深度を設定 |
-| post_set_vignette | ビネットを設定 |
-| post_set_motion_blur | モーションブラーを設定 |
-
-### スクリプト（4）
-| ツールID | 説明 |
-|---------|------|
-| script_create | 新しいC#スクリプトを作成 |
-| script_attach | GameObjectにスクリプトをアタッチ |
-| script_set_variable | スクリプトのpublic変数を設定 |
-| script_invoke_method | スクリプトのメソッドを呼び出し |
-
-### セレクション（4）
-| ツールID | 説明 |
-|---------|------|
-| select_object | エディタでGameObjectを選択 |
-| select_all | 全GameObjectを選択 |
-| select_none | 選択を解除 |
-| select_invert | 選択を反転 |
-
-### コンストレイント（4）
-| ツールID | 説明 |
-|---------|------|
-| constraint_position | Position Constraintを追加 |
-| constraint_rotation | Rotation Constraintを追加 |
-| constraint_scale | Scale Constraintを追加 |
-| constraint_aim | Aim Constraintを追加 |
-
-### ビルド（6）
-| ツールID | 説明 |
-|---------|------|
-| build_set_platform | ビルドターゲットプラットフォームを設定 |
-| build_add_scene | ビルド設定にシーンを追加 |
-| build_set_player | プレイヤー設定を変更 |
-| build_execute | ビルドを実行 |
-| build_get_settings | 現在のビルド設定を取得 |
-| build_clean | ビルドキャッシュをクリア |
-
-### レンダー（4）
-| ツールID | 説明 |
-|---------|------|
-| render_screenshot | スクリーンショットを撮影 |
-| render_set_resolution | ゲーム解像度を設定 |
-| render_set_quality | クオリティレベルを設定 |
-| render_capture_cubemap | キューブマップをキャプチャ |
-
-### アセット（5）
-| ツールID | 説明 |
-|---------|------|
-| asset_import | ファイルからアセットをインポート |
-| asset_delete | アセットを削除 |
-| asset_rename | アセット名を変更 |
-| asset_move | アセットをフォルダに移動 |
-| asset_refresh | AssetDatabaseを更新 |
-
-### エディタ（5）
-| ツールID | 説明 |
-|---------|------|
-| editor_play_mode | 再生/停止を切り替え |
-| editor_save_scene | 現在のシーンを保存 |
-| editor_load_scene | シーンを読み込み |
-| editor_undo_redo | Undo/Redoを実行 |
-| editor_clear_console | コンソールをクリア |
-
-### メッシュ（6）
-| ツールID | 説明 |
-|---------|------|
-| mesh_combine | メッシュを結合 |
-| mesh_separate | メッシュを分離 |
-| mesh_set_vertices | 頂点位置を設定 |
-| mesh_recalculate | 法線/バウンズを再計算 |
-| mesh_export | OBJ/FBXにエクスポート |
-| mesh_get_info | メッシュ情報を取得 |
-
-### タイムライン（6）
-| ツールID | 説明 |
-|---------|------|
-| timeline_create | Timelineアセットを作成 |
-| timeline_add_track | トラックを追加 |
-| timeline_add_clip | クリップを追加 |
-| timeline_set_duration | 再生時間を設定 |
-| timeline_bind_object | オブジェクトをバインド |
-| timeline_play | タイムラインを再生 |
-
-### Cinemachine（6）
-| ツールID | 説明 |
-|---------|------|
-| cm_create | 仮想カメラを作成 |
-| cm_set_follow | フォロー対象を設定 |
-| cm_set_look_at | ルックアット対象を設定 |
-| cm_set_blend | カメラブレンドを設定 |
-| cm_set_noise | ノイズプロファイルを設定 |
-| cm_create_freelook | FreeLookカメラを作成 |
-
-### ProBuilder（6）
-| ツールID | 説明 |
-|---------|------|
-| pb_create_shape | ProBuilderシェイプを作成 |
-| pb_extrude_face | フェイスを押し出し |
-| pb_set_material | フェイスにマテリアルを設定 |
-| pb_merge | オブジェクトを結合 |
-| pb_subdivide | メッシュを細分化 |
-| pb_export | OBJにエクスポート |
-
-### Input System（6）
-| ツールID | 説明 |
-|---------|------|
-| input_create_action | 入力アクションを作成 |
-| input_add_binding | バインディングを追加 |
-| input_enable | アクションの有効/無効 |
-| input_create_map | アクションマップを作成 |
-| input_read_value | 入力値を読み取り |
-| input_remove_binding | バインディングを削除 |
-
-### シェーダー（6）
-| ツールID | 説明 |
-|---------|------|
-| shader_create_graph | Shader Graphを作成 |
-| shader_add_node | ノードを追加 |
-| shader_connect | ノードを接続 |
-| shader_set_property | プロパティを設定 |
-| shader_compile | シェーダーをコンパイル |
-| shader_assign | マテリアルに割り当て |
-
-### ネットワーキング（6）
-| ツールID | 説明 |
-|---------|------|
-| net_setup | ネットワークをセットアップ |
-| net_spawn | ネットワークオブジェクトをスポーン |
-| net_send_rpc | RPCを送信 |
-| net_sync_var | 変数を同期 |
-| net_connect | サーバーに接続 |
-| net_disconnect | 切断 |
-
-### 2D（6）
-| ツールID | 説明 |
-|---------|------|
-| 2d_create_sprite | スプライトオブジェクトを作成 |
-| 2d_set_sorting_layer | ソートレイヤーとオーダーを設定 |
-| 2d_create_tilemap | タイルマップを作成 |
-| 2d_set_tile | タイルを配置 |
-| 2d_add_collider | 2Dコライダーを追加 |
-| 2d_add_animator | 2Dアニメーターを追加 |
-
-### VRChat（10）
-| ツールID | 説明 |
-|---------|------|
-| vrc_setup_avatar | VRChatアバターをセットアップ |
-| vrc_add_mirror | VRCミラーを追加 |
-| vrc_add_pickup | VRCピックアップを追加 |
-| vrc_set_spawn | スポーンポイントを設定 |
-| vrc_add_portal | ワールドポータルを追加 |
-| vrc_setup_station | ステーション/椅子をセットアップ |
-| vrc_add_trigger | VRCトリガーを追加 |
-| vrc_set_layer | VRCレイヤーを設定 |
-| vrc_optimize | VRChat用に最適化 |
-| vrc_validate | アバター/ワールドを検証 |
-
-### Addressables（6）
-| ツールID | 説明 |
-|---------|------|
-| addr_mark | アセットをAddressableに設定 |
-| addr_create_group | Addressableグループを作成 |
-| addr_set_address | アセットアドレスを設定 |
-| addr_build | Addressablesをビルド |
-| addr_load | 実行時にAddressableをロード |
-| addr_release | Addressableを解放 |
-
-### ローカライゼーション（6）
-| ツールID | 説明 |
-|---------|------|
-| loc_create_table | 文字列テーブルを作成 |
-| loc_add_entry | ローカライズエントリを追加 |
-| loc_add_locale | ロケールを追加 |
-| loc_set_active | アクティブロケールを設定 |
-| loc_export | ローカライゼーションをエクスポート |
-| loc_import | ローカライゼーションをインポート |
-
-### デバッグ（10）
-| ツールID | 説明 |
-|---------|------|
-| debug_log | メッセージをログ出力 |
-| debug_draw_ray | デバッグレイを描画 |
-| debug_draw_line | デバッグラインを描画 |
-| debug_draw_sphere | デバッグスフィアを描画 |
-| debug_break | エディタを一時停止 |
-| debug_clear | デバッグ描画をクリア |
-| debug_time_scale | タイムスケールを設定 |
-| debug_fps | FPSオーバーレイを表示 |
-| debug_bounds | オブジェクトバウンズを表示 |
-| debug_hierarchy | ヒエラルキーツリーを出力 |
-
-### テスティング（8）
-| ツールID | 説明 |
-|---------|------|
-| test_create | テストクラスを作成 |
-| test_run | テストを実行 |
-| test_assert | アサーションを追加 |
-| test_mock | モックオブジェクトを作成 |
-| test_perf | パフォーマンステスト |
-| test_coverage | カバレッジを確認 |
-| test_report | レポートを生成 |
-| test_cleanup | テストデータをクリーンアップ |
-
-### プロファイラー（10）
-| ツールID | 説明 |
-|---------|------|
-| prof_cpu_start | CPUプロファイリングを開始 |
-| prof_cpu_stop | CPUプロファイリングを停止 |
-| prof_mem_snapshot | メモリスナップショット |
-| prof_gpu | GPUプロファイリング |
-| prof_frame | フレーム分析 |
-| prof_bottleneck | ボトルネックを検出 |
-| prof_drawcalls | ドローコールを分析 |
-| prof_batches | バッチを分析 |
-| prof_heap | ヒープ分析 |
-| prof_save | プロファイラーデータを保存 |
-
-### XR / VR（10）
-| ツールID | 説明 |
-|---------|------|
-| xr_setup | XR環境をセットアップ |
-| xr_tracking | トラッキングを設定 |
-| xr_controller | コントローラーをセットアップ |
-| xr_haptics | ハプティクスフィードバック |
-| xr_teleport | テレポートをセットアップ |
-| xr_grab | グラブインタラクションを有効化 |
-| xr_ray_interaction | レイインタラクションをセットアップ |
-| xr_ui | XR UIキャンバスをセットアップ |
-| xr_passthrough | パススルーを切り替え |
-| xr_boundary | プレイ境界を設定 |
-
-### AI / NavAgent（8）
-| ツールID | 説明 |
-|---------|------|
-| ai_set_destination | エージェントの目的地を設定 |
-| ai_patrol | パトロール経路を設定 |
-| ai_chase | ターゲットを追跡 |
-| ai_flee | 脅威から逃走 |
-| ai_idle | アイドル状態にする |
-| ai_set_speed | エージェント速度を設定 |
-| ai_avoidance | 回避優先度を設定 |
-| ai_visualize_path | ナビパスを可視化 |
-
-### スプライン（8）
-| ツールID | 説明 |
-|---------|------|
-| spline_create | スプラインコンテナを作成 |
-| spline_add_knot | 制御点を追加 |
-| spline_remove_knot | 制御点を削除 |
-| spline_set_tangent | ノットのタンジェントを設定 |
-| spline_animate | スプラインに沿ってアニメーション |
-| spline_extrude | スプラインに沿ってメッシュ押し出し |
-| spline_evaluate | スプライン上の点を評価 |
-| spline_get_length | スプラインの長さを取得 |
-
-### Visual Scripting（8）
-| ツールID | 説明 |
-|---------|------|
-| vs_create_graph | ビジュアルスクリプトグラフを作成 |
-| vs_add_node | グラフにノードを追加 |
-| vs_connect_nodes | ノードを接続 |
-| vs_set_variable | グラフ変数を設定 |
-| vs_add_event | イベントノードを追加 |
-| vs_remove_node | ノードを削除 |
-| vs_add_subgraph | サブグラフを埋め込み |
-| vs_list_nodes | 全ノードを一覧表示 |
-
-### ラグドール（6）
-| ツールID | 説明 |
-|---------|------|
-| ragdoll_create | ラグドールをセットアップ |
-| ragdoll_enable | ラグドールの有効/無効 |
-| ragdoll_set_joint_limits | ジョイント制限を設定 |
-| ragdoll_add_force | ボーンに力を加える |
-| ragdoll_set_collision | 衝突モードを設定 |
-| ragdoll_remove | ラグドールを除去 |
-
-### クロス（5）
-| ツールID | 説明 |
-|---------|------|
-| cloth_add | Clothコンポーネントを追加 |
-| cloth_set_params | クロスパラメータを設定 |
-| cloth_set_gravity | クロス重力を設定 |
-| cloth_add_collider | クロスコライダーを追加 |
-| cloth_remove | クロスを除去 |
-
-### デカール（5）
-| ツールID | 説明 |
-|---------|------|
-| decal_create | デカールプロジェクターを作成 |
-| decal_set_size | デカールサイズを設定 |
-| decal_set_material | デカールマテリアルを設定 |
-| decal_set_opacity | デカール不透明度を設定 |
-| decal_remove | デカールを除去 |
-
-### LOD（6）
-| ツールID | 説明 |
-|---------|------|
-| lod_create_group | LOD Groupコンポーネントを作成 |
-| lod_set_transitions | LOD遷移距離を設定 |
-| lod_assign_renderer | LODレベルにレンダラーを割り当て |
-| lod_set_fade_mode | フェードモードを設定（None/CrossFade/SpeedTree） |
-| lod_get_info | LOD Group情報を取得 |
-| lod_remove | LOD Groupを除去 |
-
-### ギズモ（6）
-| ツールID | 説明 |
-|---------|------|
-| gizmo_draw_sphere | ワイヤースフィアギズモを描画 |
-| gizmo_draw_cube | ワイヤーキューブギズモを描画 |
-| gizmo_draw_line | ラインギズモを描画 |
-| gizmo_draw_ray | レイギズモを描画 |
-| gizmo_draw_label | シーンにテキストラベルを描画 |
-| gizmo_clear_all | 全カスタムギズモをクリア |
-
-### Reflection Probe（6）
-| ツールID | 説明 |
-|---------|------|
-| probe_create | Reflection Probeを作成 |
-| probe_set_size | バウンディングボックスサイズを設定 |
-| probe_set_resolution | キューブマップ解像度を設定 |
-| probe_set_intensity | 反射強度を設定 |
-| probe_bake | Reflection Probeをベイク |
-| probe_remove | Reflection Probeを除去 |
-
-### ライトマップ（6）
-| ツールID | 説明 |
-|---------|------|
-| lightmap_bake | ライトマップをベイク |
-| lightmap_set_resolution | テクセル/ユニットを設定 |
-| lightmap_set_max_size | アトラス最大サイズを設定 |
-| lightmap_set_object_scale | オブジェクトのライトマップスケールを設定 |
-| lightmap_clear | ベイク済みライトマップをクリア |
-| lightmap_get_info | ライトマップ設定を取得 |
-
-### オクルージョンカリング（6）
-| ツールID | 説明 |
-|---------|------|
-| occlusion_bake | オクルージョンカリングをベイク |
-| occlusion_set_occluder | Occluder Staticを設定 |
-| occlusion_set_occludee | Occludee Staticを設定 |
-| occlusion_set_params | オクルージョンパラメータを設定 |
-| occlusion_clear | オクルージョンデータをクリア |
-| occlusion_visualize | オクルージョン可視化を切り替え |
-
-### ストリーミング（6）
-| ツールID | 説明 |
-|---------|------|
-| streaming_load_scene | シーンを非同期ロード |
-| streaming_unload_scene | シーンを非同期アンロード |
-| streaming_set_active_scene | アクティブシーンを設定 |
-| streaming_get_loaded_scenes | ロード済みシーンを一覧表示 |
-| streaming_preload | シーンをプリロード |
-| streaming_get_progress | ロード進捗を取得 |
-
-### タグマネージャー（4）
-| ツールID | 説明 |
-|---------|------|
-| tagmgr_add_tag | カスタムタグを追加 |
-| tagmgr_add_layer | カスタムレイヤーを追加 |
-| tagmgr_add_sorting_layer | ソーティングレイヤーを追加 |
-| tagmgr_list_all | 全タグ・レイヤーを一覧表示 |
-
-### スクリーンショット（4）
-| ツールID | 説明 |
-|---------|------|
-| screenshot_game_view | Game Viewをキャプチャ |
-| screenshot_scene_view | Scene Viewをキャプチャ |
-| screenshot_camera | 特定カメラからキャプチャ |
-| screenshot_360 | 360度パノラマをキャプチャ |
-
----
-
-## Unreal Engine ツール（136ツール）
-
-### UE シーン（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_scene_list_actors | レベル内の全アクターを一覧 |
-| ue_scene_spawn_actor | アクターをスポーン |
-| ue_scene_delete_actor | アクターを削除 |
-| ue_scene_duplicate_actor | アクターを複製 |
-| ue_scene_rename_actor | アクター名を変更 |
-| ue_scene_get_actor_info | アクター詳細を取得 |
-
-### UE トランスフォーム（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_transform_set_location | ワールド座標を設定 |
-| ue_transform_set_rotation | 回転を設定 |
-| ue_transform_set_scale | スケールを設定 |
-| ue_transform_attach | 親にアタッチ |
-| ue_transform_detach | デタッチ |
-| ue_transform_snap_to_grid | グリッドにスナップ |
-
-### UE マテリアル（8）
-| ツールID | 説明 |
-|---------|------|
-| ue_material_create | マテリアルを作成 |
-| ue_material_set_color | ベースカラーを設定 |
-| ue_material_set_metallic | メタリック値を設定 |
-| ue_material_set_roughness | ラフネス値を設定 |
-| ue_material_set_emissive | エミッシブを設定 |
-| ue_material_set_texture | テクスチャを設定 |
-| ue_material_set_opacity | 不透明度を設定 |
-| ue_material_assign | マテリアルを割り当て |
-
-### UE ライティング（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_light_create | ライトを作成 |
-| ue_light_set_color | ライト色を設定 |
-| ue_light_set_intensity | 強度を設定 |
-| ue_light_set_shadow | シャドウを設定 |
-| ue_light_set_attenuation | 減衰半径を設定 |
-| ue_light_set_temperature | 色温度を設定 |
-
-### UE ランドスケープ（8）
-| ツールID | 説明 |
-|---------|------|
-| ue_landscape_create | ランドスケープを作成 |
-| ue_landscape_sculpt | 地形をスカルプト |
-| ue_landscape_paint | レイヤーをペイント |
-| ue_landscape_add_layer | ペイントレイヤーを追加 |
-| ue_landscape_import_heightmap | ハイトマップをインポート |
-| ue_landscape_export_heightmap | ハイトマップをエクスポート |
-| ue_landscape_set_material | マテリアルを設定 |
-| ue_landscape_get_info | 情報を取得 |
-
-### UE オーディオ（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_audio_add_component | AudioComponentを追加 |
-| ue_audio_set_volume | 音量を設定 |
-| ue_audio_set_pitch | ピッチを設定 |
-| ue_audio_set_spatial | 空間化を設定 |
-| ue_audio_add_ambient | 環境音を追加 |
-| ue_audio_add_reverb | リバーブを追加 |
-
-### UE カメラ（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_camera_create | カメラを作成 |
-| ue_camera_set_fov | FOVを設定 |
-| ue_camera_set_active | アクティブカメラを設定 |
-| ue_camera_set_postprocess | ポストプロセスを設定 |
-| ue_camera_set_aspect | アスペクト比を設定 |
-| ue_camera_look_at | ターゲットに向ける |
-
-### UE メッシュ（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_mesh_import | メッシュをインポート |
-| ue_mesh_set_collision | コリジョンを設定 |
-| ue_mesh_set_lod | LODを設定 |
-| ue_mesh_merge | メッシュを結合 |
-| ue_mesh_get_info | メッシュ情報を取得 |
-| ue_mesh_set_nanite | Naniteを有効/無効 |
-
-### UE Blueprint（10）
-| ツールID | 説明 |
-|---------|------|
-| ue_bp_create | Blueprintを作成 |
-| ue_bp_add_component | コンポーネントを追加 |
-| ue_bp_add_variable | 変数を追加 |
-| ue_bp_add_function | 関数を追加 |
-| ue_bp_add_event | イベントを追加 |
-| ue_bp_add_node | ノードを追加 |
-| ue_bp_connect_nodes | ノードを接続 |
-| ue_bp_compile | コンパイル |
-| ue_bp_spawn | BPアクターをスポーン |
-| ue_bp_get_info | BP情報を取得 |
-
-### UE Niagara（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_niagara_create | Niagaraシステムを作成 |
-| ue_niagara_set_param | パラメータを設定 |
-| ue_niagara_set_spawn_rate | スポーンレートを設定 |
-| ue_niagara_set_lifetime | 寿命を設定 |
-| ue_niagara_set_color | パーティクル色を設定 |
-| ue_niagara_activate | 有効/無効 |
-
-### UE アニメーション（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_anim_import | アニメーションをインポート |
-| ue_anim_play | モンタージュを再生 |
-| ue_anim_create_blendspace | ブレンドスペースを作成 |
-| ue_anim_create_montage | モンタージュを作成 |
-| ue_anim_set_bp | Anim BPを設定 |
-| ue_anim_retarget | リターゲット |
-
-### UE UI / UMG（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_ui_create_widget | Widgetを作成 |
-| ue_ui_add_text | TextBlockを追加 |
-| ue_ui_add_button | Buttonを追加 |
-| ue_ui_add_image | Imageを追加 |
-| ue_ui_add_progress_bar | ProgressBarを追加 |
-| ue_ui_show_widget | 表示/非表示 |
-
-### UE AI（8）
-| ツールID | 説明 |
-|---------|------|
-| ue_ai_create_bt | Behavior Treeを作成 |
-| ue_ai_create_bb | Blackboardを作成 |
-| ue_ai_add_bb_key | BBキーを追加 |
-| ue_ai_add_bt_task | BTタスクを追加 |
-| ue_ai_add_bt_decorator | BTデコレーターを追加 |
-| ue_ai_set_controller | AI Controllerを設定 |
-| ue_ai_run_bt | BTを実行 |
-| ue_ai_add_eqs | EQSクエリを作成 |
-
-### UE 物理（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_physics_enable | 物理を有効化 |
-| ue_physics_set_mass | 質量を設定 |
-| ue_physics_add_force | 力を加える |
-| ue_physics_set_damping | ダンピングを設定 |
-| ue_physics_add_constraint | コンストレイントを追加 |
-| ue_physics_set_collision_profile | コリジョンプロファイルを設定 |
-
-### UE シーケンサー（8）
-| ツールID | 説明 |
-|---------|------|
-| ue_seq_create | Level Sequenceを作成 |
-| ue_seq_add_track | トラックを追加 |
-| ue_seq_add_keyframe | キーフレームを追加 |
-| ue_seq_set_duration | 長さを設定 |
-| ue_seq_play | 再生 |
-| ue_seq_add_camera_cut | カメラカットを追加 |
-| ue_seq_render_movie | ビデオにレンダリング |
-| ue_seq_get_info | シーケンス情報を取得 |
-
-### UE ビルド（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_build_set_platform | プラットフォームを設定 |
-| ue_build_set_config | ビルド構成を設定 |
-| ue_build_package | パッケージ |
-| ue_build_cook | コンテンツをクック |
-| ue_build_lightmaps | ライトマップをビルド |
-| ue_build_get_status | ビルド状態を取得 |
-
-### UE レベル（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_level_create | レベルを作成 |
-| ue_level_open | レベルを開く |
-| ue_level_save | レベルを保存 |
-| ue_level_add_sublevel | サブレベルを追加 |
-| ue_level_set_gamemode | GameModeを設定 |
-| ue_level_get_info | レベル情報を取得 |
-
-### UE フォリッジ（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_foliage_add_type | フォリッジタイプを追加 |
-| ue_foliage_paint | フォリッジをペイント |
-| ue_foliage_erase | フォリッジを消去 |
-| ue_foliage_set_settings | 設定を変更 |
-| ue_foliage_to_static | スタティックに変換 |
-| ue_foliage_get_info | 情報を取得 |
-
-### UE PCG（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_pcg_create_graph | PCGグラフを作成 |
-| ue_pcg_add_node | ノードを追加 |
-| ue_pcg_connect_nodes | ノードを接続 |
-| ue_pcg_set_param | パラメータを設定 |
-| ue_pcg_execute | グラフを実行 |
-| ue_pcg_add_volume | PCG Volumeを追加 |
-
-### UE MetaHuman（6）
-| ツールID | 説明 |
-|---------|------|
-| ue_mh_spawn | MetaHumanをスポーン |
-| ue_mh_set_body | 体型を設定 |
-| ue_mh_set_face | 顔を調整 |
-| ue_mh_set_clothing | 衣装を設定 |
-| ue_mh_set_animation | アニメーションを設定 |
-| ue_mh_set_livelink | Live Linkを有効化 |
-
-## SuperSaveモード
-
-438ツールすべてをAIコンテキストに登録する代わりに、SuperSaveは4つのメタツールのみを公開します：
+438ツール全てを登録する代わりに、**4つのメタツール**のみ公開：
 
 | メタツール | 用途 |
-|-----------|------|
-| arcana.discover | キーワードやカテゴリでツールを検索 |
-| arcana.inspect | 特定ツールの完全なスキーマを取得 |
-| arcana.execute | パラメータを指定してツールを実行 |
-| arcana.compose | 複数ツールをパイプラインで連鎖実行 |
+|---|---|
+| arcana.discover | キーワード・カテゴリでツール検索 |
+| arcana.inspect | 特定ツールのスキーマ取得 |
+| arcana.execute | IDとパラメータでツール実行 |
+| arcana.compose | 複数ツールをパイプライン実行 |
 
-これによりトークン消費を約 **98%** 削減できます。
+トークン消費を約 **98%** 削減します。
 
 ## クイックスタート
 
 ### 必要環境
 
 - Node.js 18+
-- Unity 2022.3+ または Blender 3.6+
-- MCP対応のAIクライアント
+- Unity 2022.3+ / Unreal Engine 5.x / Blender 3.6+（任意の組み合わせ）
+- MCP対応AIクライアント（Claude Desktop, Cursor, VS Code 等）
 
 ### インストール
 
+```bash
 git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
 cd ARCANA/server
 npm install
 npm run build
+```
 
-Unityプロジェクトに unity-plugin フォルダをインポートしてください。
+### Unity セットアップ
 
-Unity > Tools > ARCANA > Setup を開くと、AIクライアントの設定が自動で行われます。
+1. `unity-plugin` フォルダをUnityプロジェクトにインポート
+2. Unity > Tools > ARCANA > Setup を開く
+3. WebSocketブリッジが localhost:9877 で起動
 
-### テストしてみよう
+### Unreal Engine セットアップ
 
-AIアシスタントに話しかけてください：
+1. `ue-plugin` フォルダをプロジェクトの Plugins ディレクトリにコピー
+2. Edit > Plugins で ARCANA を有効化
+3. WebSocketブリッジが localhost:9878 で起動
 
-- 「現在のUnityシーンにあるGameObjectを全部リストして」
-- 「赤いキューブを座標(0, 5, 0)に作って」
-- 「キューブの上にソフトシャドウ付きのポイントライトを追加して」
-- 「500x500の地形を作って、草のテクスチャと200本の木を配置して」
+### 試してみる
+
+**Unity:**
+```
+"現在のUnityシーンのGameObjectを全て一覧して"
+"位置(0, 5, 0)に赤いキューブを作って"
+"キューブの上にソフトシャドウ付きポイントライトを追加して"
+```
+
+**Unreal Engine:**
+```
+"現在のレベルのアクターを全て一覧して"
+"位置(0, 0, 200)にキューブをスポーンして"
+"5000ルーメンの暖色ポイントライトを作成して"
+```
 
 ## ロードマップ
 
-| フェーズ | 状況 | 内容 |
-|---------|------|------|
-| 1 | 完了 | コアサーバー、SuperSave、Unity 302 + UE 136ツール |
-| 2 | 完了 | Navigation、PostProcessing、Script、Selection、Constraint、Build、Render、Asset、Editor、Mesh、Timeline、Cinemachine、ProBuilder、Input、Shader、Networking、2D、VRChat、Addressables、Localization、Debug、Testing、Profiler、XR、AI、Spline、VisualScripting、Ragdoll、Cloth、Decal、LOD、Gizmo、ReflectionProbe、Lightmap、OcclusionCulling、Streaming、TagManager、Screenshot |
-| 3 | 次 | Blenderアドオン、100+ツール |
-| 4 | 完了 | Unreal Engine 136ツール（20カテゴリ） |
-| 5 | 予定 | 600+ツール、クロスエディタワークフロー、コミュニティ貢献 |
+| フェーズ | 状態 | 内容 |
+|---|---|---|
+| 1 | 完了 | コアMCPサーバー、SuperSave、ブリッジアーキテクチャ |
+| 2 | 完了 | Unity 302ツール（46カテゴリ） |
+| 3 | 完了 | Unreal Engine 136ツール（20カテゴリ） |
+| 4 | 次 | Blenderアドオン + 100〜200 Blenderツール |
+| 5 | 予定 | クロスエディタワークフロー、600+ツール、レシピシステム |
 
 ## コントリビュート
 
-ガイドラインは [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。スキルレベル問わず歓迎します。
+[CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。全てのスキルレベル歓迎です。
 
 ## 謝辞
 
-- [Synaptic AI Pro](https://synaptic-ai.net/) — インスピレーションと概念実証
-- [Model Context Protocol](https://modelcontextprotocol.io/) — プロトコル標準
-- [Unity-MCP](https://github.com/IvanMurzak/Unity-MCP) — アーキテクチャ参考
+- [Synaptic AI Pro](https://synaptic-ai.net/) - インスピレーションと概念実証
+- [Model Context Protocol](https://modelcontextprotocol.io/) - プロトコル標準
+- [Unity-MCP](https://github.com/IvanMurzak/Unity-MCP) - アーキテクチャ参考
 
 ## ライセンス
 
-MITライセンス。詳細は [LICENSE](LICENSE) をご覧ください。
+MIT License. [LICENSE](LICENSE) を参照してください。
