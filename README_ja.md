@@ -487,47 +487,83 @@ Gemini が起動したら:
 #### Step 5: エディタにプラグインをインストール
 
 <details>
-<summary><strong>Blender（初心者おすすめ）— クリックして展開</strong></summary>
+<summary><strong>Blender（初心者おすすめ）</strong></summary>
 
-> **Blender 4.2以降 / 5.x をお使いの方へ:** アドオンのインストール方法が変わっています。以下の手順を正確に実行してください。
+> **重要:** Blender のバージョンによってアドオンのインストール方法が異なります。お使いのバージョンの手順に従ってください。
 
-**手動インストール（全 Blender バージョンで確実に動きます）**
+#### 全バージョン共通: ファイルのコピー
 
-1. Blender のアドオンフォルダを探す:
+1. Blender のアドオンフォルダを開く:
    - **Windows:** `C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\`
    - **Mac:** `~/Library/Application Support/Blender/<バージョン>/scripts/addons/`
    - **Linux:** `~/.config/blender/<バージョン>/scripts/addons/`
 
-2. そのフォルダの中に `arcana_bridge` フォルダを作成
+   > **ヒント (Windows):** PowerShell でフォルダを直接開く:
+   > ```powershell
+   > explorer "$env:APPDATA\Blender Foundation\Blender\<バージョン>\scripts\addons"
+   > ```
 
-3. ARCANA の `blender-plugin/` 内の **全ファイル** をコピー:
+2. addons フォルダ内に `arcana_bridge` フォルダを作成
+
+3. ARCANA の `blender-plugin/` 内の **全ファイル** をコピー
+
+4. **重要 (Windows):** `__init__.py` が **BOMなしUTF-8** であることを確認
+   PowerShell でコピーすると BOM が付与され、Blender が `bl_info` を認識できなくなります。
+   ```powershell
+   $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\__init__.py"
+   $text = [System.IO.File]::ReadAllText($path)
+   $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+   [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
    ```
-   arcana_bridge/
-   ├── __init__.py
-   ├── arcana_bridge.py
-   ├── handlers/
-   └── utils/
-   ```
 
-4. **重要:** `__init__.py` が **BOMなしUTF-8** で保存されていることを確認してください。
-   - PowerShell や一部のエディタで編集すると、BOM（バイトオーダーマーク）が付加され、Blender が `bl_info` を認識できなくなります。
-   - 確認＆修正方法（PowerShell）:
-     ```powershell
-     $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\__init__.py"
-     $text = [System.IO.File]::ReadAllText($path)
-     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-     [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
-     ```
+---
 
-5. Blender を再起動
+<details>
+<summary><b>Blender 3.6 - 4.1</b></summary>
 
-6. **Edit > Preferences > Add-ons** を開く
-   - **Blender 4.2以降/5.x:** **「旧アドオン」** セクションの中を確認
-   - **「ARCANA」** で検索
+1. Blender を再起動
+2. **Edit > Preferences > Add-ons** を開く
+3. **"ARCANA"** で検索
+4. **ARCANA Bridge** のチェックボックスをON
+5. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
 
-7. **ARCANA Bridge** のチェックボックスをONにして有効化
+</details>
 
-8. 3Dビューポートで **N キー** → **ARCANA** タブ → **接続（Connect）** をクリック
+<details>
+<summary><b>Blender 4.2 - 4.4</b></summary>
+
+Blender 4.2 で **Extension** システムが導入されました。レガシーアドオンは別セクションに移動しています。
+
+1. `arcana_bridge` フォルダ内の `blender_manifest.toml` を **削除**（Extension システムと競合するため）
+2. Blender を再起動
+3. **Edit > Preferences > Add-ons** を開く
+4. ドロップダウンまたは **「旧アドオン（Legacy Add-ons）」** セクションを探す
+5. **"ARCANA"** で検索
+6. **ARCANA Bridge** のチェックボックスをON
+7. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
+
+</details>
+
+<details>
+<summary><b>Blender 5.0+</b></summary>
+
+Blender 5.x では Extension とレガシーアドオンが完全に分離されています。追加手順が必要です。
+
+1. `arcana_bridge` フォルダ内の `blender_manifest.toml` を **削除**
+2. `__init__.py` に **UTF-8 BOM がないこと** を確認（上記手順4を参照）
+3. Blender を再起動
+4. **Edit > Preferences > Add-ons** を開く
+5. **「旧アドオン（Legacy Add-ons）」** セクションを探す（タブまたはドロップダウン）
+6. **"ARCANA"** で検索
+7. **ARCANA Bridge** のチェックボックスをON
+8. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
+
+> **トラブルシューティング:** ARCANA が表示されない場合:
+> - **Window > Toggle System Console** でエラーログを確認（"arcana" を含む行を探す）
+> - `__init__.py` の先頭に `bl_info` が存在するか確認
+> - BOM 修正が適用されたか確認（先頭3バイトが `EF BB BF` でないこと）
+
+</details>
 
 > **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は Gemini 起動時に自動で立ち上がります。単体で使う場合は `cd ARCANA/server && node dist/index.js` を実行してください。
 

@@ -488,49 +488,85 @@ You should see:
 #### Step 5: Set Up Your Editor Plugin
 
 <details>
-<summary><strong>Blender (Recommended for beginners) — Click to expand</strong></summary>
+<summary><strong>Blender (Recommended for beginners)</strong></summary>
 
-> **Important for Blender 4.2+ / 5.x users:** The add-on install process has changed. Follow these steps carefully.
+> **Important:** The add-on install method differs by Blender version. Follow the steps for your version.
 
-**Method: Manual Install (works on all Blender versions)**
+#### All Versions: Copy Files First
 
 1. Find your Blender add-ons directory:
    - **Windows:** `C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\`
    - **Mac:** `~/Library/Application Support/Blender/<version>/scripts/addons/`
    - **Linux:** `~/.config/blender/<version>/scripts/addons/`
 
+   > **Tip (Windows):** Open the folder directly in PowerShell:
+   > ```powershell
+   > explorer "$env:APPDATA\Blender Foundation\Blender\<version>\scripts\addons"
+   > ```
+
 2. Create a folder called `arcana_bridge` inside the addons directory
 
-3. Copy **all files** from ARCANA's `blender-plugin/` into that folder:
+3. Copy **all files** from ARCANA's `blender-plugin/` into that folder
+
+4. **Critical (Windows):** Make sure `__init__.py` is **UTF-8 without BOM**.
+   PowerShell may add a BOM that prevents Blender from reading `bl_info`.
+   ```powershell
+   $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\__init__.py"
+   $text = [System.IO.File]::ReadAllText($path)
+   $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+   [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
    ```
-   arcana_bridge/
-   ├── __init__.py
-   ├── arcana_bridge.py
-   ├── handlers/
-   └── utils/
-   ```
 
-4. **Critical:** Make sure `__init__.py` is saved as **UTF-8 without BOM**.
-   - If you edited the file with PowerShell or Notepad, it may have a BOM (Byte Order Mark) that prevents Blender from reading `bl_info`.
-   - To check and fix (PowerShell):
-     ```powershell
-     $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\__init__.py"
-     $text = [System.IO.File]::ReadAllText($path)
-     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-     [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
-     ```
+---
 
-5. Restart Blender
+<details>
+<summary><b>Blender 3.6 - 4.1</b></summary>
 
-6. Go to **Edit > Preferences > Add-ons**
-   - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section (旧アドオン)
-   - Search for **"ARCANA"**
+1. Restart Blender
+2. Go to **Edit > Preferences > Add-ons**
+3. Search for **"ARCANA"**
+4. Check the box to enable **ARCANA Bridge**
+5. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
 
-7. Enable **ARCANA Bridge** by checking the box
+</details>
 
-8. In the 3D Viewport, press **N** to open the sidebar → Click the **ARCANA** tab → Press **Connect**
+<details>
+<summary><b>Blender 4.2 - 4.4</b></summary>
 
-> **Note:** ARCANA's MCP server must be running for Connect to work. If you're using Gemini CLI, the server starts automatically when Gemini launches. If not, run `node dist/index.js` from the server directory.
+Blender 4.2 introduced the **Extension** system. Legacy add-ons still work but are in a separate section.
+
+1. **Delete** `blender_manifest.toml` from the `arcana_bridge` folder if it exists (it conflicts with the Extension system)
+2. Restart Blender
+3. Go to **Edit > Preferences > Add-ons**
+4. Click the dropdown or look for the **"Legacy Add-ons"** section
+5. Search for **"ARCANA"**
+6. Check the box to enable **ARCANA Bridge**
+7. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
+
+</details>
+
+<details>
+<summary><b>Blender 5.0+</b></summary>
+
+Blender 5.x fully separates Extensions from Legacy Add-ons. Extra steps are needed.
+
+1. **Delete** `blender_manifest.toml` from the `arcana_bridge` folder if it exists
+2. Make sure `__init__.py` has **no UTF-8 BOM** (see step 4 above)
+3. Restart Blender
+4. Go to **Edit > Preferences > Add-ons**
+5. Look for the **"Legacy Add-ons"** section (it may be a separate tab or dropdown)
+6. Search for **"ARCANA"**
+7. Check the box to enable **ARCANA Bridge**
+8. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
+
+> **Troubleshooting:** If ARCANA does not appear:
+> - Open **Window > Toggle System Console** and look for errors containing "arcana"
+> - Verify `bl_info` exists at the top of `__init__.py`
+> - Confirm the BOM fix was applied (first 3 bytes should NOT be `EF BB BF`)
+
+</details>
+
+> **Note:** ARCANA's MCP server must be running for Connect to work. If you use Gemini CLI, the server starts automatically. Otherwise run `node dist/index.js` from the server directory.
 
 </details>
 
