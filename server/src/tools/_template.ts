@@ -6,7 +6,7 @@
 
 import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
+import { bridge } from "../bridge";
 
 export const templateTool: ToolDefinition = {
   id: "category_action",
