@@ -15,7 +15,7 @@ export const blSculptTools: ToolDefinition[] = [
       enableDyntopo: z.boolean().optional().describe("Enable dynamic topology sculpting"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "SculptEnterMode", params);
+      const result = await bridge.send("blender", "bl_sculpt_enter_mode", params);
       return { success: true, message: `Sculpt mode entered on "${params.objectName}"`, data: result };
     },
   },
@@ -33,7 +33,7 @@ export const blSculptTools: ToolDefinition[] = [
       direction: z.enum(["ADD", "SUBTRACT"]).optional().describe("Stroke direction"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "SculptSetBrush", params);
+      const result = await bridge.send("blender", "bl_sculpt_set_brush", params);
       return { success: true, message: `Brush set to ${params.brush}`, data: result };
     },
   },
@@ -54,7 +54,7 @@ export const blSculptTools: ToolDefinition[] = [
       radius: z.number().optional().describe("Override brush radius"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "SculptApplyStroke", params);
+      const result = await bridge.send("blender", "bl_sculpt_apply_stroke", params);
       return { success: true, message: `Sculpt stroke applied (${params.points.length} points) on "${params.objectName}"`, data: result };
     },
   },
@@ -73,7 +73,7 @@ export const blSculptTools: ToolDefinition[] = [
       preserveVolume: z.boolean().optional().describe("Preserve volume"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "SculptRemesh", params);
+      const result = await bridge.send("blender", "bl_sculpt_remesh", params);
       return { success: true, message: `${params.mode} remesh applied to "${params.objectName}"`, data: result };
     },
   },
@@ -90,7 +90,7 @@ export const blSculptTools: ToolDefinition[] = [
       extractThickness: z.number().optional().describe("Thickness for mask extract"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "SculptMaskOperations", params);
+      const result = await bridge.send("blender", "bl_sculpt_mask_operations", params);
       return { success: true, message: `Mask ${params.operation} applied on "${params.objectName}"`, data: result };
     },
   },
@@ -107,7 +107,7 @@ export const blSculptTools: ToolDefinition[] = [
       threshold: z.number().optional().describe("Threshold angle for normal-based init"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "SculptFaceSets", params);
+      const result = await bridge.send("blender", "bl_sculpt_face_sets", params);
       return { success: true, message: `Face set ${params.operation} on "${params.objectName}"`, data: result };
     },
   },

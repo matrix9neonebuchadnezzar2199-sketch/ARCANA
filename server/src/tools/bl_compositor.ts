@@ -12,7 +12,7 @@ export const blCompositorTools: ToolDefinition[] = [
       useNodes: z.boolean().optional().describe("Enable node-based compositing (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorEnable", params);
+      const result = await bridge.send("blender", "bl_compositor_enable", params);
       return { success: true, message: "Compositor enabled", data: result };
     },
   },
@@ -29,7 +29,7 @@ export const blCompositorTools: ToolDefinition[] = [
       locationY: z.number().optional().describe("Y position"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorAddNode", params);
+      const result = await bridge.send("blender", "bl_compositor_add_node", params);
       return { success: true, message: `Compositor node "${params.nodeType}" added`, data: result };
     },
   },
@@ -46,7 +46,7 @@ export const blCompositorTools: ToolDefinition[] = [
       toSocket: z.union([z.string(), z.number()]).describe("Input socket name or index"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorConnect", params);
+      const result = await bridge.send("blender", "bl_compositor_connect", params);
       return { success: true, message: `Connected ${params.fromNode}[${params.fromSocket}] -> ${params.toNode}[${params.toSocket}]`, data: result };
     },
   },
@@ -64,7 +64,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect between Render Layers and Composite (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorAddGlare", params);
+      const result = await bridge.send("blender", "bl_compositor_add_glare", params);
       return { success: true, message: `Glare (${params.glareType}) added`, data: result };
     },
   },
@@ -84,7 +84,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect in chain (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorAddColorCorrection", params);
+      const result = await bridge.send("blender", "bl_compositor_add_color_correction", params);
       return { success: true, message: "Color correction chain added", data: result };
     },
   },
@@ -100,7 +100,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect to Render Layers (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorAddDenoise", params);
+      const result = await bridge.send("blender", "bl_compositor_add_denoise", params);
       return { success: true, message: "Denoise node added", data: result };
     },
   },
@@ -116,7 +116,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect in chain (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "CompositorAddVignette", params);
+      const result = await bridge.send("blender", "bl_compositor_add_vignette", params);
       return { success: true, message: `Vignette added (intensity: ${params.intensity || 0.5})`, data: result };
     },
   },

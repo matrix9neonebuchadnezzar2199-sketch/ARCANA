@@ -15,7 +15,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       location: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Object location"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "GPCreateObject", params);
+      const result = await bridge.send("blender", "bl_gp_create_object", params);
       return { success: true, message: `Grease Pencil object "${params.name || "GPencil"}" created`, data: result };
     },
   },
@@ -32,7 +32,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       blendMode: z.enum(["REGULAR", "OVERLAY", "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]).optional().describe("Blend mode"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "GPAddLayer", params);
+      const result = await bridge.send("blender", "bl_gp_add_layer", params);
       return { success: true, message: `Layer "${params.layerName}" added to "${params.objectName}"`, data: result };
     },
   },
@@ -55,7 +55,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       lineWidth: z.number().optional().describe("Stroke line width"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "GPDrawStroke", params);
+      const result = await bridge.send("blender", "bl_gp_draw_stroke", params);
       return { success: true, message: `Stroke with ${params.points.length} points drawn on "${params.objectName}"`, data: result };
     },
   },
@@ -73,7 +73,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       layerFilter: z.string().optional().describe("Apply only to this layer"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "GPAddModifier", params);
+      const result = await bridge.send("blender", "bl_gp_add_modifier", params);
       return { success: true, message: `GP modifier ${params.modifierType} added to "${params.objectName}"`, data: result };
     },
   },
@@ -91,7 +91,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       samples: z.number().optional().describe("Sample count (for Blur, Shadow)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "GPAddEffect", params);
+      const result = await bridge.send("blender", "bl_gp_add_effect", params);
       return { success: true, message: `GP effect ${params.effectType} added to "${params.objectName}"`, data: result };
     },
   },
@@ -111,7 +111,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       opacity: z.number().optional().describe("Ghost opacity (0-1)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("blender", "GPSetOnionSkinning", params);
+      const result = await bridge.send("blender", "bl_gp_set_onion_skinning", params);
       const state = params.enabled ? "enabled" : "disabled";
       return { success: true, message: `Onion skinning ${state} on "${params.objectName}"`, data: result };
     },
