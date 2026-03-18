@@ -499,8 +499,14 @@ Gemini が起動したら:
    - **Blender 4.2+/5.x:** ドロップダウン矢印をクリック → **「ディスクからインストール」** を選択
    - **Blender 3.6-4.1:** **「インストール...」** をクリック
 4. ダウンロードした `addon.py` を選択
+
+   ![ディスクからインストール 手順1](image/install-from-disk-1.png)
+   ![ディスクからインストール 手順2](image/install-from-disk-2.png)
+   ![ディスクからインストール 手順3](image/install-from-disk-3.png)
 5. **ARCANA Bridge** のチェックボックスをONにして有効化
    - **Blender 4.2+/5.x:** **「旧アドオン（Legacy Add-ons）」** セクションを探す
+
+   ![ARCANA Bridge を有効化](image/install-from-disk-4.png)
 6. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
 
    ![ARCANA タブ](image/arcana-tab.png)
