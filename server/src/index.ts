@@ -122,6 +122,7 @@ import { blCharacterExpressionTools } from "./tools/bl_character_expression";
 import { blCharacterExportTools } from "./tools/bl_character_export";
 import { unityVrchatTools } from "./tools/unity_vrchat";
 import { imageTo3dTools } from './tools/image_to_3d';
+import { bridge } from './bridge';
 
 
 // Register all tools
@@ -225,6 +226,9 @@ const allTools = [
 allTools.forEach(tool => { if (tool) globalRegistry.register(tool); });
 console.log(`[ARCANA] ${allTools.length} tools registered across ${new Set(allTools.filter(Boolean).map(t => t!.category)).size} categories`);
 
+// Start WebSocket bridges for Unity/UE/Blender
+bridge.start();
+
 const server = new Server({ name: "arcana-mcp-server", version: "2.0.0" }, { capabilities: { tools: {} } });
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -232,7 +236,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     { name: "arcana_discover", description: "Search available ARCANA tools by keyword or category", inputSchema: { type: "object", properties: { query: { type: "string", description: "Search keyword or category name" } }, required: ["query"] } },
     { name: "arcana_inspect", description: "Get full schema and details for a specific tool", inputSchema: { type: "object", properties: { toolId: { type: "string", description: "Tool ID to inspect" } }, required: ["toolId"] } },
     { name: "arcana_execute", description: "Execute any ARCANA tool with parameters", inputSchema: { type: "object", properties: { toolId: { type: "string", description: "Tool ID to execute" }, params: { type: "object", description: "Tool parameters" } }, required: ["toolId"] } },
-    { name: "arcana_compose", description: "Execute multiple tools in sequence", inputSchema: { type: "object", properties: { steps: { type: "array", items: { type: "object", properties: { toolId: { type: "string" }, params: { type: "object" } }, required: ["toolId"] } } }, required: ["steps"] } }
+    { name: "arcana_status", description: "Check which editors (Unity/UE/Blender) are currently connected", inputSchema: { type: "object", properties: {} } },
+        {
+          name: "arcana_compose", description: "Execute multiple tools in sequence", inputSchema: { type: "object", properties: { steps: { type: "array", items: { type: "object", properties: { toolId: { type: "string" }, params: { type: "object" } }, required: ["toolId"] } } }, required: ["steps"] } }
   ]
 }));
 
