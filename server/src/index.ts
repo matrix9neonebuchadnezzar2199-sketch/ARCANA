@@ -3,7 +3,6 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { globalRegistry } from "./core/registry";
 import { superSave } from "./core/supersave";
-import { unityBridge } from "./bridge/unity-bridge";
 
 // Import all tool modules
 import { sceneTools } from "./tools/scene";
@@ -185,26 +184,20 @@ const allTools = [
     ...blUVTools,
     ...blParticleTools,
     ...blArmatureTools,
-  ...vrchatTools, ...debugTools, ...testingTools, ...profilerTools,,
+  ...vrchatTools, ...debugTools, ...testingTools, ...profilerTools,
   // ===== Phase 5: Low-level Tools =====
-  ...cinemachineTools,
-  ...probuilderTools,
   ...inputSystemTools,
   ...addressablesTools,
   ...textmeshproTools,
   ...tilemapTools,
   ...localizationTools,
-  ...ueNiagaraTools,
   ...ueUmgTools,
-  ...ueSequencerTools,
   ...ueEnhancedInputTools,
-  ...uePcgTools,
   ...ueMetaSoundTools,
   ...ueControlRigTools,
   ...blGeometryNodesTools,
   ...blCompositorTools,
   ...blGreasePencilTools,
-  ...blSculptTools,
   ...blTexturePaintTools,
   ...blVseTools,
   // ===== Phase 5: Recipe System =====
@@ -220,7 +213,6 @@ const allTools = [
   ...blCharacterExportTools,
   ...unityVrchatTools,
   ...imageTo3dTools,
-  ...ueMetahumanTools,
 ];
 
 allTools.forEach(tool => { if (tool) globalRegistry.register(tool); });
@@ -249,6 +241,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     case "arcana_discover": result = await superSave.discover({ query: args?.query as string, category: args?.category as string }); break;
     case "arcana_inspect": result = await superSave.inspect({ toolId: args?.toolId as string }); break;
     case "arcana_execute": result = await superSave.execute({ toolId: args?.toolId as string, params: (args?.params as Record<string, any>) || {} }); break;
+    case "arcana_status": result = { success: true, message: "Editor status", data: bridge.getStatus() }; break;
     case "arcana_compose": result = await superSave.compose({ steps: args?.steps as any[] }); break;
     default: result = { success: false, message: `Unknown tool: ${name}` };
   }
@@ -256,10 +249,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 async function main() {
-  unityBridge.connect().catch(() => console.log("[ARCANA] Unity not connected yet - will retry on first tool call"));
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP Server running (v6.0.0 - 578 tools)");
+  console.log("[ARCANA] MCP Server running (v6.0.0 - 832 tools)");
 }
 
 main().catch(console.error);
