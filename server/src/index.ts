@@ -1,4 +1,4 @@
-﻿import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { globalRegistry } from "./core/registry";
@@ -83,6 +83,7 @@ import { blCameraTools } from "./tools/bl_camera";
 import { blLightTools } from "./tools/bl_light";
 import { blRenderTools } from "./tools/bl_render";
 import { blSceneTools } from "./tools/bl_scene";
+import { blExecuteTools } from "./tools/bl_execute";
 import { blNodeTools } from "./tools/bl_node";
 import { blUVTools } from "./tools/bl_uv";
 import { blParticleTools } from "./tools/bl_particle";
@@ -180,6 +181,8 @@ const allTools = [
     ...blLightTools,
     ...blRenderTools,
     ...blSceneTools,
+
+    ...blExecuteTools,
     ...blNodeTools,
     ...blUVTools,
     ...blParticleTools,
