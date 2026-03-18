@@ -370,7 +370,7 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
            Cursor / VS Code / Gemini CLI をお使いの方向け。
 ```
 
-**1. Node.js**（ARCANAサーバーとGemini CLIの両方に必要）
+**1. Node.js（ARCANAサーバーに必要）
 
 - [nodejs.org](https://nodejs.org/) からLTS版をダウンロード
 - インストーラーを実行（設定はすべてデフォルトでOK）
@@ -481,7 +481,7 @@ MCPツールが表示されない: パスが dist/index.js（src/index.ts では
    ![ARCANA タブ](image/arcana-tab.png)
 
 
-> **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は自動で起動します。単体の場合は `cd ARCANA/server && node dist/index.js` を実行してください。
+> **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。AIクライアントが自動起動する場合はそのままで。それ以外は `cd ARCANA/server && node dist/index.js` を実行してください。
 
 </details>
 

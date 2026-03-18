@@ -363,15 +363,15 @@ Setup Flow:
   Step 0: Prerequisites
   Node.js + Git + 3D Editor
          |
-         |---> Option A: Try Completely Free (Gemini CLI)
+         |---> Option A: Try Completely Free (Claude Desktop)
          |     Recommended for beginners.
-         |     All you need is a Google account.
+         |     Just install and go. No API key needed.
          |
          +---> Option B: Use with Other AI Clients
-               For Claude Desktop / Cursor / VS Code users.
+               For Cursor / VS Code / Gemini CLI users.
 ```
 
-**1. Node.js** (Required for ARCANA server and Gemini CLI)
+**1. Node.js** (Required for ARCANA server)
 
 - Download LTS version from [nodejs.org](https://nodejs.org/)
 - Run the installer (all default settings are fine)
@@ -484,7 +484,7 @@ Troubleshooting:
    ![ARCANA Tab in Blender](image/arcana-tab.png)
 
 
-> **Note:** ARCANA's MCP server must be running for Connect to work. If you use Gemini CLI, the server starts automatically. Otherwise run `node dist/index.js` from the server directory.
+> **Note:** ARCANA's MCP server must be running for Connect to work. If your AI client starts it automatically, great. Otherwise run `node dist/index.js` from the server directory.
 
 </details>
 
