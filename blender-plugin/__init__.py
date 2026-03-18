@@ -1,4 +1,4 @@
-﻿bl_info = {
+bl_info = {
     "name": "ARCANA Bridge",
     "author": "ARCANA Project",
     "version": (6, 0, 0),
