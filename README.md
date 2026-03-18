@@ -403,6 +403,16 @@ Setup Flow:
 >
 > **Free tier: 1,000 requests/day and 60 requests/min** — more than enough to build entire scenes and characters.
 
+#### Overview: Setup Flow
+
+```
+1. Prepare & Install .............. Step 0 (Prerequisites) + Step 1 (Gemini CLI)
+2. Get API Key & Build ARCANA ..... Step 2 (API Key) + Step 3 (Clone & Build)
+3. Register MCP ................... Step 4 (gemini mcp add)
+4. Set Up Blender ................. Step 5 (addon.py -> Install from Disk)
+5. Start Creating! ................ Step 6 (Talk to AI, build 3D scenes)
+```
+
 #### Step 1: Install Gemini CLI
 
 ```bash
