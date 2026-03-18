@@ -26,11 +26,11 @@
 Most MCP editor tools support one editor with 20-60 tools.
 ARCANA provides **578 tools across 3 editors and 81 categories** from a single server.
 
-| | ARCANA | Unity-MCP | Blender-MCP | Unreal-MCP |
-|---|---|---|---|---|
-| **Tools** | **578** | ~20 | ~15 | ~30 |
-| **Editors** | Unity + UE + Blender | Unity | Blender | UE |
-| **SuperSave** | 4 meta-tools | - | - | - |
+| | ARCANA | Typical MCP tool |
+|---|---|---|
+| **Tools** | **578** | 20-60 |
+| **Editors** | Unity + UE + Blender | Single editor |
+| **SuperSave** | 4 meta-tools | - |
 
 ## What is ARCANA?
 
