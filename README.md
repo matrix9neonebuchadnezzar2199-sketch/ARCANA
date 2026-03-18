@@ -529,11 +529,11 @@ If Methods A/B do not work, copy files manually:
 
 2. Create a folder called `arcana_bridge` inside the addons directory
 
-3. Copy **all files** from ARCANA's `blender-plugin/` into that folder
+3. Copy `addon.py` from the repository root into the addons directory (no subfolder needed)
 
-4. **Critical (Windows):** Make sure `__init__.py` is **UTF-8 without BOM**.
+4. **Critical (Windows):** Make sure `addon.py` is **UTF-8 without BOM**.
    ```powershell
-   $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\__init__.py"
+   $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\addon.py"
    $text = [System.IO.File]::ReadAllText($path)
    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
    [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)

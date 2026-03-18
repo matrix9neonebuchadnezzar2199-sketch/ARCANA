@@ -528,11 +528,11 @@ Gemini が起動したら:
 
 2. addons フォルダ内に `arcana_bridge` フォルダを作成
 
-3. ARCANA の `blender-plugin/` 内の **全ファイル** をコピー
+3. リポジトリのルートから `addon.py` を addons ディレクトリにコピー（サブフォルダ不要）
 
-4. **重要 (Windows):** `__init__.py` が **BOMなしUTF-8** であることを確認
+4. **重要 (Windows):** `addon.py` が **BOMなしUTF-8** であることを確認
    ```powershell
-   $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\__init__.py"
+   $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\addon.py"
    $text = [System.IO.File]::ReadAllText($path)
    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
    [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
