@@ -1,14 +1,6 @@
 ﻿import { z } from "zod";
 
-export interface ToolDefinition {
-  id: string;
-  name: string;
-  description: string;
-  descriptionJa: string;
-  category: string;
-  inputSchema: z.ZodObject<any>;
-  handler: (params: any) => Promise<any>;
-}
+import { ToolDefinition, ToolResult } from "../core/registry";
 
 // ============================================================
 // Image Analysis Prompt Templates
@@ -164,12 +156,15 @@ const analyzeImageTool: ToolDefinition = {
     else prompt = FULL_ANALYSIS_PROMPT;
 
     return {
+      success: true,
+      message: "Image analysis schema generated",
+      data: {
       tool: "arcana_analyze_image",
       mode: mode,
       prompt: prompt,
       instruction: "Send this prompt along with the image to a Vision-capable AI (Claude, GPT-4V). The AI will return structured JSON parameters. Pass the result to arcana_image_to_character, arcana_image_to_scene, or arcana_image_to_world.",
       note: "This tool provides the analysis schema. The actual vision analysis is performed by the AI client (Claude Vision, etc.) which then feeds parameters to ARCANA execution tools.",
-    };
+    } };
   },
 };
 
@@ -335,12 +330,15 @@ const imageToCharacterTool: ToolDefinition = {
     }
 
     return {
+      success: true,
+      message: "Character creation pipeline generated",
+      data: {
       tool: "arcana_image_to_character",
       pipeline: pipeline,
       stepCount: pipeline.length,
       instruction: "Execute this pipeline using arcana_compose or sequentially with arcana_execute.",
       analysisUsed: Object.keys(data),
-    };
+    } };
   },
 };
 
@@ -498,13 +496,16 @@ const imageToSceneTool: ToolDefinition = {
     }
 
     return {
+      success: true,
+      message: "Scene creation pipeline generated",
+      data: {
       tool: "arcana_image_to_scene",
       pipeline: pipeline,
       stepCount: pipeline.length,
       instruction: "Execute this pipeline using arcana_compose or sequentially with arcana_execute.",
       sceneType: data.environment?.type,
       mood: data.atmosphere?.mood,
-    };
+    } };
   },
 };
 
@@ -562,13 +563,16 @@ const imageToWorldTool: ToolDefinition = {
     }
 
     return {
+      success: true,
+      message: "World creation pipeline generated",
+      data: {
       tool: "arcana_image_to_world",
       pipeline: pipeline,
       stepCount: pipeline.length,
       characterCount: data.characters?.length || 0,
       hasScene: !!data.scene,
       instruction: "Execute the scene pipeline first, then each character pipeline. Use arcana_compose for sequential execution.",
-    };
+    } };
   },
 };
 

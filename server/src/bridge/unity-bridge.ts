@@ -9,7 +9,7 @@ export class UnityBridge {
     reject: (reason: any) => void;
   }> = new Map();
 
-  constructor(url: string = "ws://localhost:8765") {
+  constructor(url: string = "ws://localhost:9877") {
     this.url = url;
   }
 
