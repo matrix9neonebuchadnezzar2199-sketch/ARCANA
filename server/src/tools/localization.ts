@@ -2,28 +2,87 @@ import { ToolDefinition } from "../core/registry";
 import { z } from "zod";
 import { unityBridge } from "../bridge/unity-bridge";
 
-const locCreateTable: ToolDefinition = { id: "loc_create_table", name: "Create String Table", description: "Create a new localization string table", descriptionJa: "新しいローカライズ文字列テーブルを作成する", category: "localization",
-  inputSchema: z.object({ tableName: z.string().describe("Table name"), path: z.string().optional().default("Assets/Localization").describe("Save folder") }),
-  handler: async (params) => { try { const r = await unityBridge.send("LocCreateTable", params); return { success: true, message: `Table created: ${params.tableName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } } };
-
-const locAddEntry: ToolDefinition = { id: "loc_add_entry", name: "Add Localization Entry", description: "Add a key-value entry to a string table for a locale", descriptionJa: "ロケールの文字列テーブルにキー・値エントリを追加する", category: "localization",
-  inputSchema: z.object({ tableName: z.string().describe("Table name"), key: z.string().describe("Entry key"), value: z.string().describe("Translated text"), locale: z.string().optional().default("en").describe("Locale code (e.g. en, ja, ko)") }),
-  handler: async (params) => { try { const r = await unityBridge.send("LocAddEntry", params); return { success: true, message: `Entry added: ${params.key} (${params.locale})`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } } };
-
-const locAddLocale: ToolDefinition = { id: "loc_add_locale", name: "Add Locale", description: "Add a new locale to the project", descriptionJa: "プロジェクトに新しいロケールを追加する", category: "localization",
-  inputSchema: z.object({ localeCode: z.string().describe("Locale code (e.g. en, ja, ko, zh, fr, de)") }),
-  handler: async (params) => { try { const r = await unityBridge.send("LocAddLocale", params); return { success: true, message: `Locale added: ${params.localeCode}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } } };
-
-const locSetActive: ToolDefinition = { id: "loc_set_active", name: "Set Active Locale", description: "Switch the active locale at runtime", descriptionJa: "ランタイムでアクティブロケールを切り替える", category: "localization",
-  inputSchema: z.object({ localeCode: z.string().describe("Locale code to activate") }),
-  handler: async (params) => { try { const r = await unityBridge.send("LocSetActive", params); return { success: true, message: `Active locale: ${params.localeCode}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } } };
-
-const locExport: ToolDefinition = { id: "loc_export", name: "Export Localization", description: "Export string table to CSV or JSON", descriptionJa: "文字列テーブルをCSV/JSONにエクスポートする", category: "localization",
-  inputSchema: z.object({ tableName: z.string().describe("Table name"), format: z.enum(["CSV", "JSON"]).optional().default("CSV").describe("Export format"), outputPath: z.string().optional().default("Assets/Localization/Export").describe("Output path") }),
-  handler: async (params) => { try { const r = await unityBridge.send("LocExport", params); return { success: true, message: `Exported: ${params.tableName} as ${params.format}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } } };
-
-const locImport: ToolDefinition = { id: "loc_import", name: "Import Localization", description: "Import translations from CSV or JSON file", descriptionJa: "CSV/JSONファイルから翻訳をインポートする", category: "localization",
-  inputSchema: z.object({ tableName: z.string().describe("Target table name"), filePath: z.string().describe("Import file path"), format: z.enum(["CSV", "JSON"]).optional().default("CSV").describe("File format") }),
-  handler: async (params) => { try { const r = await unityBridge.send("LocImport", params); return { success: true, message: `Imported to ${params.tableName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } } };
-
-export const localizationTools: ToolDefinition[] = [locCreateTable, locAddEntry, locAddLocale, locSetActive, locExport, locImport];
+export const localizationTools: ToolDefinition[] = [
+  {
+    id: "localization_add_locale",
+    name: "Add Locale",
+    description: "Add a new locale (language) to the Localization Settings",
+    descriptionJa: "Localization Settingsに新しいロケール（言語）を追加",
+    category: "Localization",
+    inputSchema: z.object({
+      localeCode: z.string().describe("Locale code (e.g. en, ja, fr, de, zh-Hans, ko, es, pt-BR)"),
+      setAsDefault: z.boolean().optional().describe("Set as project default locale"),
+    }),
+    handler: async (params) => {
+      const result = await unityBridge.send("LocalizationAddLocale", params);
+      return { success: true, message: `Locale "${params.localeCode}" added${params.setAsDefault ? " (default)" : ""}`, data: result };
+    },
+  },
+  {
+    id: "localization_create_string_table",
+    name: "Create String Table",
+    description: "Create a new String Table Collection for localized text",
+    descriptionJa: "ローカライズテキスト用の新しいString Tableコレクションを作成",
+    category: "Localization",
+    inputSchema: z.object({
+      tableName: z.string().describe("String table collection name (e.g. UI_Texts, Dialogue, Items)"),
+      path: z.string().optional().describe("Asset path relative to Assets/ (default: Assets/Localization)"),
+    }),
+    handler: async (params) => {
+      const result = await unityBridge.send("LocalizationCreateStringTable", params);
+      return { success: true, message: `String table "${params.tableName}" created`, data: result };
+    },
+  },
+  {
+    id: "localization_add_entry",
+    name: "Add Localization Entry",
+    description: "Add a key-value entry to a String Table for one or more locales",
+    descriptionJa: "1つ以上のロケール向けにString Tableにキー・値エントリを追加",
+    category: "Localization",
+    inputSchema: z.object({
+      tableName: z.string().describe("Target string table collection name"),
+      key: z.string().describe("Entry key (e.g. MENU_START, DIALOG_GREETING_01)"),
+      values: z.record(z.string()).describe("Locale-to-value map, e.g. { en: 'Start', ja: 'スタート' }"),
+    }),
+    handler: async (params) => {
+      const localeCount = Object.keys(params.values).length;
+      const result = await unityBridge.send("LocalizationAddEntry", params);
+      return { success: true, message: `Entry "${params.key}" added to "${params.tableName}" for ${localeCount} locale(s)`, data: result };
+    },
+  },
+  {
+    id: "localization_batch_import",
+    name: "Batch Import Localization",
+    description: "Import multiple localization entries at once from a structured data array",
+    descriptionJa: "構造化データ配列から複数のローカライズエントリを一括インポート",
+    category: "Localization",
+    inputSchema: z.object({
+      tableName: z.string().describe("Target string table collection name"),
+      entries: z.array(z.object({
+        key: z.string().describe("Entry key"),
+      values: z.record(z.string()).describe("Locale-to-value map, e.g. { en: 'Start', ja: 'スタート' }"),
+      })).describe("Array of entries to import"),
+      overwrite: z.boolean().optional().describe("Overwrite existing keys (default: false)"),
+    }),
+    handler: async (params) => {
+      const result = await unityBridge.send("LocalizationBatchImport", params);
+      return { success: true, message: `${params.entries.length} entries imported to "${params.tableName}"`, data: result };
+    },
+  },
+  {
+    id: "localization_bind_ui",
+    name: "Bind Localization to UI",
+    description: "Attach a LocalizeStringEvent component to a UI text object to auto-update on locale change",
+    descriptionJa: "UIテキストオブジェクトにLocalizeStringEventを付与しロケール変更時に自動更新",
+    category: "Localization",
+    inputSchema: z.object({
+      objectName: z.string().describe("Target UI text object name"),
+      tableName: z.string().describe("String table collection name"),
+      entryKey: z.string().describe("Entry key to bind"),
+    }),
+    handler: async (params) => {
+      const result = await unityBridge.send("LocalizationBindUI", params);
+      return { success: true, message: `"${params.objectName}" bound to "${params.tableName}/${params.entryKey}"`, data: result };
+    },
+  },
+];

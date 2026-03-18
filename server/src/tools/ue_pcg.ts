@@ -2,16 +2,111 @@ import { ToolDefinition } from "../core/registry";
 import { z } from "zod";
 import { unrealBridge } from "../bridge/unreal-bridge";
 
-const uePcgCreateGraph: ToolDefinition = { id: "ue_pcg_create_graph", name: "Create PCG Graph", description: "Create a new PCG graph asset", descriptionJa: "新しいPCGグラフアセットを作成", category: "ue_pcg", inputSchema: z.object({ name: z.string(), path: z.string().default("/Game/PCG") }), handler: async (p) => { const r = await unrealBridge.send("PcgCreateGraph", p); return r ? { success: true, message: `PCG graph created: ${p.name}`, data: r } : { success: false, message: "Failed" }; } };
-
-const uePcgAddNode: ToolDefinition = { id: "ue_pcg_add_node", name: "Add PCG Node", description: "Add a node to a PCG graph (Surface Sampler, Mesh Spawner, etc.)", descriptionJa: "PCGグラフにノードを追加（Surface Sampler, Mesh Spawner等）", category: "ue_pcg", inputSchema: z.object({ graphName: z.string(), nodeType: z.enum(["SurfaceSampler","MeshSpawner","PointFilter","DensityFilter","Transform","Bounds","Difference","Union","Intersection","Subgraph"]).default("SurfaceSampler") }), handler: async (p) => { const r = await unrealBridge.send("PcgAddNode", p); return r ? { success: true, message: `Node ${p.nodeType} added`, data: r } : { success: false, message: "Failed" }; } };
-
-const uePcgConnectNodes: ToolDefinition = { id: "ue_pcg_connect_nodes", name: "Connect PCG Nodes", description: "Connect two nodes in a PCG graph", descriptionJa: "PCGグラフ内の2つのノードを接続", category: "ue_pcg", inputSchema: z.object({ graphName: z.string(), fromNode: z.string(), fromPin: z.string(), toNode: z.string(), toPin: z.string() }), handler: async (p) => { const r = await unrealBridge.send("PcgConnectNodes", p); return r ? { success: true, message: `Connected ${p.fromNode} -> ${p.toNode}`, data: r } : { success: false, message: "Failed" }; } };
-
-const uePcgSetParam: ToolDefinition = { id: "ue_pcg_set_param", name: "Set PCG Parameter", description: "Set a parameter on a PCG node", descriptionJa: "PCGノードのパラメータを設定", category: "ue_pcg", inputSchema: z.object({ graphName: z.string(), nodeName: z.string(), paramName: z.string(), value: z.any() }), handler: async (p) => { const r = await unrealBridge.send("PcgSetParam", p); return r ? { success: true, message: `Param ${p.paramName} set`, data: r } : { success: false, message: "Failed" }; } };
-
-const uePcgExecute: ToolDefinition = { id: "ue_pcg_execute", name: "Execute PCG Graph", description: "Generate content by executing a PCG graph on an actor", descriptionJa: "アクター上でPCGグラフを実行してコンテンツを生成", category: "ue_pcg", inputSchema: z.object({ actorName: z.string(), graphPath: z.string() }), handler: async (p) => { const r = await unrealBridge.send("PcgExecute", p); return r ? { success: true, message: "PCG executed", data: r } : { success: false, message: "Failed" }; } };
-
-const uePcgAddVolume: ToolDefinition = { id: "ue_pcg_add_volume", name: "Add PCG Volume", description: "Spawn a PCG Volume actor with a graph assigned", descriptionJa: "グラフを割り当てたPCG Volumeアクターをスポーン", category: "ue_pcg", inputSchema: z.object({ graphPath: z.string(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0), extentX: z.number().default(5000), extentY: z.number().default(5000), extentZ: z.number().default(1000) }), handler: async (p) => { const r = await unrealBridge.send("PcgAddVolume", p); return r ? { success: true, message: "PCG Volume added", data: r } : { success: false, message: "Failed" }; } };
-
-export const uePcgTools: ToolDefinition[] = [ uePcgCreateGraph, uePcgAddNode, uePcgConnectNodes, uePcgSetParam, uePcgExecute, uePcgAddVolume ];
+export const uePcgTools: ToolDefinition[] = [
+  {
+    id: "ue_pcg_create_graph",
+    name: "Create PCG Graph",
+    description: "Create a new Procedural Content Generation graph asset",
+    descriptionJa: "新しいProcedural Content Generationグラフアセットを作成",
+    category: "UE_PCG",
+    inputSchema: z.object({
+      name: z.string().describe("PCG graph asset name"),
+      path: z.string().optional().describe("Content path (e.g. /Game/PCG/)"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("PCGCreateGraph", params);
+      return { success: true, message: `PCG graph "${params.name}" created`, data: result };
+    },
+  },
+  {
+    id: "ue_pcg_add_scatter_node",
+    name: "Add Scatter Node",
+    description: "Add a surface scatter node to distribute meshes across terrain or surfaces",
+    descriptionJa: "地形やサーフェスにメッシュを分散配置するサーフェススキャッターノードを追加",
+    category: "UE_PCG",
+    inputSchema: z.object({
+      graphName: z.string().describe("Target PCG graph"),
+      meshPath: z.string().describe("Static mesh asset path to scatter"),
+      density: z.number().optional().describe("Points per square meter"),
+      minScale: z.number().optional().describe("Minimum random scale"),
+      maxScale: z.number().optional().describe("Maximum random scale"),
+      alignToSurface: z.boolean().optional().describe("Align instances to surface normal"),
+      randomRotation: z.boolean().optional().describe("Apply random Y-axis rotation"),
+      seed: z.number().optional().describe("Random seed"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("PCGAddScatterNode", params);
+      return { success: true, message: `Scatter node added to "${params.graphName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_pcg_add_filter_node",
+    name: "Add Filter Node",
+    description: "Add a filter node to include or exclude points by slope, height, density, or tag",
+    descriptionJa: "傾斜、高さ、密度、タグでポイントを含む・除外するフィルターノードを追加",
+    category: "UE_PCG",
+    inputSchema: z.object({
+      graphName: z.string().describe("Target PCG graph"),
+      filterType: z.enum(["Slope", "Height", "Density", "Tag", "Distance", "Bounds"]).describe("Filter type"),
+      minValue: z.number().optional().describe("Minimum threshold"),
+      maxValue: z.number().optional().describe("Maximum threshold"),
+      tagName: z.string().optional().describe("Tag name (for Tag filter)"),
+      invert: z.boolean().optional().describe("Invert filter result"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("PCGAddFilterNode", params);
+      return { success: true, message: `${params.filterType} filter added to "${params.graphName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_pcg_add_spline_sampler",
+    name: "Add Spline Sampler Node",
+    description: "Add a spline sampler node to generate points along a spline",
+    descriptionJa: "スプラインに沿ってポイントを生成するスプラインサンプラーノードを追加",
+    category: "UE_PCG",
+    inputSchema: z.object({
+      graphName: z.string().describe("Target PCG graph"),
+      samplingMode: z.enum(["Distance", "NumberOfSamples", "Subdivision"]).optional().describe("Sampling mode"),
+      spacing: z.number().optional().describe("Distance between samples"),
+      numSamples: z.number().optional().describe("Number of sample points"),
+      fillMode: z.enum(["None", "Interior", "Exterior"]).optional().describe("Area fill mode"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("PCGAddSplineSampler", params);
+      return { success: true, message: `Spline sampler added to "${params.graphName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_pcg_spawn_actor",
+    name: "Add PCG Volume to Level",
+    description: "Place a PCG volume actor in the level bound to a PCG graph",
+    descriptionJa: "PCGグラフにバインドされたPCGボリュームアクターをレベルに配置",
+    category: "UE_PCG",
+    inputSchema: z.object({
+      graphName: z.string().describe("PCG graph asset name"),
+      location: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Volume location"),
+      volumeSize: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Volume extent size"),
+      generateOnLoad: z.boolean().optional().describe("Generate on level load (default: true)"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("PCGSpawnActor", params);
+      return { success: true, message: `PCG volume placed for "${params.graphName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_pcg_regenerate",
+    name: "Regenerate PCG",
+    description: "Force regenerate a PCG graph instance in the level",
+    descriptionJa: "レベル内のPCGグラフインスタンスを強制再生成",
+    category: "UE_PCG",
+    inputSchema: z.object({
+      actorName: z.string().optional().describe("PCG volume actor name (regenerates all if omitted)"),
+      newSeed: z.number().optional().describe("New random seed"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("PCGRegenerate", params);
+      const target = params.actorName || "all PCG actors";
+      return { success: true, message: `PCG regenerated: ${target}`, data: result };
+    },
+  },
+];

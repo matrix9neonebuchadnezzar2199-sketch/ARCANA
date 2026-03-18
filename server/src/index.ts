@@ -73,7 +73,7 @@ import { ueBuildTools } from "./tools/ue_build";
 import { ueLevelTools } from "./tools/ue_level";
 import { ueFoliageTools } from "./tools/ue_foliage";
 import { uePcgTools } from "./tools/ue_pcg";
-import { ueMetaHumanTools } from "./tools/ue_metahuman";
+import { ueMetahumanTools } from "./tools/ue_metahuman";
 import { blObjectTools } from "./tools/bl_object";
 import { blMeshTools } from "./tools/bl_mesh";
 import { blMaterialTools } from "./tools/bl_material";
@@ -95,6 +95,33 @@ import { localizationTools } from "./tools/localization";
 import { debugTools } from "./tools/debug";
 import { testingTools } from "./tools/testing";
 import { profilerTools } from "./tools/profiler";
+
+// ===== Phase 5: New Low-level Tools =====
+import { inputSystemTools } from "./tools/input_system";
+import { textmeshproTools } from "./tools/textmeshpro";
+import { tilemapTools } from "./tools/tilemap";
+import { ueUmgTools } from "./tools/ue_umg";
+import { ueEnhancedInputTools } from "./tools/ue_enhanced_input";
+import { ueMetaSoundTools, ueControlRigTools } from "./tools/ue_metasound_controlrig";
+import { blGeometryNodesTools } from "./tools/bl_geometry_nodes";
+import { blCompositorTools } from "./tools/bl_compositor";
+import { blTexturePaintTools } from "./tools/bl_texture_paint";
+import { blVseTools } from "./tools/bl_vse";
+
+// ===== Phase 5: Recipe System =====
+import { recipeSceneTools } from "./tools/recipe_scenes";
+import { recipeProjectTools } from "./tools/recipe_project";
+import { recipePipelineTools } from "./tools/recipe_pipeline";
+
+// ===== Phase 5: Character Creation =====
+import { blCharacterBodyTools } from "./tools/bl_character_body";
+import { blCharacterFaceTools } from "./tools/bl_character_face";
+import { blCharacterHairTools } from "./tools/bl_character_hair";
+import { blCharacterMaterialTools } from "./tools/bl_character_material";
+import { blCharacterExpressionTools } from "./tools/bl_character_expression";
+import { blCharacterExportTools } from "./tools/bl_character_export";
+import { unityVrchatTools } from "./tools/unity_vrchat";
+
 
 // Register all tools
 const allTools = [
@@ -141,7 +168,7 @@ const allTools = [
   ...ueLevelTools,
   ...ueFoliageTools,
   ...uePcgTools,
-  ...ueMetaHumanTools,
+  ...ueMetahumanTools,
     ...blObjectTools,
     ...blMeshTools,
     ...blMaterialTools,
@@ -156,12 +183,45 @@ const allTools = [
     ...blUVTools,
     ...blParticleTools,
     ...blArmatureTools,
-    ...blGreasePencilTools,
-  ...vrchatTools, ...addressablesTools, ...localizationTools, ...debugTools, ...testingTools, ...profilerTools
+  ...vrchatTools, ...debugTools, ...testingTools, ...profilerTools,,
+  // ===== Phase 5: Low-level Tools =====
+  ...cinemachineTools,
+  ...probuilderTools,
+  ...inputSystemTools,
+  ...addressablesTools,
+  ...textmeshproTools,
+  ...tilemapTools,
+  ...localizationTools,
+  ...ueNiagaraTools,
+  ...ueUmgTools,
+  ...ueSequencerTools,
+  ...ueEnhancedInputTools,
+  ...uePcgTools,
+  ...ueMetaSoundTools,
+  ...ueControlRigTools,
+  ...blGeometryNodesTools,
+  ...blCompositorTools,
+  ...blGreasePencilTools,
+  ...blSculptTools,
+  ...blTexturePaintTools,
+  ...blVseTools,
+  // ===== Phase 5: Recipe System =====
+  ...recipeSceneTools,
+  ...recipeProjectTools,
+  ...recipePipelineTools,
+  // ===== Phase 5: Character Creation =====
+  ...blCharacterBodyTools,
+  ...blCharacterFaceTools,
+  ...blCharacterHairTools,
+  ...blCharacterMaterialTools,
+  ...blCharacterExpressionTools,
+  ...blCharacterExportTools,
+  ...unityVrchatTools,
+  ...ueMetahumanTools,
 ];
 
-allTools.forEach(tool => globalRegistry.register(tool));
-console.log(`[ARCANA] ${allTools.length} tools registered across ${new Set(allTools.map(t => t.category)).size} categories`);
+allTools.forEach(tool => { if (tool) globalRegistry.register(tool); });
+console.log(`[ARCANA] ${allTools.length} tools registered across ${new Set(allTools.filter(Boolean).map(t => t!.category)).size} categories`);
 
 const server = new Server({ name: "arcana-mcp-server", version: "2.0.0" }, { capabilities: { tools: {} } });
 

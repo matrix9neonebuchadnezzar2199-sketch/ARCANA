@@ -2,16 +2,140 @@ import { ToolDefinition } from "../core/registry";
 import { z } from "zod";
 import { unrealBridge } from "../bridge/unreal-bridge";
 
-const ueMhSpawn: ToolDefinition = { id: "ue_mh_spawn", name: "Spawn MetaHuman", description: "Spawn a MetaHuman character in the level", descriptionJa: "レベルにMetaHumanキャラクターをスポーン", category: "ue_metahuman", inputSchema: z.object({ metahumanPath: z.string(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0), name: z.string().optional() }), handler: async (p) => { const r = await unrealBridge.send("MhSpawn", p); return r ? { success: true, message: "MetaHuman spawned", data: r } : { success: false, message: "Failed" }; } };
-
-const ueMhSetBody: ToolDefinition = { id: "ue_mh_set_body", name: "Set MetaHuman Body", description: "Set body type and proportions of a MetaHuman", descriptionJa: "MetaHumanの体型とプロポーションを設定", category: "ue_metahuman", inputSchema: z.object({ actorName: z.string(), bodyType: z.enum(["Average","Athletic","Heavy","Thin"]).default("Average"), height: z.number().default(175) }), handler: async (p) => { const r = await unrealBridge.send("MhSetBody", p); return r ? { success: true, message: `Body set: ${p.bodyType}`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueMhSetFace: ToolDefinition = { id: "ue_mh_set_face", name: "Set MetaHuman Face", description: "Adjust facial features of a MetaHuman", descriptionJa: "MetaHumanの顔の特徴を調整", category: "ue_metahuman", inputSchema: z.object({ actorName: z.string(), preset: z.string().optional(), jawWidth: z.number().optional(), eyeSize: z.number().optional(), noseLength: z.number().optional() }), handler: async (p) => { const r = await unrealBridge.send("MhSetFace", p); return r ? { success: true, message: "Face adjusted", data: r } : { success: false, message: "Failed" }; } };
-
-const ueMhSetClothing: ToolDefinition = { id: "ue_mh_set_clothing", name: "Set MetaHuman Clothing", description: "Assign clothing assets to a MetaHuman", descriptionJa: "MetaHumanに衣装アセットを割り当て", category: "ue_metahuman", inputSchema: z.object({ actorName: z.string(), topPath: z.string().optional(), bottomPath: z.string().optional(), shoesPath: z.string().optional() }), handler: async (p) => { const r = await unrealBridge.send("MhSetClothing", p); return r ? { success: true, message: "Clothing set", data: r } : { success: false, message: "Failed" }; } };
-
-const ueMhSetAnimation: ToolDefinition = { id: "ue_mh_set_animation", name: "Set MetaHuman Animation", description: "Assign animation blueprint or play animation on MetaHuman", descriptionJa: "MetaHumanにアニメーションBPを割り当てまたは再生", category: "ue_metahuman", inputSchema: z.object({ actorName: z.string(), animBpPath: z.string().optional(), montagePath: z.string().optional() }), handler: async (p) => { const r = await unrealBridge.send("MhSetAnimation", p); return r ? { success: true, message: "Animation set", data: r } : { success: false, message: "Failed" }; } };
-
-const ueMhSetLiveLink: ToolDefinition = { id: "ue_mh_set_livelink", name: "Set MetaHuman Live Link", description: "Enable Live Link facial/body capture on MetaHuman", descriptionJa: "MetaHumanでLive Linkフェイシャル/ボディキャプチャを有効化", category: "ue_metahuman", inputSchema: z.object({ actorName: z.string(), source: z.enum(["iPhone","Rokoko","OptiTrack","Vicon","Custom"]).default("iPhone"), facialCapture: z.boolean().default(true), bodyCapture: z.boolean().default(false) }), handler: async (p) => { const r = await unrealBridge.send("MhSetLiveLink", p); return r ? { success: true, message: `Live Link: ${p.source}`, data: r } : { success: false, message: "Failed" }; } };
-
-export const ueMetaHumanTools: ToolDefinition[] = [ ueMhSpawn, ueMhSetBody, ueMhSetFace, ueMhSetClothing, ueMhSetAnimation, ueMhSetLiveLink ];
+export const ueMetahumanTools: ToolDefinition[] = [
+  {
+    id: "ue_metahuman_create",
+    name: "MetaHuman: Create Base",
+    description: "Create a MetaHuman base character with gender, age range, and ethnicity preset. Spawns in the current level.",
+    descriptionJa: "MetaHumanベースキャラクター生成（性別・年齢層・エスニシティプリセット指定、現在のレベルにスポーン）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      name: z.string().optional().describe("Character name identifier"),
+      gender: z.enum(["male", "female"]).describe("Gender"),
+      ageRange: z.enum(["young_adult", "adult", "middle_aged", "elderly"]).optional().describe("Age range (default adult)"),
+      bodyType: z.enum(["average", "athletic", "heavy", "slim"]).optional().describe("Body type (default average)"),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_create", params),
+  },
+  {
+    id: "ue_metahuman_set_face",
+    name: "MetaHuman: Set Face Parameters",
+    description: "Adjust MetaHuman face parameters: jaw, cheekbone, nose, eye, mouth, forehead, and ear sliders (0.0-1.0).",
+    descriptionJa: "MetaHuman顔パラメータ調整（顎・頬骨・鼻・目・口・額・耳のスライダーを0.0〜1.0で設定）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      jawWidth: z.number().min(0).max(1).optional(),
+      jawLength: z.number().min(0).max(1).optional(),
+      cheekboneHeight: z.number().min(0).max(1).optional(),
+      cheekboneWidth: z.number().min(0).max(1).optional(),
+      noseHeight: z.number().min(0).max(1).optional(),
+      noseWidth: z.number().min(0).max(1).optional(),
+      eyeSize: z.number().min(0).max(1).optional(),
+      eyeSpacing: z.number().min(0).max(1).optional(),
+      mouthWidth: z.number().min(0).max(1).optional(),
+      lipThickness: z.number().min(0).max(1).optional(),
+      foreheadHeight: z.number().min(0).max(1).optional(),
+      earSize: z.number().min(0).max(1).optional(),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_set_face", params),
+  },
+  {
+    id: "ue_metahuman_set_body",
+    name: "MetaHuman: Set Body Parameters",
+    description: "Adjust MetaHuman body proportions: height, shoulder width, chest, waist, hip, muscle, and fat sliders.",
+    descriptionJa: "MetaHuman体型パラメータ調整（身長・肩幅・胸囲・ウエスト・ヒップ・筋肉量・体脂肪スライダー）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      height: z.number().min(0).max(1).optional(),
+      shoulderWidth: z.number().min(0).max(1).optional(),
+      chest: z.number().min(0).max(1).optional(),
+      waist: z.number().min(0).max(1).optional(),
+      hip: z.number().min(0).max(1).optional(),
+      muscle: z.number().min(0).max(1).optional(),
+      fat: z.number().min(0).max(1).optional(),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_set_body", params),
+  },
+  {
+    id: "ue_metahuman_set_hair",
+    name: "MetaHuman: Set Hair",
+    description: "Set MetaHuman hairstyle, color, and groom properties. Uses Unreal Groom system for realistic strand-based hair.",
+    descriptionJa: "MetaHuman髪設定（ヘアスタイル・色・Groomプロパティ。UE Groomシステムによるストランドベース髪）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      hairstyle: z.string().optional().describe("Hairstyle asset name or preset"),
+      color: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Hair color RGB (0-1)"),
+      colorPreset: z.enum(["black", "dark_brown", "brown", "blonde", "platinum", "red", "auburn", "gray", "white", "ash"]).optional().describe("Hair color preset"),
+      roughness: z.number().min(0).max(1).optional().describe("Hair roughness"),
+      groomDensity: z.number().min(0).max(1).optional().describe("Groom strand density"),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_set_hair", params),
+  },
+  {
+    id: "ue_metahuman_set_skin",
+    name: "MetaHuman: Set Skin",
+    description: "Configure MetaHuman skin: complexion, freckles, wrinkles, roughness, pore detail, and subsurface scattering.",
+    descriptionJa: "MetaHuman肌設定（肌色・そばかす・シワ・ラフネス・毛穴ディテール・サブサーフェスウォーターイング）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      complexion: z.number().min(0).max(1).optional().describe("Skin complexion (0=lightest, 1=darkest)"),
+      freckles: z.number().min(0).max(1).optional().describe("Freckle intensity"),
+      wrinkles: z.number().min(0).max(1).optional().describe("Wrinkle depth (age effect)"),
+      roughness: z.number().min(0).max(1).optional().describe("Skin roughness"),
+      poreDetail: z.number().min(0).max(1).optional().describe("Pore detail visibility"),
+      subsurface: z.number().min(0).max(1).optional().describe("Subsurface scattering strength"),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_set_skin", params),
+  },
+  {
+    id: "ue_metahuman_set_clothing",
+    name: "MetaHuman: Set Clothing",
+    description: "Equip clothing on MetaHuman: top, bottom, shoes, and accessories from available asset library.",
+    descriptionJa: "MetaHuman衣装設定（トップス・ボトムス・靴・アクセサリをアセットライブラリから装着）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      top: z.string().optional().describe("Top clothing asset name"),
+      bottom: z.string().optional().describe("Bottom clothing asset name"),
+      shoes: z.string().optional().describe("Shoes asset name"),
+      accessories: z.array(z.string()).optional().describe("Accessory asset names"),
+      topColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Top color override RGB"),
+      bottomColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Bottom color override RGB"),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_set_clothing", params),
+  },
+  {
+    id: "ue_metahuman_set_expression",
+    name: "MetaHuman: Set Expression Preset",
+    description: "Apply a facial expression preset or set individual morph targets on MetaHuman face rig.",
+    descriptionJa: "MetaHuman表情プリセット適用（プリセット or 個別モーフターゲット設定）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      preset: z.enum(["neutral", "happy", "sad", "angry", "surprised", "disgusted", "fearful", "contempt"]).optional().describe("Expression preset"),
+      morphTargets: z.record(z.number().min(0).max(1)).optional().describe("Individual morph target values"),
+      blendStrength: z.number().min(0).max(1).optional().describe("Preset blend strength (default 1.0)"),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_set_expression", params),
+  },
+  {
+    id: "ue_metahuman_export",
+    name: "MetaHuman: Export",
+    description: "Export MetaHuman character as FBX or USD for use in other applications. Includes skeleton, mesh, morphs, and textures.",
+    descriptionJa: "MetaHumanエクスポート（FBX/USD形式、スケルトン・メッシュ・モーフ・テクスチャ含む）",
+    category: "UE_MetaHuman",
+    inputSchema: z.object({
+      targetActor: z.string().describe("MetaHuman actor name in level"),
+      format: z.enum(["fbx", "usd"]).optional().describe("Export format (default fbx)"),
+      outputPath: z.string().optional().describe("Output file path"),
+      includeMorphs: z.boolean().optional().describe("Include morph targets (default true)"),
+      includeTextures: z.boolean().optional().describe("Include textures (default true)"),
+      lodLevel: z.number().min(0).max(4).optional().describe("LOD level to export (default 0 = highest)"),
+    }),
+    handler: async (params) => unrealBridge.send("ue_metahuman_export", params),
+  },
+];

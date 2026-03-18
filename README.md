@@ -1,36 +1,76 @@
-<p align="center">
-  <img src="image/TOP.png" alt="ARCANA Banner" width="100%">
-</p>
+[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
 
-<h1 align="center">ARCANA</h1>
-<p align="center"><strong>Advanced Runtime for Creative AI & Natural-language Automation</strong></p>
-<p align="center">Control <b>Unity</b>, <b>Unreal Engine</b>, and <b>Blender</b> with natural language.<br>Free and open source, forever.</p>
+**Advanced Runtime for Creative AI & Natural-language Automation**
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/Tools-578-brightgreen.svg" alt="438 Tools">
-  <img src="https://img.shields.io/badge/Categories-81-orange.svg" alt="66 Categories">
-  <img src="https://img.shields.io/badge/Unity-2022.3+-black?logo=unity" alt="Unity 2022.3+">
-  <img src="https://img.shields.io/badge/Unreal_Engine-5.x-black?logo=unrealengine" alt="UE 5.x">
-  <img src="https://img.shields.io/badge/Blender-3.6+-orange?logo=blender" alt="Blender 3.6+">
-  <img src="https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white" alt="Node 18+">
-  <img src="https://img.shields.io/badge/MCP-Compatible-purple" alt="MCP Compatible">
-</p>
+Control **Unity**, **Unreal Engine**, and **Blender** with natural language.
+Build scenes in seconds. Create characters like a game. Free and open source, forever.
 
-<p align="center"><a href="README_ja.md">日本語</a> | English</p>
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![828 Tools](https://img.shields.io/badge/Tools-828-blue.svg)](#tool-overview) [![93 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 3.6+](https://img.shields.io/badge/Blender-3.6%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
+
+[日本語版はこちら](README_ja.md) | English
 
 ---
 
 ## Why ARCANA?
 
-Most MCP editor tools support one editor with 20-60 tools.
-ARCANA provides **578 tools across 3 editors and 81 categories** from a single server.
+Most MCP editor tools support one editor with 20-60 tools. ARCANA provides **828 tools across 3 editors and 93 categories** from a single server — including **one-command scene generation** and **game-style character creation**.
 
-| | ARCANA | Typical MCP tool |
-|---|---|---|
-| **Tools** | **578** | 20-60 |
+|  | ARCANA | Typical MCP tool |
+| --- | --- | --- |
+| **Tools** | **828** | 20-60 |
 | **Editors** | Unity + UE + Blender | Single editor |
-| **SuperSave** | 4 meta-tools | - |
+| **Scene Generation** | One command | - |
+| **Character Creation** | Game-style sliders | - |
+| **Cross-Editor Pipeline** | Blender to Unity/UE | - |
+| **SuperSave** | 4 meta-tools (~98% token saving) | - |
+
+## Frustrated by These? ARCANA Solves Them.
+
+<details>
+<summary><strong>Click to see common pain points ARCANA eliminates</strong></summary>
+
+#### "Setting up an FPS scene takes hours..."
+```
+"Create an FPS scene with terrain, lighting, post-processing, nav mesh, and 8 spawn points"
+```
+One command. ARCANA's **Recipe System** builds it all at once.
+
+#### "UI layout is so tedious..."
+```
+"Create a main menu with title, start/options/quit buttons, and background music"
+```
+Canvas, buttons, event bindings, layout — all generated.
+
+#### "I want to make a VRChat avatar but the workflow is a nightmare..."
+```
+"Create a 160cm female avatar with large eyes, ash hair, anime style"
+"Add PhysBones to all hair chains with soft physics"
+"Generate all 70+ Unified Expression shape keys"
+"Validate avatar for VRChat Good rank"
+```
+Character body, face, hair, expressions, VRM export, VRChat setup — all via natural language.
+
+#### "Blender to Unity export always breaks..."
+```
+"Export this model from Blender to Unity with correct scale and material remapping"
+```
+ARCANA's **Pipeline tools** handle axis conversion, scale, and material mapping automatically.
+
+#### "I spend hours on lighting and post-processing..."
+```
+"Set up 3-point studio lighting with soft mood"
+"Apply cinematic post-processing with bloom, color grading, and depth of field"
+```
+Professional setups in seconds.
+
+#### "Project cleanup is a chore..."
+```
+"Run project health check — find missing references, unused assets, duplicate materials"
+"Audit all textures and suggest optimizations"
+```
+Automated project hygiene.
+
+</details>
 
 ## What is ARCANA?
 
@@ -38,153 +78,248 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Un
 
 ## Key Features
 
-- **578 Tools / 81 Categories** - Unity 302, Unreal Engine 136, Blender 140
-- **3 Editor Support** - One server controls Unity, UE, and Blender
-- **Natural Language** - Describe what you want, AI does it
-- **Any AI Client** - Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
-- **SuperSave Mode** - 4 meta-tools reduce token usage ~98%
-- **Bridge Architecture** - WebSocket per editor (Unity :9877, UE :9878, Blender :9879)
-- **Open Source** - MIT, free forever
-- **Bilingual** - English + Japanese
-- **Undo Safe** - Unity tools support Undo/Redo
+- **828 Tools / 93 Categories** — Unity 358, Unreal Engine 192, Blender 238, Cross-Editor 40
+- **3 Editor Support** — One server controls Unity, UE, and Blender simultaneously
+- **Natural Language** — Describe what you want, AI does it
+- **Any AI Client** — Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
+- **SuperSave Mode** — 4 meta-tools reduce token usage ~98%
+- **Bridge Architecture** — WebSocket per editor (Unity :9877, UE :9878, Blender :9879)
+- **Open Source** — MIT, free forever
+- **Bilingual** — English + Japanese
+- **Undo Safe** — Unity tools support Undo/Redo
+
+### Key Feature: One-Command Scene Generation
+
+Build complete game scenes with a single natural language command. No more hours of manual setup.
+
+| Recipe | What It Creates |
+| --- | --- |
+| `recipe_fps_scene` | Terrain, lighting, camera, post-processing, nav mesh, spawn points |
+| `recipe_rpg_dungeon` | Rooms, corridors, doors, treasure chests, enemy spawns, boss room |
+| `recipe_horror_scene` | Dark lighting, fog, ambient audio, flickering lights, jump-scare triggers |
+| `recipe_open_world_base` | Large terrain, streaming zones, LOD, weather, day-night cycle |
+| `recipe_vr_room` | Teleport points, grab interactables, world-space UI, guardian boundary |
+| `recipe_ui_main_menu` | Title, start/options/quit buttons, background, BGM |
+| `recipe_ui_hud` | Health bar, ammo counter, minimap, crosshair, score display |
+| `recipe_ui_inventory` | Grid slots, drag-and-drop, item tooltip, equipment panel |
+| `recipe_lighting_studio` | 3-point lighting (key, fill, rim), backdrop, reflection probe |
+| `recipe_pbr_material` | Albedo, normal, metallic, roughness, AO, emission auto-configured |
+
+Plus **project management tools**: health check, texture audit, polygon budget, naming conventions, build size report, collision matrix, quality settings, and more.
+
+### Key Feature: Game-Style Character Creation
+
+Create and customize characters with slider-based controls — just like Monster Hunter, VRChat, or any character creator. Adjust parameters down to 1cm hair length or a specific skin tone.
+
+<details>
+<summary><strong>Character Creation Parameters (78 tools)</strong></summary>
+
+#### Body (12 tools)
+Base body generation, height (cm), proportions (shoulder/chest/waist/hip), muscle mass, body fat, arm length, leg length, hand size, foot size, neck, torso length, accessory slots.
+
+#### Face (15 tools)
+Face outline (round/oval/square/heart), jaw, cheekbone, eye shape (size/spacing/angle), eyelid (double fold), pupil (color/pattern/heterochromia), eyebrow, nose, mouth, ear (elf ears!), forehead, chin, temple, nasolabial fold, face presets (anime/realistic/chibi).
+
+#### Hair (10 tools)
+Style (17 presets: straight, wavy, curly, ponytail, twintail, bun, braids, mohawk, hime cut...), length in cm (front/side/back independently), color (22 presets: ash, platinum blonde, pink, lavender...), gradient (ombre/balayage), highlights, volume, shine, physics (PhysBone), parting, accessories (ribbon, tiara, hairpin...).
+
+#### Material & Skin (8 tools)
+Skin color (8 presets or RGB), texture (freckles/pores/aged), moles, makeup (eyeshadow/blush/lip/eyeliner/foundation), eye material, nail color (glitter, French tip), tattoos, scars.
+
+#### Expressions (8 tools)
+Unified Expressions auto-generation (70+ shape keys for VRCFaceTracking), individual shape key control, expression presets, viseme (lip-sync) setup, custom shape keys, mirror L/R, batch set, export/import expressions as JSON.
+
+#### Export & VRChat (17 tools)
+VRM export, FBX export (Unity/UE optimized), avatar validation (VRChat rank check), auto-optimization (decimate, atlas, merge), spring bone setup, Avatar Descriptor, PhysBone, Expression Menu, toggles, viseme, eye tracking, bounding box, face tracking, upload prep.
+
+#### UE MetaHuman (8 tools)
+Create MetaHuman, set face/body/hair/skin/clothing, expression presets, export (FBX/USD).
+
+</details>
+
+**Example workflow:**
+```
+"Create a 160cm female avatar, anime style, slim build"
+"Set eyes large with slight upward angle, iris color violet"
+"Set hair to hime cut, 25cm back length, ash blonde with pink highlights"
+"Apply light makeup — pink lip, subtle blush"
+"Generate all Unified Expression shape keys and visemes"
+"Validate for VRChat Good rank, then export as VRM"
+```
 
 ## Architecture
 
-![ARCANA Architecture](image/ARCANA%20to%20Unity%26Blender.png)
+[![ARCANA Architecture](image/ARCANA%20to%20Unity%26Blender.png)](image/ARCANA%20to%20Unity%26Blender.png)
 
 ```
 AI Client           MCP            ARCANA Server        Editors
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT, etc.    stdio/SSE    578 tools / 81 cat  ----> UE 5    :9878
+ChatGPT, etc.    stdio/SSE    828 tools / 93 cat  ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
+
 ## Tool Overview
 
-### Unity Tools (302 tools / 46 categories)
+### Unity Tools (358 tools / 53 categories)
 
 <details>
 <summary>Click to expand Unity tool list</summary>
 
 | Category | Count | Examples |
-|----------|-------|---------|
-| Scene | 3 | scene_list_objects, scene_create_gameobject, scene_delete_gameobject |
-| Transform | 5 | transform_set_position, transform_set_rotation, transform_set_scale |
-| Material | 5 | material_set_color, material_set_transparency, material_set_emission |
-| Lighting | 5 | lighting_create_light, lighting_set_color, lighting_set_intensity |
-| Terrain | 4 | terrain_create, terrain_set_height, terrain_add_texture |
-| Audio | 3 | audio_add_source, audio_set_volume, audio_set_spatial |
-| Camera | 3 | camera_create, camera_set_fov, camera_set_background |
-| Physics | 3 | physics_add_rigidbody, physics_add_collider, physics_set_gravity |
-| VFX | 4 | vfx_create_particle, vfx_set_color, vfx_set_speed |
-| Animation | 4 | anim_add_animator, anim_set_parameter, anim_play |
-| UI | 4 | ui_create_canvas, ui_create_text, ui_create_button |
-| Optimization | 4 | opt_get_scene_stats, opt_set_static, opt_add_lod_group |
-| Component | 4 | component_add, component_remove, component_set_enabled |
-| Prefab | 3 | prefab_create, prefab_instantiate, prefab_unpack |
-| Layer / Tag | 3 | layertag_set_layer, layertag_set_tag, layertag_rename |
-| Environment | 3 | env_set_skybox, env_set_fog, env_set_reflection |
-| Navigation | 4 | nav_bake, nav_add_agent, nav_add_obstacle |
-| PostProcessing | 5 | post_set_bloom, post_set_color_adjust, post_set_dof |
-| Script | 4 | script_create, script_attach, script_set_variable |
-| Selection | 4 | select_object, select_all, select_none |
-| Constraint | 4 | constraint_position, constraint_rotation, constraint_scale |
-| Build | 6 | build_set_platform, build_add_scene, build_execute |
-| Render | 4 | render_screenshot, render_set_resolution, render_set_quality |
-| Asset | 5 | asset_import, asset_delete, asset_rename |
-| Editor | 5 | editor_play_mode, editor_save_scene, editor_load_scene |
-| Mesh | 6 | mesh_combine, mesh_separate, mesh_export |
-| Timeline | 6 | timeline_create, timeline_add_track, timeline_add_clip |
-| Cinemachine | 6 | cm_create, cm_set_follow, cm_set_look_at |
-| ProBuilder | 6 | pb_create_shape, pb_extrude_face, pb_set_material |
-| Input System | 6 | input_create_action, input_add_binding, input_enable |
-| Shader | 6 | shader_create_graph, shader_add_node, shader_connect |
-| Networking | 6 | net_setup, net_spawn, net_send_rpc |
-| 2D | 6 | 2d_create_sprite, 2d_set_sorting_layer, 2d_create_tilemap |
-| VRChat | 10 | vrc_setup_avatar, vrc_add_mirror, vrc_add_pickup |
-| Addressables | 6 | addr_mark, addr_create_group, addr_build |
-| Localization | 6 | loc_create_table, loc_add_entry, loc_add_locale |
-| Debug | 10 | debug_log, debug_draw_ray, debug_draw_line |
-| Testing | 8 | test_create, test_run, test_assert |
-| Profiler | 10 | prof_cpu_start, prof_mem_snapshot, prof_gpu |
-| XR / VR | 10 | xr_setup, xr_tracking, xr_controller |
-| AI / NavAgent | 8 | ai_set_destination, ai_patrol, ai_chase |
-| Spline | 8 | spline_create, spline_add_knot, spline_animate |
-| Visual Scripting | 8 | vs_create_graph, vs_add_node, vs_connect_nodes |
-| Ragdoll | 6 | ragdoll_create, ragdoll_enable, ragdoll_set_joint_limits |
-| Cloth | 5 | cloth_add, cloth_set_params, cloth_set_gravity |
-| Decal | 5 | decal_create, decal_set_size, decal_set_material |
-| LOD | 6 | lod_create_group, lod_set_transitions, lod_assign_renderer |
-| Gizmo | 6 | gizmo_draw_sphere, gizmo_draw_cube, gizmo_draw_line |
-| Reflection Probe | 6 | probe_create, probe_set_size, probe_bake |
-| Lightmap | 6 | lightmap_bake, lightmap_set_resolution, lightmap_clear |
-| Occlusion | 6 | occlusion_bake, occlusion_set_occluder, occlusion_clear |
-| Streaming | 6 | streaming_load_scene, streaming_unload_scene, streaming_preload |
-| Tag Manager | 4 | tagmgr_add_tag, tagmgr_add_layer, tagmgr_list_all |
-| Screenshot | 4 | screenshot_game_view, screenshot_scene_view, screenshot_360 |
+| --- | --- | --- |
+| Scene | 3 | scene_list_objects, scene_create_gameobject |
+| Transform | 5 | transform_set_position, transform_set_rotation |
+| Material | 5 | material_set_color, material_set_transparency |
+| Lighting | 5 | lighting_create_light, lighting_set_color |
+| Terrain | 4 | terrain_create, terrain_set_height |
+| Audio | 3 | audio_add_source, audio_set_volume |
+| Camera | 3 | camera_create, camera_set_fov |
+| Physics | 3 | physics_add_rigidbody, physics_add_collider |
+| VFX | 4 | vfx_create_particle, vfx_set_color |
+| Animation | 4 | anim_add_animator, anim_set_parameter |
+| UI | 4 | ui_create_canvas, ui_create_text |
+| Optimization | 4 | opt_get_scene_stats, opt_set_static |
+| Component | 4 | component_add, component_remove |
+| Prefab | 3 | prefab_create, prefab_instantiate |
+| Layer / Tag | 3 | layertag_set_layer, layertag_set_tag |
+| Environment | 3 | env_set_skybox, env_set_fog |
+| Navigation | 4 | nav_bake, nav_add_agent |
+| PostProcessing | 5 | post_set_bloom, post_set_color_adjust |
+| Script | 4 | script_create, script_attach |
+| Selection | 4 | select_object, select_all |
+| Constraint | 4 | constraint_position, constraint_rotation |
+| Build | 6 | build_set_platform, build_execute |
+| Render | 4 | render_screenshot, render_set_resolution |
+| Asset | 5 | asset_import, asset_delete |
+| Editor | 5 | editor_play_mode, editor_save_scene |
+| Mesh | 6 | mesh_combine, mesh_separate |
+| Timeline | 6 | timeline_create, timeline_add_track |
+| Shader | 6 | shader_create_graph, shader_add_node |
+| Networking | 6 | net_setup, net_spawn |
+| 2D | 6 | 2d_create_sprite, 2d_create_tilemap |
+| Spline | 8 | spline_create, spline_add_knot |
+| Visual Scripting | 8 | vs_create_graph, vs_add_node |
+| Ragdoll | 6 | ragdoll_create, ragdoll_enable |
+| Cloth | 5 | cloth_add, cloth_set_params |
+| Decal | 5 | decal_create, decal_set_size |
+| XR / VR | 10 | xr_setup, xr_tracking |
+| AI / NavAgent | 8 | ai_set_destination, ai_patrol |
+| LOD | 6 | lod_create_group, lod_set_transitions |
+| Gizmo | 6 | gizmo_draw_sphere, gizmo_draw_cube |
+| Reflection Probe | 6 | probe_create, probe_set_size |
+| Lightmap | 6 | lightmap_bake, lightmap_set_resolution |
+| Occlusion | 6 | occlusion_bake, occlusion_set_occluder |
+| Streaming | 6 | streaming_load_scene, streaming_unload_scene |
+| Tag Manager | 4 | tagmgr_add_tag, tagmgr_add_layer |
+| Screenshot | 4 | screenshot_game_view, screenshot_scene_view |
+| Debug | 10 | debug_log, debug_draw_ray |
+| Testing | 8 | test_create, test_run |
+| Profiler | 10 | prof_cpu_start, prof_mem_snapshot |
+| **Phase 5 New:** | | |
+| Cinemachine | 8 | cm_create_virtual_camera, cm_set_follow_target |
+| ProBuilder | 8 | pb_create_shape, pb_extrude_faces |
+| Input System | 6 | input_system_create_action_map, input_system_add_action |
+| Addressables | 6 | addressables_create_group, addressables_mark_asset |
+| TextMeshPro | 6 | tmp_create_text, tmp_set_style |
+| Tilemap | 5 | tilemap_create, tilemap_set_tiles |
+| Localization | 5 | loc_add_locale, loc_create_string_table |
+| VRChat | 22 | vrc_setup_avatar, vrc_add_physbone, vrc_setup_face_tracking |
 
 </details>
 
-### Unreal Engine Tools (136 tools / 20 categories)
+### Unreal Engine Tools (192 tools / 27 categories)
 
 <details>
 <summary>Click to expand Unreal Engine tool list</summary>
 
 | Category | Count | Examples |
-|----------|-------|---------|
-| UE Scene | 6 | ue_scene_list_actors, ue_scene_spawn_actor, ue_scene_delete_actor |
-| UE Transform | 6 | ue_transform_set_location, ue_transform_set_rotation, ue_transform_set_scale |
-| UE Material | 8 | ue_material_create, ue_material_set_color, ue_material_set_metallic |
-| UE Lighting | 6 | ue_light_create, ue_light_set_color, ue_light_set_intensity |
-| UE Landscape | 8 | ue_landscape_create, ue_landscape_sculpt, ue_landscape_paint |
-| UE Audio | 6 | ue_audio_add_component, ue_audio_set_volume, ue_audio_set_spatial |
-| UE Camera | 6 | ue_camera_create, ue_camera_set_fov, ue_camera_set_active |
-| UE Mesh | 6 | ue_mesh_import, ue_mesh_set_collision, ue_mesh_set_nanite |
-| UE Blueprint | 10 | ue_bp_create, ue_bp_add_component, ue_bp_compile |
-| UE Niagara | 6 | ue_niagara_create, ue_niagara_set_param, ue_niagara_set_spawn_rate |
-| UE Animation | 6 | ue_anim_import, ue_anim_play, ue_anim_create_blendspace |
-| UE UI / UMG | 6 | ue_ui_create_widget, ue_ui_add_text, ue_ui_add_button |
-| UE AI | 8 | ue_ai_create_bt, ue_ai_create_bb, ue_ai_run_bt |
-| UE Physics | 6 | ue_physics_enable, ue_physics_set_mass, ue_physics_add_force |
-| UE Sequencer | 8 | ue_seq_create, ue_seq_add_track, ue_seq_render_movie |
-| UE Build | 6 | ue_build_set_platform, ue_build_package, ue_build_cook |
-| UE Level | 6 | ue_level_create, ue_level_open, ue_level_save |
-| UE Foliage | 6 | ue_foliage_add_type, ue_foliage_paint, ue_foliage_erase |
-| UE PCG | 6 | ue_pcg_create_graph, ue_pcg_add_node, ue_pcg_execute |
-| UE MetaHuman | 6 | ue_mh_spawn, ue_mh_set_body, ue_mh_set_face |
+| --- | --- | --- |
+| UE Scene | 6 | ue_scene_list_actors, ue_scene_spawn_actor |
+| UE Transform | 6 | ue_transform_set_location, ue_transform_set_rotation |
+| UE Material | 8 | ue_material_create, ue_material_set_color |
+| UE Lighting | 6 | ue_light_create, ue_light_set_color |
+| UE Landscape | 8 | ue_landscape_create, ue_landscape_sculpt |
+| UE Audio | 6 | ue_audio_add_component, ue_audio_set_volume |
+| UE Camera | 6 | ue_camera_create, ue_camera_set_fov |
+| UE Mesh | 6 | ue_mesh_import, ue_mesh_set_collision |
+| UE Blueprint | 10 | ue_bp_create, ue_bp_add_component |
+| UE Animation | 6 | ue_anim_import, ue_anim_play |
+| UE UI / UMG | 6 | ue_ui_create_widget, ue_ui_add_text |
+| UE AI | 8 | ue_ai_create_bt, ue_ai_create_bb |
+| UE Physics | 6 | ue_physics_enable, ue_physics_set_mass |
+| UE Build | 6 | ue_build_set_platform, ue_build_package |
+| UE Level | 6 | ue_level_create, ue_level_open |
+| UE Foliage | 6 | ue_foliage_add_type, ue_foliage_paint |
+| **Phase 5 New:** | | |
+| UE Niagara VFX | 10 | ue_niagara_create_system, ue_niagara_add_emitter |
+| UE UMG Widget | 8 | ue_umg_create_widget, ue_umg_add_element |
+| UE Sequencer | 8 | ue_sequencer_create_sequence, ue_sequencer_add_track |
+| UE Enhanced Input | 6 | ue_einput_create_action, ue_einput_create_mapping |
+| UE PCG | 6 | ue_pcg_create_graph, ue_pcg_add_point_sampler |
+| UE MetaSound | 5 | ue_metasound_create, ue_metasound_add_node |
+| UE Control Rig | 5 | ue_controlrig_create, ue_controlrig_add_control |
+| UE MetaHuman | 8 | ue_metahuman_create, ue_metahuman_set_face |
 
 </details>
 
-### Blender Tools (140 tools / 15 categories)
+### Blender Tools (238 tools / 27 categories)
 
 <details>
 <summary>Click to expand Blender tool list</summary>
 
 | Category | Count | Examples |
-|----------|-------|---------|
-| BL Object | 10 | bl_object_create, bl_object_delete, bl_object_duplicate |
-| BL Mesh | 10 | bl_mesh_edit_vertices, bl_mesh_extrude_faces, bl_mesh_bevel |
-| BL Material | 8 | bl_material_create, bl_material_set_color, bl_material_assign |
-| BL Modifier | 10 | bl_mod_subsurf, bl_mod_mirror, bl_mod_boolean |
-| BL Sculpt | 8 | bl_sculpt_set_brush, bl_sculpt_set_strength, bl_sculpt_remesh |
-| BL Animation | 10 | bl_anim_insert_keyframe, bl_anim_create_bone, bl_anim_bake |
-| BL Camera | 6 | bl_camera_create, bl_camera_set_focal, bl_camera_set_dof |
-| BL Light | 6 | bl_light_create, bl_light_set_color, bl_light_set_power |
-| BL Render | 10 | bl_render_set_engine, bl_render_set_resolution, bl_render_execute |
-| BL Scene | 8 | bl_scene_list, bl_scene_create, bl_scene_set_world |
-| BL Node | 10 | bl_node_add, bl_node_connect, bl_node_set_value |
-| BL UV | 8 | bl_uv_unwrap, bl_uv_smart_project, bl_uv_pack_islands |
-| BL Particle | 8 | bl_particle_add, bl_particle_add_hair, bl_particle_set_count |
-| BL Armature | 10 | bl_armature_create, bl_armature_add_bone, bl_armature_auto_weights |
-| BL Grease Pencil | 8 | bl_gp_create, bl_gp_add_layer, bl_gp_set_brush |
+| --- | --- | --- |
+| BL Object | 10 | bl_object_create, bl_object_delete |
+| BL Mesh | 10 | bl_mesh_edit_vertices, bl_mesh_extrude_faces |
+| BL Material | 8 | bl_material_create, bl_material_set_color |
+| BL Modifier | 10 | bl_mod_subsurf, bl_mod_mirror |
+| BL Sculpt | 8 | bl_sculpt_set_brush, bl_sculpt_set_strength |
+| BL Animation | 10 | bl_anim_insert_keyframe, bl_anim_create_bone |
+| BL Camera | 6 | bl_camera_create, bl_camera_set_focal |
+| BL Light | 6 | bl_light_create, bl_light_set_color |
+| BL Render | 10 | bl_render_set_engine, bl_render_set_resolution |
+| BL Scene | 8 | bl_scene_list, bl_scene_create |
+| BL Node | 10 | bl_node_add, bl_node_connect |
+| BL UV | 8 | bl_uv_unwrap, bl_uv_smart_project |
+| BL Particle | 8 | bl_particle_add, bl_particle_add_hair |
+| BL Armature | 10 | bl_armature_create, bl_armature_add_bone |
+| BL Grease Pencil | 8 | bl_gp_create, bl_gp_add_layer |
+| **Phase 5 New:** | | |
+| BL Geometry Nodes | 10 | bl_geonodes_create_tree, bl_geonodes_add_node |
+| BL Compositor | 7 | bl_comp_enable, bl_comp_add_node |
+| BL Grease Pencil+ | 6 | bl_gp_set_brush_advanced, bl_gp_create_frame |
+| BL Sculpting+ | 6 | bl_sculpt_dyntopo, bl_sculpt_mask |
+| BL Texture Paint | 5 | bl_texpaint_enable, bl_texpaint_set_brush |
+| BL Video Sequence | 6 | bl_vse_add_strip, bl_vse_cut |
+| **Character Creation:** | | |
+| BL Character Body | 12 | bl_char_create_base, bl_char_set_height |
+| BL Character Face | 15 | bl_char_set_eye_shape, bl_char_set_nose |
+| BL Character Hair | 10 | bl_char_set_hair_style, bl_char_set_hair_color |
+| BL Character Material | 8 | bl_char_set_skin_color, bl_char_set_makeup |
+| BL Character Expression | 8 | bl_char_create_unified_shapekeys, bl_char_setup_viseme |
+| BL Character Export | 5 | bl_char_export_vrm, bl_char_validate_avatar |
+
+</details>
+
+### Cross-Editor & Recipe Tools (40 tools / 3 categories)
+
+<details>
+<summary>Click to expand Cross-Editor tool list</summary>
+
+| Category | Count | Examples |
+| --- | --- | --- |
+| Recipe Scene | 15 | recipe_fps_scene, recipe_rpg_dungeon, recipe_horror_scene, recipe_ui_main_menu |
+| Recipe Project | 15 | project_health_check, project_texture_audit, project_polygon_budget |
+| Recipe Pipeline | 10 | pipeline_blender_to_unity, pipeline_animation_retarget, pipeline_lod_generator |
 
 </details>
 
 ## SuperSave Mode
 
-Instead of registering all 578 tools, SuperSave exposes only **4 meta-tools**:
+Instead of registering all 828 tools, SuperSave exposes only **4 meta-tools**:
 
 | Meta-Tool | Purpose |
-|---|---|
+| --- | --- |
 | arcana.discover | Search tools by keyword or category |
 | arcana.inspect | Get full schema for a specific tool |
 | arcana.execute | Run any tool by ID with parameters |
@@ -223,29 +358,37 @@ npm run build
 
 ### Try It
 
-**Unity:**
+**Scene Generation:**
+```
+"Create an FPS scene with snowy terrain and dramatic lighting"
+"Build an RPG dungeon with 10 rooms, ice theme, and a boss room"
+```
+
+**Character Creation:**
+```
+"Create a character with height 175cm, athletic build"
+"Set hair to wavy, 30cm, ash color with lavender highlights"
+"Make eyes larger and add violet irises"
+```
+
+**Traditional Editing:**
 ```
 "List all GameObjects in the current Unity scene"
 "Create a red cube at position (0, 5, 0)"
-"Add a point light above the cube with soft shadows"
-```
-
-**Unreal Engine:**
-```
-"List all actors in the current level"
-"Spawn a cube at location (0, 0, 200)"
-"Create a point light with 5000 lumens and warm temperature"
+"Set up Niagara particle system with fire effect"
 ```
 
 ## Roadmap
 
 | Phase | Status | Content |
-|---|---|---|
+| --- | --- | --- |
 | 1 | Done | Core MCP server, SuperSave, Bridge architecture |
 | 2 | Done | Unity 302 tools (46 categories) |
 | 3 | Done | Unreal Engine 136 tools (20 categories) |
 | 4 | Done | Blender 140 tools (15 categories) |
-| 5 | Next | Cross-editor workflows, 700+ tools, Recipe system |
+| 5 | **Done** | **828 tools, Recipe system, Character creation, Cross-editor pipeline** |
+| 6 | Next | UE C++ plugin, Blender Python addon, end-to-end testing |
+| 7 | Planned | Claude Desktop integration, CI/CD, community recipes |
 
 ## Contributing
 
@@ -253,9 +396,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. All skill levels welcome.
 
 ## Acknowledgements
 
-- [Synaptic AI Pro](https://synaptic-ai.net/) - Inspiration and proof of concept
-- [Model Context Protocol](https://modelcontextprotocol.io/) - The protocol standard
-- [Unity-MCP](https://github.com/IvanMurzak/Unity-MCP) - Architecture reference
+- [Synaptic AI Pro](https://synaptic-ai.net/) — Inspiration and proof of concept
+- [Model Context Protocol](https://modelcontextprotocol.io/) — The protocol standard
+- [Unity-MCP](https://github.com/IvanMurzak/Unity-MCP) — Architecture reference
 
 ## License
 

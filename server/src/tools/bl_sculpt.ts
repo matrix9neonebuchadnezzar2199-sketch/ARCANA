@@ -2,20 +2,114 @@ import { ToolDefinition } from "../core/registry";
 import { z } from "zod";
 import { blenderBridge } from "../bridge/blender-bridge";
 
-const blSculptBrush: ToolDefinition = { id: "bl_sculpt_set_brush", name: "Set Sculpt Brush", description: "Set active sculpt brush type", descriptionJa: "スカルプトブラシタイプを設定", category: "bl_sculpt", inputSchema: z.object({ brush: z.enum(["DRAW","CLAY","CLAY_STRIPS","INFLATE","GRAB","SMOOTH","FLATTEN","CREASE","PINCH","SNAKE_HOOK"]).default("DRAW") }), handler: async (p) => { const r = await blenderBridge.send("SculptSetBrush", p); return r ? { success: true, message: `Brush: ${p.brush}`, data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptStrength: ToolDefinition = { id: "bl_sculpt_set_strength", name: "Set Brush Strength", description: "Set sculpt brush strength", descriptionJa: "ブラシ強度を設定", category: "bl_sculpt", inputSchema: z.object({ value: z.number().min(0).max(1).default(0.5) }), handler: async (p) => { const r = await blenderBridge.send("SculptSetStrength", p); return r ? { success: true, message: `Strength: ${p.value}`, data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptRadius: ToolDefinition = { id: "bl_sculpt_set_radius", name: "Set Brush Radius", description: "Set sculpt brush radius in pixels", descriptionJa: "ブラシ半径をピクセルで設定", category: "bl_sculpt", inputSchema: z.object({ value: z.number().min(1).max(500).default(50) }), handler: async (p) => { const r = await blenderBridge.send("SculptSetRadius", p); return r ? { success: true, message: `Radius: ${p.value}px`, data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptDyntopo: ToolDefinition = { id: "bl_sculpt_dyntopo", name: "Toggle Dyntopo", description: "Enable or disable dynamic topology", descriptionJa: "ダイナミックトポロジーの有効/無効を切替", category: "bl_sculpt", inputSchema: z.object({ enable: z.boolean().default(true), detail: z.number().default(12) }), handler: async (p) => { const r = await blenderBridge.send("SculptDyntopo", p); return r ? { success: true, message: p.enable ? "Dyntopo enabled" : "Dyntopo disabled", data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptMultires: ToolDefinition = { id: "bl_sculpt_add_multires", name: "Add Multires", description: "Add multiresolution modifier and subdivide", descriptionJa: "マルチレゾリューションモディファイアを追加", category: "bl_sculpt", inputSchema: z.object({ name: z.string(), levels: z.number().default(2) }), handler: async (p) => { const r = await blenderBridge.send("SculptAddMultires", p); return r ? { success: true, message: `Multires added (${p.levels} levels)`, data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptMask: ToolDefinition = { id: "bl_sculpt_mask", name: "Sculpt Mask", description: "Fill, clear, or invert sculpt mask", descriptionJa: "スカルプトマスクの塗り潰し・クリア・反転", category: "bl_sculpt", inputSchema: z.object({ action: z.enum(["FILL","CLEAR","INVERT"]).default("CLEAR") }), handler: async (p) => { const r = await blenderBridge.send("SculptMask", p); return r ? { success: true, message: `Mask: ${p.action}`, data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptRemesh: ToolDefinition = { id: "bl_sculpt_remesh", name: "Voxel Remesh", description: "Remesh with voxel size", descriptionJa: "ボクセルサイズでリメッシュ", category: "bl_sculpt", inputSchema: z.object({ name: z.string(), voxelSize: z.number().default(0.05) }), handler: async (p) => { const r = await blenderBridge.send("SculptRemesh", p); return r ? { success: true, message: `Remeshed (voxel ${p.voxelSize})`, data: r } : { success: false, message: "Failed" }; } };
-
-const blSculptMode: ToolDefinition = { id: "bl_sculpt_toggle_mode", name: "Toggle Sculpt Mode", description: "Enter or exit sculpt mode", descriptionJa: "スカルプトモードの切替", category: "bl_sculpt", inputSchema: z.object({ name: z.string(), enter: z.boolean().default(true) }), handler: async (p) => { const r = await blenderBridge.send("SculptToggleMode", p); return r ? { success: true, message: p.enter ? "Entered sculpt mode" : "Exited sculpt mode", data: r } : { success: false, message: "Failed" }; } };
-
-export const blSculptTools: ToolDefinition[] = [ blSculptBrush, blSculptStrength, blSculptRadius, blSculptDyntopo, blSculptMultires, blSculptMask, blSculptRemesh, blSculptMode ];
+export const blSculptTools: ToolDefinition[] = [
+  {
+    id: "bl_sculpt_enter_mode",
+    name: "Enter Sculpt Mode",
+    description: "Enter sculpt mode on a mesh object with optional multires setup",
+    descriptionJa: "メッシュオブジェクトでスカルプトモードに入る（オプションでMultires設定）",
+    category: "BL_Sculpt",
+    inputSchema: z.object({
+      objectName: z.string().describe("Target mesh object"),
+      addMultires: z.boolean().optional().describe("Add Multires modifier if not present"),
+      multiresLevels: z.number().optional().describe("Multires subdivision levels to add"),
+      enableDyntopo: z.boolean().optional().describe("Enable dynamic topology sculpting"),
+    }),
+    handler: async (params) => {
+      const result = await blenderBridge.send("SculptEnterMode", params);
+      return { success: true, message: `Sculpt mode entered on "${params.objectName}"`, data: result };
+    },
+  },
+  {
+    id: "bl_sculpt_set_brush",
+    name: "Set Sculpt Brush",
+    description: "Select and configure a sculpt brush with radius, strength, and settings",
+    descriptionJa: "半径、強度、設定でスカルプトブラシを選択・構成",
+    category: "BL_Sculpt",
+    inputSchema: z.object({
+      brush: z.enum(["DRAW", "CLAY", "CLAY_STRIPS", "INFLATE", "BLOB", "CREASE", "SMOOTH", "FLATTEN", "FILL", "SCRAPE", "PINCH", "GRAB", "SNAKE_HOOK", "THUMB", "NUDGE", "ROTATE", "MASK", "DRAW_FACE_SETS", "ELASTIC_DEFORM", "CLOTH", "POSE", "SLIDE_RELAX", "MULTIRES_DISPLACEMENT_ERASER", "MULTIRES_DISPLACEMENT_SMEAR"]).describe("Brush type"),
+      radius: z.number().optional().describe("Brush radius in pixels"),
+      strength: z.number().optional().describe("Brush strength (0-1)"),
+      autoSmooth: z.number().optional().describe("Auto smooth factor (0-1)"),
+      direction: z.enum(["ADD", "SUBTRACT"]).optional().describe("Stroke direction"),
+    }),
+    handler: async (params) => {
+      const result = await blenderBridge.send("SculptSetBrush", params);
+      return { success: true, message: `Brush set to ${params.brush}`, data: result };
+    },
+  },
+  {
+    id: "bl_sculpt_apply_stroke",
+    name: "Apply Sculpt Stroke",
+    description: "Programmatically apply a sculpt stroke along a path of points",
+    descriptionJa: "ポイントパスに沿ってスカルプトストロークをプログラム的に適用",
+    category: "BL_Sculpt",
+    inputSchema: z.object({
+      objectName: z.string().describe("Target sculpt object"),
+      brush: z.string().optional().describe("Brush to use (default: current)"),
+      points: z.array(z.object({
+        x: z.number(), y: z.number(), z: z.number(),
+        pressure: z.number().optional(),
+      })).describe("Stroke path points in world space"),
+      strength: z.number().optional().describe("Override brush strength"),
+      radius: z.number().optional().describe("Override brush radius"),
+    }),
+    handler: async (params) => {
+      const result = await blenderBridge.send("SculptApplyStroke", params);
+      return { success: true, message: `Sculpt stroke applied (${params.points.length} points) on "${params.objectName}"`, data: result };
+    },
+  },
+  {
+    id: "bl_sculpt_remesh",
+    name: "Remesh Sculpt",
+    description: "Apply voxel or quadriflow remesh to a sculpted object",
+    descriptionJa: "スカルプトオブジェクトにボクセルまたはQuadriFlowリメッシュを適用",
+    category: "BL_Sculpt",
+    inputSchema: z.object({
+      objectName: z.string().describe("Target object"),
+      mode: z.enum(["VOXEL", "QUAD"]).describe("Remesh mode"),
+      voxelSize: z.number().optional().describe("Voxel size (for VOXEL mode, smaller = more detail)"),
+      targetFaces: z.number().optional().describe("Target face count (for QUAD mode)"),
+      smoothNormals: z.boolean().optional().describe("Smooth normals after remesh"),
+      preserveVolume: z.boolean().optional().describe("Preserve volume"),
+    }),
+    handler: async (params) => {
+      const result = await blenderBridge.send("SculptRemesh", params);
+      return { success: true, message: `${params.mode} remesh applied to "${params.objectName}"`, data: result };
+    },
+  },
+  {
+    id: "bl_sculpt_mask_operations",
+    name: "Sculpt Mask Operations",
+    description: "Perform mask operations: fill, clear, invert, smooth, sharpen, or extract masked region",
+    descriptionJa: "マスク操作を実行: 塗りつぶし、クリア、反転、スムーズ、シャープ、マスク領域の抽出",
+    category: "BL_Sculpt",
+    inputSchema: z.object({
+      objectName: z.string().describe("Target sculpt object"),
+      operation: z.enum(["FILL", "CLEAR", "INVERT", "SMOOTH", "SHARPEN", "EXTRACT", "GROW", "SHRINK"]).describe("Mask operation"),
+      iterations: z.number().optional().describe("Iterations for smooth/sharpen/grow/shrink"),
+      extractThickness: z.number().optional().describe("Thickness for mask extract"),
+    }),
+    handler: async (params) => {
+      const result = await blenderBridge.send("SculptMaskOperations", params);
+      return { success: true, message: `Mask ${params.operation} applied on "${params.objectName}"`, data: result };
+    },
+  },
+  {
+    id: "bl_sculpt_face_sets",
+    name: "Face Set Operations",
+    description: "Create, modify, or visibility-toggle face sets for organized sculpting",
+    descriptionJa: "整理されたスカルプト用にフェイスセットの作成、変更、表示切替を実行",
+    category: "BL_Sculpt",
+    inputSchema: z.object({
+      objectName: z.string().describe("Target sculpt object"),
+      operation: z.enum(["INIT_FROM_NORMALS", "INIT_FROM_SHARP_EDGES", "INIT_FROM_MATERIALS", "INIT_FROM_UV_SEAMS", "VISIBILITY_SHOW_ALL", "VISIBILITY_HIDE_SET", "VISIBILITY_SHOW_SET", "RANDOMIZE_COLORS"]).describe("Face set operation"),
+      faceSetId: z.number().optional().describe("Target face set ID (for visibility operations)"),
+      threshold: z.number().optional().describe("Threshold angle for normal-based init"),
+    }),
+    handler: async (params) => {
+      const result = await blenderBridge.send("SculptFaceSets", params);
+      return { success: true, message: `Face set ${params.operation} on "${params.objectName}"`, data: result };
+    },
+  },
+];

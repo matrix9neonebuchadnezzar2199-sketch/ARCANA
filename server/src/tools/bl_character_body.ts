@@ -1,0 +1,162 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { blenderBridge } from "../bridge/blender-bridge";
+
+export const blCharacterBodyTools: ToolDefinition[] = [
+  {
+    id: "bl_char_create_base",
+    name: "Character: Create Base Body",
+    description: "Create a base character body with gender, height, and body type preset. Generates armature and base mesh with shape keys.",
+    descriptionJa: "ベースボディ生成（性別・身長・体型プリセット指定、アーマチュア＋Shape Key付きメッシュ生成）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      gender: z.enum(["male", "female", "androgynous"]).describe("Body gender base"),
+      heightCm: z.number().min(100).max(220).optional().describe("Height in cm (default 170)"),
+      bodyType: z.enum(["slim", "average", "athletic", "muscular", "heavy"]).optional().describe("Body type preset (default average)"),
+      style: z.enum(["realistic", "anime", "chibi", "semi_realistic"]).optional().describe("Art style (default realistic)"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_create_base", params),
+  },
+  {
+    id: "bl_char_set_height",
+    name: "Character: Set Height",
+    description: "Set character height in centimeters. Adjusts overall bone scale proportionally.",
+    descriptionJa: "キャラの身長をcm単位で設定（ボーンスケールを比例調整）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      heightCm: z.number().min(100).max(220).describe("Height in centimeters"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_height", params),
+  },
+  {
+    id: "bl_char_set_body_proportion",
+    name: "Character: Set Body Proportions",
+    description: "Set body proportions: shoulder width, chest, waist, hip measurements as slider values (0.0-1.0).",
+    descriptionJa: "体型プロポーション設定（肩幅・胸囲・ウエスト・ヒップをスライダー値0.0〜1.0で指定）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      shoulderWidth: z.number().min(0).max(1).optional().describe("Shoulder width (0=narrow, 1=wide)"),
+      chest: z.number().min(0).max(1).optional().describe("Chest size"),
+      waist: z.number().min(0).max(1).optional().describe("Waist size"),
+      hip: z.number().min(0).max(1).optional().describe("Hip size"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_body_proportion", params),
+  },
+  {
+    id: "bl_char_set_muscle",
+    name: "Character: Set Muscle Mass",
+    description: "Set overall muscle definition (0.0 = none, 1.0 = bodybuilder). Drives multiple shape keys for arms, legs, torso.",
+    descriptionJa: "筋肉量設定（0.0=なし〜1.0=ボディビルダー、腕・脚・胴の複数Shape Keyを連動制御）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      muscle: z.number().min(0).max(1).describe("Muscle mass value"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_muscle", params),
+  },
+  {
+    id: "bl_char_set_body_fat",
+    name: "Character: Set Body Fat",
+    description: "Set body fat ratio (0.0 = lean, 1.0 = heavy). Affects belly, cheeks, arms, and thighs shape keys.",
+    descriptionJa: "体脂肪率設定（0.0=痩せ〜1.0=太め、腹・頬・腕・太もものShape Keyに影響）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      bodyFat: z.number().min(0).max(1).describe("Body fat ratio"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_body_fat", params),
+  },
+  {
+    id: "bl_char_set_arm_length",
+    name: "Character: Set Arm Length",
+    description: "Adjust arm length relative to body (0.0 = short, 0.5 = normal, 1.0 = long). Scales upper arm and forearm bones.",
+    descriptionJa: "腕の長さ調整（0.0=短い〜0.5=標準〜1.0=長い、上腕・前腕ボーンをスケール）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      armLength: z.number().min(0).max(1).describe("Arm length ratio"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_arm_length", params),
+  },
+  {
+    id: "bl_char_set_leg_length",
+    name: "Character: Set Leg Length",
+    description: "Adjust leg length relative to body (0.0 = short, 0.5 = normal, 1.0 = long). Scales thigh and shin bones.",
+    descriptionJa: "脚の長さ調整（0.0=短い〜0.5=標準〜1.0=長い、太もも・すねボーンをスケール）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      legLength: z.number().min(0).max(1).describe("Leg length ratio"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_leg_length", params),
+  },
+  {
+    id: "bl_char_set_hand_size",
+    name: "Character: Set Hand Size",
+    description: "Adjust hand size (0.0 = small, 0.5 = normal, 1.0 = large). Useful for stylized or anime characters.",
+    descriptionJa: "手のサイズ調整（0.0=小〜0.5=標準〜1.0=大、アニメ調キャラで重要）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      handSize: z.number().min(0).max(1).describe("Hand size ratio"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_hand_size", params),
+  },
+  {
+    id: "bl_char_set_foot_size",
+    name: "Character: Set Foot Size",
+    description: "Adjust foot size (0.0 = small, 0.5 = normal, 1.0 = large).",
+    descriptionJa: "足のサイズ調整（0.0=小〜0.5=標準〜1.0=大）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      footSize: z.number().min(0).max(1).describe("Foot size ratio"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_foot_size", params),
+  },
+  {
+    id: "bl_char_set_neck",
+    name: "Character: Set Neck",
+    description: "Adjust neck length and thickness independently.",
+    descriptionJa: "首の長さと太さを個別調整",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      neckLength: z.number().min(0).max(1).optional().describe("Neck length (0=short, 1=long)"),
+      neckThickness: z.number().min(0).max(1).optional().describe("Neck thickness (0=thin, 1=thick)"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_neck", params),
+  },
+  {
+    id: "bl_char_set_torso",
+    name: "Character: Set Torso Length",
+    description: "Adjust torso length ratio. Affects spine bone chain scaling.",
+    descriptionJa: "胴の長さ調整（スパインボーンチェーンをスケール）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      torsoLength: z.number().min(0).max(1).describe("Torso length (0=short, 0.5=normal, 1=long)"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_set_torso", params),
+  },
+  {
+    id: "bl_char_add_accessory_slot",
+    name: "Character: Add Accessory Slot",
+    description: "Add an accessory attachment slot (earring, necklace, glasses, etc.) at a specified bone position.",
+    descriptionJa: "アクセサリスロット追加（ピアス・ネックレス・メガネ等の装着位置をボーンに定義）",
+    category: "BL_CharacterBody",
+    inputSchema: z.object({
+      objectName: z.string().optional().describe("Target character object name"),
+      slotName: z.string().describe("Slot name (e.g. earring_L, necklace, glasses)"),
+      parentBone: z.string().describe("Parent bone name to attach slot"),
+      offset: z.object({
+        x: z.number().optional(),
+        y: z.number().optional(),
+        z: z.number().optional(),
+      }).optional().describe("Position offset from bone"),
+    }),
+    handler: async (params) => blenderBridge.send("bl_char_add_accessory_slot", params),
+  },
+];

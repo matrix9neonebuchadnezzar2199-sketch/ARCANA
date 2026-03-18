@@ -2,20 +2,148 @@ import { ToolDefinition } from "../core/registry";
 import { z } from "zod";
 import { unrealBridge } from "../bridge/unreal-bridge";
 
-const ueSeqCreate: ToolDefinition = { id: "ue_seq_create", name: "Create Level Sequence", description: "Create a new Level Sequence asset", descriptionJa: "新しいLevel Sequenceアセットを作成", category: "ue_sequencer", inputSchema: z.object({ name: z.string(), path: z.string().default("/Game/Cinematics") }), handler: async (p) => { const r = await unrealBridge.send("SeqCreate", p); return r ? { success: true, message: `Sequence created: ${p.name}`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqAddTrack: ToolDefinition = { id: "ue_seq_add_track", name: "Add Sequencer Track", description: "Add a track (Transform, Animation, Camera, Audio, Event) to a sequence", descriptionJa: "シーケンスにトラック（Transform, Animation等）を追加", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string(), actorName: z.string(), trackType: z.enum(["Transform","Animation","CameraCut","Audio","Event","Fade","Material"]).default("Transform") }), handler: async (p) => { const r = await unrealBridge.send("SeqAddTrack", p); return r ? { success: true, message: `Track ${p.trackType} added`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqAddKeyframe: ToolDefinition = { id: "ue_seq_add_keyframe", name: "Add Keyframe", description: "Add a keyframe to a sequencer track at a specific time", descriptionJa: "指定時間にシーケンサートラックへキーフレームを追加", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string(), actorName: z.string(), trackType: z.string(), time: z.number(), value: z.any() }), handler: async (p) => { const r = await unrealBridge.send("SeqAddKeyframe", p); return r ? { success: true, message: `Keyframe added at ${p.time}s`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqSetDuration: ToolDefinition = { id: "ue_seq_set_duration", name: "Set Sequence Duration", description: "Set the playback range duration of a sequence", descriptionJa: "シーケンスの再生範囲の長さを設定", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string(), duration: z.number().default(10) }), handler: async (p) => { const r = await unrealBridge.send("SeqSetDuration", p); return r ? { success: true, message: `Duration set to ${p.duration}s`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqPlay: ToolDefinition = { id: "ue_seq_play", name: "Play Sequence", description: "Play a Level Sequence in the editor viewport", descriptionJa: "エディタビューポートでLevel Sequenceを再生", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string(), loop: z.boolean().default(false) }), handler: async (p) => { const r = await unrealBridge.send("SeqPlay", p); return r ? { success: true, message: `Playing: ${p.sequenceName}`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqAddCameraCut: ToolDefinition = { id: "ue_seq_add_camera_cut", name: "Add Camera Cut", description: "Add a camera cut track binding a camera actor", descriptionJa: "カメラアクターをバインドするカメラカットトラックを追加", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string(), cameraName: z.string(), startTime: z.number().default(0), endTime: z.number().default(5) }), handler: async (p) => { const r = await unrealBridge.send("SeqAddCameraCut", p); return r ? { success: true, message: `Camera cut added: ${p.cameraName}`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqRenderMovie: ToolDefinition = { id: "ue_seq_render_movie", name: "Render Movie", description: "Render the sequence to a video file", descriptionJa: "シーケンスをビデオファイルにレンダリング", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string(), outputDir: z.string().default("./Renders"), resolution: z.enum(["720p","1080p","2160p"]).default("1080p"), format: z.enum(["AVI","MP4","PNG"]).default("MP4") }), handler: async (p) => { const r = await unrealBridge.send("SeqRenderMovie", p); return r ? { success: true, message: `Rendering: ${p.resolution} ${p.format}`, data: r } : { success: false, message: "Failed" }; } };
-
-const ueSeqGetInfo: ToolDefinition = { id: "ue_seq_get_info", name: "Get Sequence Info", description: "Get tracks, duration, and bindings of a sequence", descriptionJa: "シーケンスのトラック・長さ・バインディング情報を取得", category: "ue_sequencer", inputSchema: z.object({ sequenceName: z.string() }), handler: async (p) => { const r = await unrealBridge.send("SeqGetInfo", p); return r ? { success: true, message: `Info for ${p.sequenceName}`, data: r } : { success: false, message: "Failed" }; } };
-
-export const ueSequencerTools: ToolDefinition[] = [ ueSeqCreate, ueSeqAddTrack, ueSeqAddKeyframe, ueSeqSetDuration, ueSeqPlay, ueSeqAddCameraCut, ueSeqRenderMovie, ueSeqGetInfo ];
+export const ueSequencerTools: ToolDefinition[] = [
+  {
+    id: "ue_sequencer_create_sequence",
+    name: "Create Level Sequence",
+    description: "Create a new Level Sequence asset for cinematics",
+    descriptionJa: "シネマティクス用の新しいLevel Sequenceアセットを作成",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      name: z.string().describe("Sequence asset name"),
+      path: z.string().optional().describe("Content path (e.g. /Game/Cinematics/)"),
+      frameRate: z.number().optional().describe("Frame rate (default: 30)"),
+      durationSeconds: z.number().optional().describe("Initial duration in seconds"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerCreateSequence", params);
+      return { success: true, message: `Level Sequence "${params.name}" created`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_add_actor_track",
+    name: "Add Actor Track",
+    description: "Add an actor binding track to a Level Sequence",
+    descriptionJa: "Level Sequenceにアクターバインディングトラックを追加",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence name"),
+      actorName: z.string().describe("Actor to bind from the level"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerAddActorTrack", params);
+      return { success: true, message: `Actor track for "${params.actorName}" added to "${params.sequenceName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_add_transform_key",
+    name: "Add Transform Keyframe",
+    description: "Add a transform keyframe (location, rotation, scale) at a specific time",
+    descriptionJa: "指定時間にトランスフォームキーフレーム（位置、回転、スケール）を追加",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence"),
+      actorName: z.string().describe("Target actor"),
+      timeSeconds: z.number().describe("Time in seconds"),
+      location: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Location"),
+      rotation: z.object({ pitch: z.number(), yaw: z.number(), roll: z.number() }).optional().describe("Rotation"),
+      scale: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Scale"),
+      interpolation: z.enum(["Linear", "Cubic", "Constant"]).optional().describe("Interpolation mode"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerAddTransformKey", params);
+      return { success: true, message: `Transform key added at ${params.timeSeconds}s for "${params.actorName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_add_camera_cut",
+    name: "Add Camera Cut Track",
+    description: "Add a camera cut track to switch between cameras over time",
+    descriptionJa: "時間経過でカメラ間を切り替えるカメラカットトラックを追加",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence"),
+      cuts: z.array(z.object({
+        cameraName: z.string().describe("Camera actor name"),
+        startTime: z.number().describe("Start time in seconds"),
+      })).describe("Camera cut entries"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerAddCameraCut", params);
+      return { success: true, message: `${params.cuts.length} camera cut(s) added to "${params.sequenceName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_add_audio_track",
+    name: "Add Audio Track",
+    description: "Add an audio track with a sound asset to the sequence",
+    descriptionJa: "シーケンスにサウンドアセット付きオーディオトラックを追加",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence"),
+      soundAssetPath: z.string().describe("Sound asset path"),
+      startTime: z.number().optional().describe("Start time in seconds (default: 0)"),
+      volume: z.number().optional().describe("Volume multiplier (default: 1.0)"),
+      rowIndex: z.number().optional().describe("Audio track row index"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerAddAudioTrack", params);
+      return { success: true, message: `Audio track added to "${params.sequenceName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_add_animation_track",
+    name: "Add Skeletal Animation Track",
+    description: "Add a skeletal animation clip to an actor track in the sequence",
+    descriptionJa: "シーケンスのアクタートラックにスケルタルアニメーションクリップを追加",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence"),
+      actorName: z.string().describe("Skeletal mesh actor name"),
+      animationPath: z.string().describe("Animation sequence asset path"),
+      startTime: z.number().optional().describe("Start time in seconds"),
+      endTime: z.number().optional().describe("End time in seconds"),
+      playRate: z.number().optional().describe("Playback rate (default: 1.0)"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerAddAnimationTrack", params);
+      return { success: true, message: `Animation added for "${params.actorName}" in "${params.sequenceName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_add_fade_track",
+    name: "Add Fade Track",
+    description: "Add a fade track to create fade-in and fade-out effects",
+    descriptionJa: "フェードイン・フェードアウト効果を作成するフェードトラックを追加",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence"),
+      keyframes: z.array(z.object({
+        time: z.number().describe("Time in seconds"),
+        value: z.number().describe("Fade value (0 = no fade, 1 = fully black)"),
+      })).describe("Fade keyframes"),
+      fadeColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Fade color (default: black)"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerAddFadeTrack", params);
+      return { success: true, message: `Fade track with ${params.keyframes.length} keyframes added to "${params.sequenceName}"`, data: result };
+    },
+  },
+  {
+    id: "ue_sequencer_play_preview",
+    name: "Play Sequence Preview",
+    description: "Play, pause, or stop a Level Sequence preview in the editor",
+    descriptionJa: "エディタでLevel Sequenceプレビューを再生・一時停止・停止",
+    category: "UE_Sequencer",
+    inputSchema: z.object({
+      sequenceName: z.string().describe("Target Level Sequence"),
+      action: z.enum(["Play", "Pause", "Stop", "PlayFromStart"]).describe("Playback action"),
+      playRate: z.number().optional().describe("Playback rate"),
+      looping: z.boolean().optional().describe("Loop playback"),
+    }),
+    handler: async (params) => {
+      const result = await unrealBridge.send("SequencerPlayPreview", params);
+      return { success: true, message: `Sequence "${params.sequenceName}": ${params.action}`, data: result };
+    },
+  },
+];
