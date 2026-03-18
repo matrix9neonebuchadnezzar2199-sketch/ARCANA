@@ -1,0 +1,9 @@
+﻿{
+  "mcpServers": {
+    "arcana": {
+      "command": "node",
+      "args": ["F:/Antigravity_tool/ARCANA/server/dist/index.js"],
+      "transport": "stdio"
+    }
+  }
+}

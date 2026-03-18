@@ -1,0 +1,11 @@
+﻿{
+  "mcp": {
+    "servers": {
+      "arcana": {
+        "command": "node",
+        "args": ["./server/dist/index.js"],
+        "cwd": "F:\\Antigravity_tool\\ARCANA"
+      }
+    }
+  }
+}

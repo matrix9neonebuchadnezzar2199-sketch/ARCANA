@@ -393,6 +393,30 @@ npm run build
 6. WebSocket bridge starts on localhost:9879
 
 > **Tip:** Enable "Auto Connect on Startup" in the add-on preferences to skip step 5.
+
+### AI Client Configuration
+
+ARCANA works with any MCP-compatible AI client. Copy the example config for your client:
+
+**Claude Desktop** (~/.config/claude/claude_desktop_config.json):
+```json
+{  "mcpServers": { "arcana": { "command": "node", "args": ["PATH_TO/ARCANA/server/dist/index.js"] } } }
+```
+
+**Cursor** (.cursor/mcp.json):
+```json
+{  "mcpServers": { "arcana": { "command": "node", "args": ["./server/dist/index.js"], "cwd": "PATH_TO/ARCANA" } } }
+```
+
+**VS Code** (.vscode/settings.json):
+```json
+{  "mcp": { "servers": { "arcana": { "command": "node", "args": ["./server/dist/index.js"], "cwd": "PATH_TO/ARCANA" } } } }
+```
+
+Replace PATH_TO with your actual ARCANA installation path.
+
+See also: claude_desktop_config.example.json, cursor_mcp_config.example.json, vscode_mcp_config.example.json in the repository root.
+
 ### Try It
 
 **Scene Generation:**

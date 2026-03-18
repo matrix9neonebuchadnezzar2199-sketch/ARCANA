@@ -393,6 +393,30 @@ npm run build
 6. WebSocketブリッジが localhost:9879 で起動
 
 > **ヒント:** アドオン設定で「Auto Connect on Startup」を有効にすると、起動時に自動接続します。
+
+### AIクライアント設定
+
+ARCANAはMCP対応の全AIクライアントで動作します。お使いのクライアント用の設定をコピーしてください：
+
+**Claude Desktop** (~/.config/claude/claude_desktop_config.json):
+```json
+{  "mcpServers": { "arcana": { "command": "node", "args": ["PATH_TO/ARCANA/server/dist/index.js"] } } }
+```
+
+**Cursor** (.cursor/mcp.json):
+```json
+{  "mcpServers": { "arcana": { "command": "node", "args": ["./server/dist/index.js"], "cwd": "PATH_TO/ARCANA" } } }
+```
+
+**VS Code** (.vscode/settings.json):
+```json
+{  "mcp": { "servers": { "arcana": { "command": "node", "args": ["./server/dist/index.js"], "cwd": "PATH_TO/ARCANA" } } } }
+```
+
+PATH_TOを実際のARCANAインストールパスに置き換えてください。
+
+リポジトリルートの claude_desktop_config.example.json, cursor_mcp_config.example.json, vscode_mcp_config.example.json も参照してください。
+
 ### 試してみよう
 
 **シーン自動生成：**
