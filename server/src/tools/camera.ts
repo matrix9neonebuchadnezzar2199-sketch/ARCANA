@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const cameraCreate: ToolDefinition = {
   id: "camera_create",
   name: "Create Camera",
@@ -17,7 +16,7 @@ export const cameraCreate: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("CameraCreate", params);
+      const result = await bridge.send("unity", "CameraCreate", params);
       return { success: true, message: `Created camera: ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const cameraSetFOV: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("CameraSetFOV", params);
+      const result = await bridge.send("unity", "CameraSetFOV", params);
       return { success: true, message: `Set FOV of ${params.name} to ${params.fov}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -58,7 +57,7 @@ export const cameraSetBackground: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("CameraSetBackground", params);
+      const result = await bridge.send("unity", "CameraSetBackground", params);
       return { success: true, message: `Set background of ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

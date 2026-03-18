@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const transformSetPosition: ToolDefinition = {
   id: "transform_set_position",
   name: "Set Position",
@@ -16,7 +15,7 @@ export const transformSetPosition: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TransformSetPosition", params);
+      const result = await bridge.send("unity", "TransformSetPosition", params);
       return { success: true, message: `Moved ${params.name} to (${params.x}, ${params.y}, ${params.z})`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -38,7 +37,7 @@ export const transformSetRotation: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TransformSetRotation", params);
+      const result = await bridge.send("unity", "TransformSetRotation", params);
       return { success: true, message: `Rotated ${params.name} to (${params.x}, ${params.y}, ${params.z})`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -60,7 +59,7 @@ export const transformSetScale: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TransformSetScale", params);
+      const result = await bridge.send("unity", "TransformSetScale", params);
       return { success: true, message: `Scaled ${params.name} to (${params.x}, ${params.y}, ${params.z})`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -80,7 +79,7 @@ export const transformSetParent: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TransformSetParent", params);
+      const result = await bridge.send("unity", "TransformSetParent", params);
       return { success: true, message: `Set parent of ${params.childName} to ${params.parentName}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -102,7 +101,7 @@ export const transformLookAt: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TransformLookAt", params);
+      const result = await bridge.send("unity", "TransformLookAt", params);
       return { success: true, message: `${params.name} now looks at (${params.targetX}, ${params.targetY}, ${params.targetZ})`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

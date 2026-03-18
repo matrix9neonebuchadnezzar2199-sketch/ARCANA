@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const constraintPosition: ToolDefinition = {
   id: "constraint_position",
   name: "Add Position Constraint",
@@ -15,7 +14,7 @@ const constraintPosition: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ConstraintPosition", params);
+      const result = await bridge.send("unity", "ConstraintPosition", params);
       return { success: true, message: `PositionConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -36,7 +35,7 @@ const constraintRotation: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ConstraintRotation", params);
+      const result = await bridge.send("unity", "ConstraintRotation", params);
       return { success: true, message: `RotationConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -57,7 +56,7 @@ const constraintScale: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ConstraintScale", params);
+      const result = await bridge.send("unity", "ConstraintScale", params);
       return { success: true, message: `ScaleConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -79,7 +78,7 @@ const constraintAim: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ConstraintAim", params);
+      const result = await bridge.send("unity", "ConstraintAim", params);
       return { success: true, message: `AimConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

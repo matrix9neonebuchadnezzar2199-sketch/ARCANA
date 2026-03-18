@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const vfxCreateParticle: ToolDefinition = {
   id: "vfx_create_particle",
   name: "Create Particle System",
@@ -17,7 +16,7 @@ export const vfxCreateParticle: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("VFXCreateParticle", params);
+      const result = await bridge.send("unity", "VFXCreateParticle", params);
       return { success: true, message: `Created particle system: ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const vfxSetColor: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("VFXSetColor", params);
+      const result = await bridge.send("unity", "VFXSetColor", params);
       return { success: true, message: `Set particle color of ${params.name} to ${params.color}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -58,7 +57,7 @@ export const vfxSetSpeed: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("VFXSetSpeed", params);
+      const result = await bridge.send("unity", "VFXSetSpeed", params);
       return { success: true, message: `Set particle speed of ${params.name} to ${params.startSpeed}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -79,7 +78,7 @@ export const vfxSetShape: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("VFXSetShape", params);
+      const result = await bridge.send("unity", "VFXSetShape", params);
       return { success: true, message: `Set particle shape of ${params.name} to ${params.shape}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const terrainCreate: ToolDefinition = {
   id: "terrain_create",
   name: "Create Terrain",
@@ -15,7 +14,7 @@ export const terrainCreate: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TerrainCreate", params);
+      const result = await bridge.send("unity", "TerrainCreate", params);
       return { success: true, message: "Terrain created", data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const terrainSetHeight: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TerrainSetHeight", params);
+      const result = await bridge.send("unity", "TerrainSetHeight", params);
       return { success: true, message: "Terrain height set", data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -57,7 +56,7 @@ export const terrainAddTexture: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TerrainAddTexture", params);
+      const result = await bridge.send("unity", "TerrainAddTexture", params);
       return { success: true, message: "Terrain texture added", data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -79,7 +78,7 @@ export const terrainAddTrees: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("TerrainAddTrees", params);
+      const result = await bridge.send("unity", "TerrainAddTrees", params);
       return { success: true, message: `Added ${params.count || 100} trees`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

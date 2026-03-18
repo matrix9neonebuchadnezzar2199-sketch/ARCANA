@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 export const blVseTools: ToolDefinition[] = [
   {
     id: "bl_vse_add_strip",
@@ -20,7 +19,7 @@ export const blVseTools: ToolDefinition[] = [
       text: z.string().optional().describe("Text content (for TEXT strip)"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("VSEAddStrip", params);
+      const result = await bridge.send("blender", "VSEAddStrip", params);
       return { success: true, message: `${params.stripType} strip added to channel ${params.channel} at frame ${params.frameStart}`, data: result };
     },
   },
@@ -39,7 +38,7 @@ export const blVseTools: ToolDefinition[] = [
       wipeAngle: z.number().optional().describe("Wipe angle in degrees"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("VSEAddTransition", params);
+      const result = await bridge.send("blender", "VSEAddTransition", params);
       return { success: true, message: `${params.transitionType} transition added between "${params.stripA}" and "${params.stripB}"`, data: result };
     },
   },
@@ -59,7 +58,7 @@ export const blVseTools: ToolDefinition[] = [
       glowThreshold: z.number().optional().describe("Glow threshold (for GLOW)"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("VSEAddEffect", params);
+      const result = await bridge.send("blender", "VSEAddEffect", params);
       return { success: true, message: `${params.effectType} effect added on "${params.inputStrip}"`, data: result };
     },
   },
@@ -75,7 +74,7 @@ export const blVseTools: ToolDefinition[] = [
       cutType: z.enum(["SOFT", "HARD"]).optional().describe("Cut type (SOFT keeps source, HARD duplicates data)"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("VSECutStrip", params);
+      const result = await bridge.send("blender", "VSECutStrip", params);
       return { success: true, message: `Strip "${params.stripName}" cut at frame ${params.frame}`, data: result };
     },
   },
@@ -97,7 +96,7 @@ export const blVseTools: ToolDefinition[] = [
       mute: z.boolean().optional().describe("Mute the strip"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("VSESetStripProperties", params);
+      const result = await bridge.send("blender", "VSESetStripProperties", params);
       return { success: true, message: `Properties updated on strip "${params.stripName}"`, data: result };
     },
   },
@@ -118,7 +117,7 @@ export const blVseTools: ToolDefinition[] = [
       resolutionY: z.number().optional().describe("Output height"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("VSERenderAnimation", params);
+      const result = await bridge.send("blender", "VSERenderAnimation", params);
       return { success: true, message: `VSE render started: ${params.outputPath}`, data: result };
     },
   },

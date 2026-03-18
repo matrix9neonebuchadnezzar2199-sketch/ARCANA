@@ -1,14 +1,13 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unrealBridge } from "../bridge/unreal-bridge";
-
 const ueLandscapeCreate: ToolDefinition = {
   id: "ue_landscape_create", name: "Create Landscape",
   description: "Create a new landscape actor with custom size",
   descriptionJa: "カスタムサイズの新しいランドスケープアクターを作成",
   category: "ue_landscape",
   inputSchema: z.object({ sizeX: z.number().default(505), sizeY: z.number().default(505), sections: z.number().default(1), quadsPerSection: z.number().default(63) }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeCreate", p); return r ? { success: true, message: "Landscape created", data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeCreate", p); return r ? { success: true, message: "Landscape created", data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapeSculpt: ToolDefinition = {
@@ -17,7 +16,7 @@ const ueLandscapeSculpt: ToolDefinition = {
   descriptionJa: "指定位置のランドスケープ高さをスカルプト",
   category: "ue_landscape",
   inputSchema: z.object({ x: z.number(), y: z.number(), radius: z.number().default(500), strength: z.number().default(0.5), mode: z.enum(["Raise","Lower","Flatten","Smooth"]).default("Raise") }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeSculpt", p); return r ? { success: true, message: `Sculpt: ${p.mode}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeSculpt", p); return r ? { success: true, message: `Sculpt: ${p.mode}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapePaint: ToolDefinition = {
@@ -26,7 +25,7 @@ const ueLandscapePaint: ToolDefinition = {
   descriptionJa: "ランドスケープにマテリアルレイヤーをペイント",
   category: "ue_landscape",
   inputSchema: z.object({ layerName: z.string(), x: z.number(), y: z.number(), radius: z.number().default(500), strength: z.number().default(1) }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapePaint", p); return r ? { success: true, message: `Painted layer: ${p.layerName}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapePaint", p); return r ? { success: true, message: `Painted layer: ${p.layerName}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapeAddLayer: ToolDefinition = {
@@ -35,7 +34,7 @@ const ueLandscapeAddLayer: ToolDefinition = {
   descriptionJa: "ランドスケープマテリアルに新しいペイントレイヤーを追加",
   category: "ue_landscape",
   inputSchema: z.object({ layerName: z.string(), materialPath: z.string().optional() }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeAddLayer", p); return r ? { success: true, message: `Layer added: ${p.layerName}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeAddLayer", p); return r ? { success: true, message: `Layer added: ${p.layerName}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapeImportHeightmap: ToolDefinition = {
@@ -44,7 +43,7 @@ const ueLandscapeImportHeightmap: ToolDefinition = {
   descriptionJa: "PNG/RAWファイルからハイトマップをインポート",
   category: "ue_landscape",
   inputSchema: z.object({ filePath: z.string() }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeImportHeightmap", p); return r ? { success: true, message: "Heightmap imported", data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeImportHeightmap", p); return r ? { success: true, message: "Heightmap imported", data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapeExportHeightmap: ToolDefinition = {
@@ -53,7 +52,7 @@ const ueLandscapeExportHeightmap: ToolDefinition = {
   descriptionJa: "ランドスケープのハイトマップをファイルにエクスポート",
   category: "ue_landscape",
   inputSchema: z.object({ filePath: z.string(), format: z.enum(["PNG","RAW"]).default("PNG") }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeExportHeightmap", p); return r ? { success: true, message: `Heightmap exported: ${p.format}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeExportHeightmap", p); return r ? { success: true, message: `Heightmap exported: ${p.format}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapeSetMaterial: ToolDefinition = {
@@ -62,7 +61,7 @@ const ueLandscapeSetMaterial: ToolDefinition = {
   descriptionJa: "ランドスケープアクターにランドスケープマテリアルを割り当て",
   category: "ue_landscape",
   inputSchema: z.object({ materialPath: z.string() }),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeSetMaterial", p); return r ? { success: true, message: "Landscape material set", data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeSetMaterial", p); return r ? { success: true, message: "Landscape material set", data: r } : { success: false, message: "Failed" }; }
 };
 
 const ueLandscapeGetInfo: ToolDefinition = {
@@ -71,7 +70,7 @@ const ueLandscapeGetInfo: ToolDefinition = {
   descriptionJa: "ランドスケープのサイズ・解像度・レイヤー情報を取得",
   category: "ue_landscape",
   inputSchema: z.object({}),
-  handler: async (p) => { const r = await unrealBridge.send("LandscapeGetInfo", p); return r ? { success: true, message: "Landscape info retrieved", data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("unreal", "LandscapeGetInfo", p); return r ? { success: true, message: "Landscape info retrieved", data: r } : { success: false, message: "Failed" }; }
 };
 
 export const ueLandscapeTools: ToolDefinition[] = [

@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unrealBridge } from "../bridge/unreal-bridge";
-
 export const ueSequencerTools: ToolDefinition[] = [
   {
     id: "ue_sequencer_create_sequence",
@@ -16,7 +15,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       durationSeconds: z.number().optional().describe("Initial duration in seconds"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerCreateSequence", params);
+      const result = await bridge.send("unreal", "SequencerCreateSequence", params);
       return { success: true, message: `Level Sequence "${params.name}" created`, data: result };
     },
   },
@@ -31,7 +30,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       actorName: z.string().describe("Actor to bind from the level"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerAddActorTrack", params);
+      const result = await bridge.send("unreal", "SequencerAddActorTrack", params);
       return { success: true, message: `Actor track for "${params.actorName}" added to "${params.sequenceName}"`, data: result };
     },
   },
@@ -51,7 +50,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       interpolation: z.enum(["Linear", "Cubic", "Constant"]).optional().describe("Interpolation mode"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerAddTransformKey", params);
+      const result = await bridge.send("unreal", "SequencerAddTransformKey", params);
       return { success: true, message: `Transform key added at ${params.timeSeconds}s for "${params.actorName}"`, data: result };
     },
   },
@@ -69,7 +68,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       })).describe("Camera cut entries"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerAddCameraCut", params);
+      const result = await bridge.send("unreal", "SequencerAddCameraCut", params);
       return { success: true, message: `${params.cuts.length} camera cut(s) added to "${params.sequenceName}"`, data: result };
     },
   },
@@ -87,7 +86,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       rowIndex: z.number().optional().describe("Audio track row index"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerAddAudioTrack", params);
+      const result = await bridge.send("unreal", "SequencerAddAudioTrack", params);
       return { success: true, message: `Audio track added to "${params.sequenceName}"`, data: result };
     },
   },
@@ -106,7 +105,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       playRate: z.number().optional().describe("Playback rate (default: 1.0)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerAddAnimationTrack", params);
+      const result = await bridge.send("unreal", "SequencerAddAnimationTrack", params);
       return { success: true, message: `Animation added for "${params.actorName}" in "${params.sequenceName}"`, data: result };
     },
   },
@@ -125,7 +124,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       fadeColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Fade color (default: black)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerAddFadeTrack", params);
+      const result = await bridge.send("unreal", "SequencerAddFadeTrack", params);
       return { success: true, message: `Fade track with ${params.keyframes.length} keyframes added to "${params.sequenceName}"`, data: result };
     },
   },
@@ -142,7 +141,7 @@ export const ueSequencerTools: ToolDefinition[] = [
       looping: z.boolean().optional().describe("Loop playback"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("SequencerPlayPreview", params);
+      const result = await bridge.send("unreal", "SequencerPlayPreview", params);
       return { success: true, message: `Sequence "${params.sequenceName}": ${params.action}`, data: result };
     },
   },

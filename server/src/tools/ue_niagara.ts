@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unrealBridge } from "../bridge/unreal-bridge";
-
 export const ueNiagaraTools: ToolDefinition[] = [
   {
     id: "ue_niagara_create_system",
@@ -15,7 +14,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path (e.g. /Game/VFX/)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraCreateSystem", params);
+      const result = await bridge.send("unreal", "NiagaraCreateSystem", params);
       return { success: true, message: `Niagara system "${params.name}" created`, data: result };
     },
   },
@@ -32,7 +31,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       simulationSpace: z.enum(["Local", "World"]).optional().describe("Simulation space"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraAddEmitter", params);
+      const result = await bridge.send("unreal", "NiagaraAddEmitter", params);
       return { success: true, message: `Emitter "${params.emitterName}" added to "${params.systemName}"`, data: result };
     },
   },
@@ -50,7 +49,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       burstDelay: z.number().optional().describe("Delay before burst in seconds"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSetSpawnRate", params);
+      const result = await bridge.send("unreal", "NiagaraSetSpawnRate", params);
       return { success: true, message: `Spawn rate set to ${params.spawnRate}/s on "${params.emitterName}"`, data: result };
     },
   },
@@ -67,7 +66,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       lifetimeMax: z.number().describe("Maximum lifetime in seconds"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSetLifetime", params);
+      const result = await bridge.send("unreal", "NiagaraSetLifetime", params);
       return { success: true, message: `Lifetime set to ${params.lifetimeMin}-${params.lifetimeMax}s on "${params.emitterName}"`, data: result };
     },
   },
@@ -84,7 +83,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       velocityMax: z.object({ x: z.number(), y: z.number(), z: z.number() }).describe("Maximum velocity"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSetVelocity", params);
+      const result = await bridge.send("unreal", "NiagaraSetVelocity", params);
       return { success: true, message: `Velocity set on "${params.emitterName}"`, data: result };
     },
   },
@@ -102,7 +101,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       sizeOverLife: z.array(z.object({ time: z.number(), value: z.number() })).optional().describe("Size curve over normalized lifetime"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSetSize", params);
+      const result = await bridge.send("unreal", "NiagaraSetSize", params);
       return { success: true, message: `Size configured on "${params.emitterName}"`, data: result };
     },
   },
@@ -122,7 +121,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       })).optional().describe("Color gradient keyframes over normalized lifetime"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSetColor", params);
+      const result = await bridge.send("unreal", "NiagaraSetColor", params);
       return { success: true, message: `Color configured on "${params.emitterName}"`, data: result };
     },
   },
@@ -140,7 +139,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       direction: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Force direction (for Gravity, Wind)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraAddForce", params);
+      const result = await bridge.send("unreal", "NiagaraAddForce", params);
       return { success: true, message: `${params.forceType} force added to "${params.emitterName}"`, data: result };
     },
   },
@@ -158,7 +157,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       meshPath: z.string().optional().describe("Static mesh asset path (for Mesh renderer)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSetRenderer", params);
+      const result = await bridge.send("unreal", "NiagaraSetRenderer", params);
       return { success: true, message: `${params.rendererType} renderer set on "${params.emitterName}"`, data: result };
     },
   },
@@ -176,7 +175,7 @@ export const ueNiagaraTools: ToolDefinition[] = [
       autoDestroy: z.boolean().optional().describe("Auto destroy when complete"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("NiagaraSpawnAtLocation", params);
+      const result = await bridge.send("unreal", "NiagaraSpawnAtLocation", params);
       return { success: true, message: `Niagara system spawned at (${params.location.x}, ${params.location.y}, ${params.location.z})`, data: result };
     },
   },

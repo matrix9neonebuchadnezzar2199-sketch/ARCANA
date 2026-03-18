@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const shaderSetProperty: ToolDefinition = {
   id: "shader_set_property",
   name: "Set Shader Property",
@@ -9,7 +8,7 @@ const shaderSetProperty: ToolDefinition = {
   descriptionJa: "マテリアルシェーダーのfloat/color/vectorプロパティを設定する",
   category: "shader",
   inputSchema: z.object({ objectName: z.string().describe("GameObject name"), propertyName: z.string().describe("Shader property name (e.g. _Metallic)"), valueType: z.enum(["float", "color", "vector"]).describe("Value type"), value: z.string().describe("Value as string (float: 0.5, color: #FF0000, vector: 1,0,0,1)") }),
-  handler: async (params) => { try { const r = await unityBridge.send("ShaderSetProperty", params); return { success: true, message: `${params.propertyName} set on ${params.objectName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { try { const r = await bridge.send("unity", "ShaderSetProperty", params); return { success: true, message: `${params.propertyName} set on ${params.objectName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
 };
 
 const shaderSetKeyword: ToolDefinition = {
@@ -19,7 +18,7 @@ const shaderSetKeyword: ToolDefinition = {
   descriptionJa: "マテリアルのシェーダーキーワードを有効/無効にする",
   category: "shader",
   inputSchema: z.object({ objectName: z.string().describe("GameObject name"), keyword: z.string().describe("Shader keyword (e.g. _EMISSION)"), enabled: z.boolean().optional().default(true).describe("Enable or disable") }),
-  handler: async (params) => { try { const r = await unityBridge.send("ShaderSetKeyword", params); return { success: true, message: `Keyword ${params.keyword} ${params.enabled ? "enabled" : "disabled"}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { try { const r = await bridge.send("unity", "ShaderSetKeyword", params); return { success: true, message: `Keyword ${params.keyword} ${params.enabled ? "enabled" : "disabled"}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
 };
 
 const shaderSwitch: ToolDefinition = {
@@ -29,7 +28,7 @@ const shaderSwitch: ToolDefinition = {
   descriptionJa: "シェーダー名を指定してマテリアルのシェーダーを切り替える",
   category: "shader",
   inputSchema: z.object({ objectName: z.string().describe("GameObject name"), shaderName: z.string().describe("Full shader name (e.g. Universal Render Pipeline/Lit)") }),
-  handler: async (params) => { try { const r = await unityBridge.send("ShaderSwitch", params); return { success: true, message: `Shader switched to ${params.shaderName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { try { const r = await bridge.send("unity", "ShaderSwitch", params); return { success: true, message: `Shader switched to ${params.shaderName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
 };
 
 const shaderSetGlobal: ToolDefinition = {
@@ -39,7 +38,7 @@ const shaderSetGlobal: ToolDefinition = {
   descriptionJa: "全マテリアルに影響するグローバルシェーダープロパティを設定する",
   category: "shader",
   inputSchema: z.object({ propertyName: z.string().describe("Global property name"), valueType: z.enum(["float", "color", "vector"]).describe("Value type"), value: z.string().describe("Value as string") }),
-  handler: async (params) => { try { const r = await unityBridge.send("ShaderSetGlobal", params); return { success: true, message: `Global ${params.propertyName} set`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { try { const r = await bridge.send("unity", "ShaderSetGlobal", params); return { success: true, message: `Global ${params.propertyName} set`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
 };
 
 const shaderGetProperties: ToolDefinition = {
@@ -49,7 +48,7 @@ const shaderGetProperties: ToolDefinition = {
   descriptionJa: "マテリアルのシェーダー全プロパティを一覧取得する",
   category: "shader",
   inputSchema: z.object({ objectName: z.string().describe("GameObject name") }),
-  handler: async (params) => { try { const r = await unityBridge.send("ShaderGetProperties", params); return { success: true, message: `Properties retrieved for ${params.objectName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { try { const r = await bridge.send("unity", "ShaderGetProperties", params); return { success: true, message: `Properties retrieved for ${params.objectName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
 };
 
 const shaderListAll: ToolDefinition = {
@@ -59,7 +58,7 @@ const shaderListAll: ToolDefinition = {
   descriptionJa: "プロジェクト内の利用可能な全シェーダーを一覧表示する",
   category: "shader",
   inputSchema: z.object({ filter: z.string().optional().default("").describe("Filter keyword") }),
-  handler: async (params) => { try { const r = await unityBridge.send("ShaderListAll", params); return { success: true, message: "Shader list retrieved", data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { try { const r = await bridge.send("unity", "ShaderListAll", params); return { success: true, message: "Shader list retrieved", data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
 };
 
 export const shaderTools: ToolDefinition[] = [shaderSetProperty, shaderSetKeyword, shaderSwitch, shaderSetGlobal, shaderGetProperties, shaderListAll];

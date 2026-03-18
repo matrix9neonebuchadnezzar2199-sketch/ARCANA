@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const vsCreateGraph: ToolDefinition = {
   id: "vs_create_graph",
   name: "Create Visual Script Graph",
@@ -10,7 +9,7 @@ const vsCreateGraph: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), graphType: z.enum(["script","state"]).default("script") }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsCreateGraph", p);
+    const r = await bridge.send("unity", "VsCreateGraph", p);
     return r ? { success: true, message: `Graph created on ${p.objectName}`, data: r }
              : { success: false, message: "Failed to create graph" };
   }
@@ -24,7 +23,7 @@ const vsAddNode: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), nodeType: z.string(), posX: z.number().default(0), posY: z.number().default(0) }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsAddNode", p);
+    const r = await bridge.send("unity", "VsAddNode", p);
     return r ? { success: true, message: `Node ${p.nodeType} added`, data: r }
              : { success: false, message: "Failed to add node" };
   }
@@ -38,7 +37,7 @@ const vsConnectNodes: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), fromNodeId: z.string(), fromPort: z.string(), toNodeId: z.string(), toPort: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsConnectNodes", p);
+    const r = await bridge.send("unity", "VsConnectNodes", p);
     return r ? { success: true, message: `Nodes connected: ${p.fromNodeId} -> ${p.toNodeId}`, data: r }
              : { success: false, message: "Failed to connect nodes" };
   }
@@ -52,7 +51,7 @@ const vsSetVariable: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), varName: z.string(), varType: z.enum(["float","int","bool","string","vector3"]).default("float"), value: z.any() }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsSetVariable", p);
+    const r = await bridge.send("unity", "VsSetVariable", p);
     return r ? { success: true, message: `Variable ${p.varName} set`, data: r }
              : { success: false, message: "Failed to set variable" };
   }
@@ -66,7 +65,7 @@ const vsAddEvent: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), eventType: z.enum(["OnStart","OnUpdate","OnFixedUpdate","OnTriggerEnter","OnTriggerExit","OnCollisionEnter","OnCollisionExit","OnDestroy"]) }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsAddEvent", p);
+    const r = await bridge.send("unity", "VsAddEvent", p);
     return r ? { success: true, message: `Event ${p.eventType} added`, data: r }
              : { success: false, message: "Failed to add event" };
   }
@@ -80,7 +79,7 @@ const vsRemoveNode: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), nodeId: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsRemoveNode", p);
+    const r = await bridge.send("unity", "VsRemoveNode", p);
     return r ? { success: true, message: `Node ${p.nodeId} removed`, data: r }
              : { success: false, message: "Failed to remove node" };
   }
@@ -94,7 +93,7 @@ const vsAddSubgraph: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), subgraphAsset: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsAddSubgraph", p);
+    const r = await bridge.send("unity", "VsAddSubgraph", p);
     return r ? { success: true, message: `Subgraph ${p.subgraphAsset} embedded`, data: r }
              : { success: false, message: "Failed to add subgraph" };
   }
@@ -108,7 +107,7 @@ const vsListNodes: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("VsListNodes", p);
+    const r = await bridge.send("unity", "VsListNodes", p);
     return r ? { success: true, message: "Nodes listed", data: r }
              : { success: false, message: "Failed to list nodes" };
   }

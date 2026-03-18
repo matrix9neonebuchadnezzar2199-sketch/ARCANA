@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const physicsAddRigidbody: ToolDefinition = {
   id: "physics_add_rigidbody",
   name: "Add Rigidbody",
@@ -16,7 +15,7 @@ export const physicsAddRigidbody: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PhysicsAddRigidbody", params);
+      const result = await bridge.send("unity", "PhysicsAddRigidbody", params);
       return { success: true, message: `Added Rigidbody to ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const physicsAddCollider: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PhysicsAddCollider", params);
+      const result = await bridge.send("unity", "PhysicsAddCollider", params);
       return { success: true, message: `Added ${params.type} collider to ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -58,7 +57,7 @@ export const physicsSetGravity: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PhysicsSetGravity", params);
+      const result = await bridge.send("unity", "PhysicsSetGravity", params);
       return { success: true, message: `Set gravity to (${params.x || 0}, ${params.y}, ${params.z || 0})`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

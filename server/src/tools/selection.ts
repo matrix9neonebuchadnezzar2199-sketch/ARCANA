@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const selectObject: ToolDefinition = {
   id: "select_object",
   name: "Select Object",
@@ -13,7 +12,7 @@ const selectObject: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("SelectObject", params);
+      const result = await bridge.send("unity", "SelectObject", params);
       return { success: true, message: `Selected: ${params.name}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -30,7 +29,7 @@ const selectAll: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("SelectAll", {});
+      const result = await bridge.send("unity", "SelectAll", {});
       return { success: true, message: "All objects selected", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -47,7 +46,7 @@ const selectNone: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("SelectNone", {});
+      const result = await bridge.send("unity", "SelectNone", {});
       return { success: true, message: "Selection cleared", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -64,7 +63,7 @@ const selectInvert: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("SelectInvert", {});
+      const result = await bridge.send("unity", "SelectInvert", {});
       return { success: true, message: "Selection inverted", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

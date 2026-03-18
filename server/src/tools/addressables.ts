@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 export const addressablesTools: ToolDefinition[] = [
   {
     id: "addressables_create_group",
@@ -16,7 +15,7 @@ export const addressablesTools: ToolDefinition[] = [
       bundleMode: z.enum(["PackTogether", "PackSeparately", "PackTogetherByLabel"]).optional().describe("Bundle packing mode"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("AddressablesCreateGroup", params);
+      const result = await bridge.send("unity", "AddressablesCreateGroup", params);
       return { success: true, message: `Addressable group "${params.groupName}" created`, data: result };
     },
   },
@@ -33,7 +32,7 @@ export const addressablesTools: ToolDefinition[] = [
       labels: z.array(z.string()).optional().describe("Labels to assign"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("AddressablesMarkAsset", params);
+      const result = await bridge.send("unity", "AddressablesMarkAsset", params);
       return { success: true, message: `Asset "${params.assetPath}" marked as Addressable`, data: result };
     },
   },
@@ -49,7 +48,7 @@ export const addressablesTools: ToolDefinition[] = [
       removeLabels: z.array(z.string()).optional().describe("Labels to remove"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("AddressablesSetLabels", params);
+      const result = await bridge.send("unity", "AddressablesSetLabels", params);
       return { success: true, message: `Labels updated for "${params.address}"`, data: result };
     },
   },
@@ -64,7 +63,7 @@ export const addressablesTools: ToolDefinition[] = [
       profileName: z.string().optional().describe("Build profile name to use"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("AddressablesBuild", params);
+      const result = await bridge.send("unity", "AddressablesBuild", params);
       return { success: true, message: `Addressables build ${params.cleanBuild ? "(clean) " : ""}completed`, data: result };
     },
   },
@@ -79,7 +78,7 @@ export const addressablesTools: ToolDefinition[] = [
       groupFilter: z.string().optional().describe("Filter groups by name pattern"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("AddressablesListGroups", params);
+      const result = await bridge.send("unity", "AddressablesListGroups", params);
       return { success: true, message: "Addressable groups listed", data: result };
     },
   },
@@ -94,7 +93,7 @@ export const addressablesTools: ToolDefinition[] = [
       autoFix: z.boolean().optional().describe("Auto-fix detected issues"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("AddressablesAnalyze", params);
+      const result = await bridge.send("unity", "AddressablesAnalyze", params);
       return { success: true, message: "Addressables analysis completed", data: result };
     },
   },

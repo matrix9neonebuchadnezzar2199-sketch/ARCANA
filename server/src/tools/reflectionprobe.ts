@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const probeCreate: ToolDefinition = {
   id: "probe_create",
   name: "Create Reflection Probe",
@@ -10,7 +9,7 @@ const probeCreate: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ name: z.string().optional(), x: z.number().default(0), y: z.number().default(1), z: z.number().default(0), mode: z.enum(["Baked","Realtime","Custom"]).default("Baked") }),
   handler: async (p) => {
-    const r = await unityBridge.send("ProbeCreate", p);
+    const r = await bridge.send("unity", "ProbeCreate", p);
     return r ? { success: true, message: `Reflection Probe created: ${p.name ?? "NewProbe"}`, data: r }
              : { success: false, message: "Failed to create probe" };
   }
@@ -24,7 +23,7 @@ const probeSetSize: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string(), sizeX: z.number().default(10), sizeY: z.number().default(10), sizeZ: z.number().default(10) }),
   handler: async (p) => {
-    const r = await unityBridge.send("ProbeSetSize", p);
+    const r = await bridge.send("unity", "ProbeSetSize", p);
     return r ? { success: true, message: `Probe size set on ${p.objectName}`, data: r }
              : { success: false, message: "Failed to set probe size" };
   }
@@ -38,7 +37,7 @@ const probeSetResolution: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string(), resolution: z.enum(["16","32","64","128","256","512","1024","2048"]).default("256") }),
   handler: async (p) => {
-    const r = await unityBridge.send("ProbeSetResolution", p);
+    const r = await bridge.send("unity", "ProbeSetResolution", p);
     return r ? { success: true, message: `Probe resolution set to ${p.resolution}`, data: r }
              : { success: false, message: "Failed to set probe resolution" };
   }
@@ -52,7 +51,7 @@ const probeSetIntensity: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string(), intensity: z.number().default(1) }),
   handler: async (p) => {
-    const r = await unityBridge.send("ProbeSetIntensity", p);
+    const r = await bridge.send("unity", "ProbeSetIntensity", p);
     return r ? { success: true, message: `Probe intensity set to ${p.intensity}`, data: r }
              : { success: false, message: "Failed to set probe intensity" };
   }
@@ -66,7 +65,7 @@ const probeBake: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("ProbeBake", p);
+    const r = await bridge.send("unity", "ProbeBake", p);
     return r ? { success: true, message: `Probe baked: ${p.objectName}`, data: r }
              : { success: false, message: "Failed to bake probe" };
   }
@@ -80,7 +79,7 @@ const probeRemove: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("ProbeRemove", p);
+    const r = await bridge.send("unity", "ProbeRemove", p);
     return r ? { success: true, message: `Probe removed: ${p.objectName}`, data: r }
              : { success: false, message: "Failed to remove probe" };
   }

@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const animAddAnimator: ToolDefinition = {
   id: "anim_add_animator",
   name: "Add Animator",
@@ -14,7 +13,7 @@ export const animAddAnimator: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AnimAddAnimator", params);
+      const result = await bridge.send("unity", "AnimAddAnimator", params);
       return { success: true, message: `Added Animator to ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -36,7 +35,7 @@ export const animSetParameter: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AnimSetParameter", params);
+      const result = await bridge.send("unity", "AnimSetParameter", params);
       return { success: true, message: `Set ${params.paramName} on ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -57,7 +56,7 @@ export const animPlay: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AnimPlay", params);
+      const result = await bridge.send("unity", "AnimPlay", params);
       return { success: true, message: `Playing ${params.stateName} on ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -82,7 +81,7 @@ export const animCreateClip: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AnimCreateClip", params);
+      const result = await bridge.send("unity", "AnimCreateClip", params);
       return { success: true, message: `Created animation clip: ${params.clipName}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

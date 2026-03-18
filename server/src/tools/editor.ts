@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const editorPlayMode: ToolDefinition = {
   id: "editor_play_mode",
   name: "Toggle Play Mode",
@@ -13,7 +12,7 @@ const editorPlayMode: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EditorPlayMode", params);
+      const result = await bridge.send("unity", "EditorPlayMode", params);
       return { success: true, message: `Play mode: ${params.action}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -32,7 +31,7 @@ const editorSaveScene: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EditorSaveScene", params);
+      const result = await bridge.send("unity", "EditorSaveScene", params);
       return { success: true, message: "Scene saved", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -51,7 +50,7 @@ const editorLoadScene: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EditorLoadScene", params);
+      const result = await bridge.send("unity", "EditorLoadScene", params);
       return { success: true, message: `Scene loaded: ${params.path}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -70,7 +69,7 @@ const editorUndoRedo: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EditorUndoRedo", params);
+      const result = await bridge.send("unity", "EditorUndoRedo", params);
       return { success: true, message: `${params.action} executed`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -87,7 +86,7 @@ const editorClearConsole: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("EditorClearConsole", {});
+      const result = await bridge.send("unity", "EditorClearConsole", {});
       return { success: true, message: "Console cleared", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

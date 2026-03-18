@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const meshCombine: ToolDefinition = {
   id: "mesh_combine",
   name: "Combine Meshes",
@@ -10,7 +9,7 @@ const meshCombine: ToolDefinition = {
   category: "mesh",
   inputSchema: z.object({ name: z.string().describe("Parent GameObject name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("MeshCombine", params); return { success: true, message: `Meshes combined on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "MeshCombine", params); return { success: true, message: `Meshes combined on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -23,7 +22,7 @@ const meshFlip: ToolDefinition = {
   category: "mesh",
   inputSchema: z.object({ name: z.string().describe("GameObject name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("MeshFlip", params); return { success: true, message: `Normals flipped on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "MeshFlip", params); return { success: true, message: `Normals flipped on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -36,7 +35,7 @@ const meshRecalcNormals: ToolDefinition = {
   category: "mesh",
   inputSchema: z.object({ name: z.string().describe("GameObject name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("MeshRecalcNormals", params); return { success: true, message: `Normals recalculated on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "MeshRecalcNormals", params); return { success: true, message: `Normals recalculated on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -49,7 +48,7 @@ const meshSetVertexColor: ToolDefinition = {
   category: "mesh",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), color: z.string().optional().default("#FFFFFF").describe("Hex color") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("MeshSetVertexColor", params); return { success: true, message: `Vertex color set on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "MeshSetVertexColor", params); return { success: true, message: `Vertex color set on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -62,7 +61,7 @@ const meshGetInfo: ToolDefinition = {
   category: "mesh",
   inputSchema: z.object({ name: z.string().describe("GameObject name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("MeshGetInfo", params); return { success: true, message: `Mesh info for ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "MeshGetInfo", params); return { success: true, message: `Mesh info for ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -75,7 +74,7 @@ const meshReplacePrimitive: ToolDefinition = {
   category: "mesh",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), primitive: z.enum(["Cube", "Sphere", "Cylinder", "Capsule", "Plane", "Quad"]).describe("Primitive type") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("MeshReplacePrimitive", params); return { success: true, message: `Mesh replaced with ${params.primitive} on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "MeshReplacePrimitive", params); return { success: true, message: `Mesh replaced with ${params.primitive} on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };

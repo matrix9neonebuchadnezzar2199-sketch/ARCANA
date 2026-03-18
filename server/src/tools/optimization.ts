@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const optGetSceneStats: ToolDefinition = {
   id: "opt_get_scene_stats",
   name: "Get Scene Statistics",
@@ -11,7 +10,7 @@ export const optGetSceneStats: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("OptGetSceneStats", params);
+      const result = await bridge.send("unity", "OptGetSceneStats", params);
       return { success: true, message: "Scene statistics retrieved", data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -32,7 +31,7 @@ export const optSetStatic: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("OptSetStatic", params);
+      const result = await bridge.send("unity", "OptSetStatic", params);
       return { success: true, message: `Set static on ${params.name} to ${params.isStatic}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -53,7 +52,7 @@ export const optAddLODGroup: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("OptAddLODGroup", params);
+      const result = await bridge.send("unity", "OptAddLODGroup", params);
       return { success: true, message: `Added LOD Group to ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -70,7 +69,7 @@ export const optRemoveMissingScripts: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("OptRemoveMissingScripts", params);
+      const result = await bridge.send("unity", "OptRemoveMissingScripts", params);
       return { success: true, message: "Removed missing scripts", data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

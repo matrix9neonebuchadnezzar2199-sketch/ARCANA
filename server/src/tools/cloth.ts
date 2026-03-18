@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const clothAdd: ToolDefinition = {
   id: "cloth_add",
   name: "Add Cloth Component",
@@ -10,7 +9,7 @@ const clothAdd: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("ClothAdd", p);
+    const r = await bridge.send("unity", "ClothAdd", p);
     return r ? { success: true, message: `Cloth added to ${p.objectName}`, data: r }
              : { success: false, message: "Failed to add cloth" };
   }
@@ -24,7 +23,7 @@ const clothSetParams: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), damping: z.number().min(0).max(1).default(0.1), stiffness: z.number().min(0).max(1).default(0.5), stretchLimit: z.number().default(0.1), friction: z.number().min(0).max(1).default(0.5) }),
   handler: async (p) => {
-    const r = await unityBridge.send("ClothSetParams", p);
+    const r = await bridge.send("unity", "ClothSetParams", p);
     return r ? { success: true, message: `Cloth params updated on ${p.objectName}`, data: r }
              : { success: false, message: "Failed to set cloth params" };
   }
@@ -38,7 +37,7 @@ const clothSetGravity: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), useGravity: z.boolean().default(true), externalX: z.number().default(0), externalY: z.number().default(0), externalZ: z.number().default(0) }),
   handler: async (p) => {
-    const r = await unityBridge.send("ClothSetGravity", p);
+    const r = await bridge.send("unity", "ClothSetGravity", p);
     return r ? { success: true, message: `Cloth gravity set on ${p.objectName}`, data: r }
              : { success: false, message: "Failed to set cloth gravity" };
   }
@@ -52,7 +51,7 @@ const clothAddCollider: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), colliderObject: z.string(), colliderType: z.enum(["sphere","capsule"]).default("sphere") }),
   handler: async (p) => {
-    const r = await unityBridge.send("ClothAddCollider", p);
+    const r = await bridge.send("unity", "ClothAddCollider", p);
     return r ? { success: true, message: `Cloth collider added from ${p.colliderObject}`, data: r }
              : { success: false, message: "Failed to add cloth collider" };
   }
@@ -66,7 +65,7 @@ const clothRemove: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("ClothRemove", p);
+    const r = await bridge.send("unity", "ClothRemove", p);
     return r ? { success: true, message: `Cloth removed from ${p.objectName}`, data: r }
              : { success: false, message: "Failed to remove cloth" };
   }

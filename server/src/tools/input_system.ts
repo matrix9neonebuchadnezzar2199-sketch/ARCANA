@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 export const inputSystemTools: ToolDefinition[] = [
   {
     id: "input_system_create_action_map",
@@ -14,7 +13,7 @@ export const inputSystemTools: ToolDefinition[] = [
       mapName: z.string().describe("Action map name (e.g. Player, UI, Vehicle)"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("InputSystemCreateActionMap", params);
+      const result = await bridge.send("unity", "InputSystemCreateActionMap", params);
       return { success: true, message: `Action map "${params.mapName}" created in "${params.assetName}"`, data: result };
     },
   },
@@ -32,7 +31,7 @@ export const inputSystemTools: ToolDefinition[] = [
       controlType: z.enum(["Vector2", "Float", "Button", "Vector3", "Quaternion", "Integer", "Stick", "Dpad", "Touch"]).optional().describe("Expected control type"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("InputSystemAddAction", params);
+      const result = await bridge.send("unity", "InputSystemAddAction", params);
       return { success: true, message: `Action "${params.actionName}" added to "${params.mapName}"`, data: result };
     },
   },
@@ -51,7 +50,7 @@ export const inputSystemTools: ToolDefinition[] = [
       compositePart: z.string().optional().describe("Part in composite (e.g. up, down, left, right)"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("InputSystemAddBinding", params);
+      const result = await bridge.send("unity", "InputSystemAddBinding", params);
       return { success: true, message: `Binding "${params.path}" added to "${params.actionName}"`, data: result };
     },
   },
@@ -68,7 +67,7 @@ export const inputSystemTools: ToolDefinition[] = [
       compositeType: z.enum(["2DVector", "3DVector", "1DAxis", "ButtonWithOneModifier", "ButtonWithTwoModifiers"]).describe("Composite type"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("InputSystemAddComposite", params);
+      const result = await bridge.send("unity", "InputSystemAddComposite", params);
       return { success: true, message: `Composite ${params.compositeType} added to "${params.actionName}"`, data: result };
     },
   },
@@ -82,7 +81,7 @@ export const inputSystemTools: ToolDefinition[] = [
       assetName: z.string().describe("Input Actions asset name"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("InputSystemListActions", params);
+      const result = await bridge.send("unity", "InputSystemListActions", params);
       return { success: true, message: `Actions listed for "${params.assetName}"`, data: result };
     },
   },
@@ -101,7 +100,7 @@ export const inputSystemTools: ToolDefinition[] = [
       })).describe("Required devices for this scheme"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("InputSystemSetControlScheme", params);
+      const result = await bridge.send("unity", "InputSystemSetControlScheme", params);
       return { success: true, message: `Control scheme "${params.schemeName}" configured`, data: result };
     },
   },

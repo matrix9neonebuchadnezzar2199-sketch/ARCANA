@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const buildSetPlatform: ToolDefinition = {
   id: "build_set_platform",
   name: "Switch Platform",
@@ -13,7 +12,7 @@ const buildSetPlatform: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("BuildSetPlatform", params);
+      const result = await bridge.send("unity", "BuildSetPlatform", params);
       return { success: true, message: `Platform switched to ${params.platform}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -33,7 +32,7 @@ const buildAddScene: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("BuildAddScene", params);
+      const result = await bridge.send("unity", "BuildAddScene", params);
       return { success: true, message: `Scene added to build: ${params.path}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -55,7 +54,7 @@ const buildSetPlayerSettings: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("BuildSetPlayer", params);
+      const result = await bridge.send("unity", "BuildSetPlayer", params);
       return { success: true, message: "Player settings updated", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -75,7 +74,7 @@ const buildExecute: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("BuildExecute", params);
+      const result = await bridge.send("unity", "BuildExecute", params);
       return { success: true, message: `Build output to ${params.outputPath}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -92,7 +91,7 @@ const buildGetSettings: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("BuildGetSettings", {});
+      const result = await bridge.send("unity", "BuildGetSettings", {});
       return { success: true, message: "Build settings retrieved", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -109,7 +108,7 @@ const buildClean: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("BuildClean", {});
+      const result = await bridge.send("unity", "BuildClean", {});
       return { success: true, message: "Build cache cleaned", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

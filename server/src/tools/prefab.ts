@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const prefabCreate: ToolDefinition = {
   id: "prefab_create",
   name: "Create Prefab",
@@ -14,7 +13,7 @@ export const prefabCreate: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PrefabCreate", params);
+      const result = await bridge.send("unity", "PrefabCreate", params);
       return { success: true, message: `Created prefab from ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const prefabInstantiate: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PrefabInstantiate", params);
+      const result = await bridge.send("unity", "PrefabInstantiate", params);
       return { success: true, message: `Instantiated prefab: ${params.prefabPath}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -57,7 +56,7 @@ export const prefabUnpack: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PrefabUnpack", params);
+      const result = await bridge.send("unity", "PrefabUnpack", params);
       return { success: true, message: `Unpacked prefab: ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

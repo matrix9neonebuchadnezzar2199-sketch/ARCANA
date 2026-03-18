@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const lightmapBake: ToolDefinition = {
   id: "lightmap_bake",
   name: "Bake Lightmaps",
@@ -10,7 +9,7 @@ const lightmapBake: ToolDefinition = {
   category: "lightmap",
   inputSchema: z.object({ mode: z.enum(["Baked","Realtime","Mixed"]).default("Baked") }),
   handler: async (p) => {
-    const r = await unityBridge.send("LightmapBake", p);
+    const r = await bridge.send("unity", "LightmapBake", p);
     return r ? { success: true, message: `Lightmap bake started: ${p.mode}`, data: r }
              : { success: false, message: "Failed to bake lightmaps" };
   }
@@ -24,7 +23,7 @@ const lightmapSetResolution: ToolDefinition = {
   category: "lightmap",
   inputSchema: z.object({ texelsPerUnit: z.number().default(40) }),
   handler: async (p) => {
-    const r = await unityBridge.send("LightmapSetResolution", p);
+    const r = await bridge.send("unity", "LightmapSetResolution", p);
     return r ? { success: true, message: `Resolution set to ${p.texelsPerUnit} texels/unit`, data: r }
              : { success: false, message: "Failed to set resolution" };
   }
@@ -38,7 +37,7 @@ const lightmapSetMaxSize: ToolDefinition = {
   category: "lightmap",
   inputSchema: z.object({ maxSize: z.enum(["256","512","1024","2048","4096"]).default("1024") }),
   handler: async (p) => {
-    const r = await unityBridge.send("LightmapSetMaxSize", p);
+    const r = await bridge.send("unity", "LightmapSetMaxSize", p);
     return r ? { success: true, message: `Max lightmap size set to ${p.maxSize}`, data: r }
              : { success: false, message: "Failed to set max size" };
   }
@@ -52,7 +51,7 @@ const lightmapSetObjectScale: ToolDefinition = {
   category: "lightmap",
   inputSchema: z.object({ objectName: z.string(), scaleInLightmap: z.number().default(1) }),
   handler: async (p) => {
-    const r = await unityBridge.send("LightmapSetObjectScale", p);
+    const r = await bridge.send("unity", "LightmapSetObjectScale", p);
     return r ? { success: true, message: `Lightmap scale set on ${p.objectName}`, data: r }
              : { success: false, message: "Failed to set object scale" };
   }
@@ -66,7 +65,7 @@ const lightmapClear: ToolDefinition = {
   category: "lightmap",
   inputSchema: z.object({}),
   handler: async (p) => {
-    const r = await unityBridge.send("LightmapClear", p);
+    const r = await bridge.send("unity", "LightmapClear", p);
     return r ? { success: true, message: "Lightmaps cleared", data: r }
              : { success: false, message: "Failed to clear lightmaps" };
   }
@@ -80,7 +79,7 @@ const lightmapGetInfo: ToolDefinition = {
   category: "lightmap",
   inputSchema: z.object({}),
   handler: async (p) => {
-    const r = await unityBridge.send("LightmapGetInfo", p);
+    const r = await bridge.send("unity", "LightmapGetInfo", p);
     return r ? { success: true, message: "Lightmap info retrieved", data: r }
              : { success: false, message: "Failed to get lightmap info" };
   }

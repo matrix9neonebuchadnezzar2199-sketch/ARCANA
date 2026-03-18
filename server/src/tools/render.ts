@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const renderScreenshot: ToolDefinition = {
   id: "render_screenshot",
   name: "Take Screenshot",
@@ -16,7 +15,7 @@ const renderScreenshot: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("RenderScreenshot", params);
+      const result = await bridge.send("unity", "RenderScreenshot", params);
       return { success: true, message: `Screenshot saved to ${params.path}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -37,7 +36,7 @@ const renderSetResolution: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("RenderSetResolution", params);
+      const result = await bridge.send("unity", "RenderSetResolution", params);
       return { success: true, message: `Resolution set to ${params.width}x${params.height}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -56,7 +55,7 @@ const renderSetQuality: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("RenderSetQuality", params);
+      const result = await bridge.send("unity", "RenderSetQuality", params);
       return { success: true, message: `Quality set to ${params.level}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -79,7 +78,7 @@ const renderCaptureSkybox: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("RenderCaptureSkybox", params);
+      const result = await bridge.send("unity", "RenderCaptureSkybox", params);
       return { success: true, message: `Cubemap saved to ${params.path}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const streamingLoadScene: ToolDefinition = {
   id: "streaming_load_scene",
   name: "Load Scene Async",
@@ -10,7 +9,7 @@ const streamingLoadScene: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string(), mode: z.enum(["Single","Additive"]).default("Additive") }),
   handler: async (p) => {
-    const r = await unityBridge.send("StreamingLoadScene", p);
+    const r = await bridge.send("unity", "StreamingLoadScene", p);
     return r ? { success: true, message: `Scene ${p.sceneName} loading (${p.mode})`, data: r }
              : { success: false, message: "Failed to load scene" };
   }
@@ -24,7 +23,7 @@ const streamingUnloadScene: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("StreamingUnloadScene", p);
+    const r = await bridge.send("unity", "StreamingUnloadScene", p);
     return r ? { success: true, message: `Scene ${p.sceneName} unloading`, data: r }
              : { success: false, message: "Failed to unload scene" };
   }
@@ -38,7 +37,7 @@ const streamingSetActiveScene: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("StreamingSetActiveScene", p);
+    const r = await bridge.send("unity", "StreamingSetActiveScene", p);
     return r ? { success: true, message: `Active scene set to ${p.sceneName}`, data: r }
              : { success: false, message: "Failed to set active scene" };
   }
@@ -52,7 +51,7 @@ const streamingGetLoadedScenes: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({}),
   handler: async (p) => {
-    const r = await unityBridge.send("StreamingGetLoadedScenes", p);
+    const r = await bridge.send("unity", "StreamingGetLoadedScenes", p);
     return r ? { success: true, message: "Loaded scenes retrieved", data: r }
              : { success: false, message: "Failed to get loaded scenes" };
   }
@@ -66,7 +65,7 @@ const streamingPreload: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("StreamingPreload", p);
+    const r = await bridge.send("unity", "StreamingPreload", p);
     return r ? { success: true, message: `Scene ${p.sceneName} preloading`, data: r }
              : { success: false, message: "Failed to preload scene" };
   }
@@ -80,7 +79,7 @@ const streamingGetProgress: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("StreamingGetProgress", p);
+    const r = await bridge.send("unity", "StreamingGetProgress", p);
     return r ? { success: true, message: "Loading progress retrieved", data: r }
              : { success: false, message: "Failed to get progress" };
   }

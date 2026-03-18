@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const assetSearch: ToolDefinition = {
   id: "asset_search",
   name: "Search Assets",
@@ -14,7 +13,7 @@ const assetSearch: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AssetSearch", params);
+      const result = await bridge.send("unity", "AssetSearch", params);
       return { success: true, message: "Asset search completed", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -34,7 +33,7 @@ const assetImport: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AssetImport", params);
+      const result = await bridge.send("unity", "AssetImport", params);
       return { success: true, message: `Asset imported to ${params.destPath}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -53,7 +52,7 @@ const assetDelete: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AssetDelete", params);
+      const result = await bridge.send("unity", "AssetDelete", params);
       return { success: true, message: `Asset deleted: ${params.path}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -73,7 +72,7 @@ const assetMove: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AssetMove", params);
+      const result = await bridge.send("unity", "AssetMove", params);
       return { success: true, message: `Asset moved: ${params.oldPath} -> ${params.newPath}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -93,7 +92,7 @@ const assetDuplicate: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AssetDuplicate", params);
+      const result = await bridge.send("unity", "AssetDuplicate", params);
       return { success: true, message: `Asset duplicated: ${params.path}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

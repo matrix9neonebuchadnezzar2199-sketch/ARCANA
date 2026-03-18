@@ -1,14 +1,13 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 const blObjCreate: ToolDefinition = {
   id: "bl_object_create", name: "Create Object",
   description: "Create a mesh primitive in Blender",
   descriptionJa: "Blenderでメッシュプリミティブを作成",
   category: "bl_object",
   inputSchema: z.object({ type: z.enum(["Cube","Sphere","Cylinder","Plane","Cone","Torus","Monkey"]).default("Cube"), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0) }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectCreate", p); return r ? { success: true, message: `Created ${p.type}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectCreate", p); return r ? { success: true, message: `Created ${p.type}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjDelete: ToolDefinition = {
@@ -17,7 +16,7 @@ const blObjDelete: ToolDefinition = {
   descriptionJa: "名前でオブジェクトを削除",
   category: "bl_object",
   inputSchema: z.object({ name: z.string() }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectDelete", p); return r ? { success: true, message: `Deleted ${p.name}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectDelete", p); return r ? { success: true, message: `Deleted ${p.name}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjDuplicate: ToolDefinition = {
@@ -26,7 +25,7 @@ const blObjDuplicate: ToolDefinition = {
   descriptionJa: "オブジェクトを複製",
   category: "bl_object",
   inputSchema: z.object({ name: z.string(), linked: z.boolean().default(false) }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectDuplicate", p); return r ? { success: true, message: `Duplicated ${p.name}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectDuplicate", p); return r ? { success: true, message: `Duplicated ${p.name}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjJoin: ToolDefinition = {
@@ -35,7 +34,7 @@ const blObjJoin: ToolDefinition = {
   descriptionJa: "選択オブジェクトを結合",
   category: "bl_object",
   inputSchema: z.object({ names: z.array(z.string()) }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectJoin", p); return r ? { success: true, message: "Objects joined", data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectJoin", p); return r ? { success: true, message: "Objects joined", data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjSeparate: ToolDefinition = {
@@ -44,7 +43,7 @@ const blObjSeparate: ToolDefinition = {
   descriptionJa: "ルーズパーツまたはマテリアルで分離",
   category: "bl_object",
   inputSchema: z.object({ name: z.string(), mode: z.enum(["LOOSE","MATERIAL"]).default("LOOSE") }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectSeparate", p); return r ? { success: true, message: `Separated by ${p.mode}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectSeparate", p); return r ? { success: true, message: `Separated by ${p.mode}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjRename: ToolDefinition = {
@@ -53,7 +52,7 @@ const blObjRename: ToolDefinition = {
   descriptionJa: "オブジェクト名を変更",
   category: "bl_object",
   inputSchema: z.object({ name: z.string(), newName: z.string() }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectRename", p); return r ? { success: true, message: `Renamed to ${p.newName}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectRename", p); return r ? { success: true, message: `Renamed to ${p.newName}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjVisibility: ToolDefinition = {
@@ -62,7 +61,7 @@ const blObjVisibility: ToolDefinition = {
   descriptionJa: "オブジェクトの表示/非表示を切替",
   category: "bl_object",
   inputSchema: z.object({ name: z.string(), visible: z.boolean() }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectVisibility", p); return r ? { success: true, message: `Visibility: ${p.visible}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectVisibility", p); return r ? { success: true, message: `Visibility: ${p.visible}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjSetOrigin: ToolDefinition = {
@@ -71,7 +70,7 @@ const blObjSetOrigin: ToolDefinition = {
   descriptionJa: "原点をジオメトリ中心・3Dカーソル等に設定",
   category: "bl_object",
   inputSchema: z.object({ name: z.string(), type: z.enum(["GEOMETRY_ORIGIN","ORIGIN_GEOMETRY","ORIGIN_CURSOR","ORIGIN_CENTER_OF_MASS"]).default("ORIGIN_GEOMETRY") }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectSetOrigin", p); return r ? { success: true, message: `Origin set: ${p.type}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectSetOrigin", p); return r ? { success: true, message: `Origin set: ${p.type}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjSetParent: ToolDefinition = {
@@ -80,7 +79,7 @@ const blObjSetParent: ToolDefinition = {
   descriptionJa: "親子関係を設定",
   category: "bl_object",
   inputSchema: z.object({ child: z.string(), parent: z.string() }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectSetParent", p); return r ? { success: true, message: `${p.child} parented to ${p.parent}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectSetParent", p); return r ? { success: true, message: `${p.child} parented to ${p.parent}`, data: r } : { success: false, message: "Failed" }; }
 };
 
 const blObjGetInfo: ToolDefinition = {
@@ -89,7 +88,7 @@ const blObjGetInfo: ToolDefinition = {
   descriptionJa: "オブジェクト情報を取得（位置・回転・スケール・タイプ）",
   category: "bl_object",
   inputSchema: z.object({ name: z.string() }),
-  handler: async (p) => { const r = await blenderBridge.send("ObjectGetInfo", p); return r ? { success: true, message: "Info retrieved", data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { const r = await bridge.send("blender", "ObjectGetInfo", p); return r ? { success: true, message: "Info retrieved", data: r } : { success: false, message: "Failed" }; }
 };
 
 export const blObjectTools: ToolDefinition[] = [

@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const layertagSetLayer: ToolDefinition = {
   id: "layertag_set_layer",
   name: "Set Layer",
@@ -15,7 +14,7 @@ export const layertagSetLayer: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("LayerTagSetLayer", params);
+      const result = await bridge.send("unity", "LayerTagSetLayer", params);
       return { success: true, message: `Set layer of ${params.name} to ${params.layer}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -35,7 +34,7 @@ export const layertagSetTag: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("LayerTagSetTag", params);
+      const result = await bridge.send("unity", "LayerTagSetTag", params);
       return { success: true, message: `Set tag of ${params.name} to ${params.tag}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -55,7 +54,7 @@ export const layertagRename: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("LayerTagRename", params);
+      const result = await bridge.send("unity", "LayerTagRename", params);
       return { success: true, message: `Renamed ${params.name} to ${params.newName}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const uiCreateCanvas: ToolDefinition = {
   id: "ui_create_canvas",
   name: "Create Canvas",
@@ -14,7 +13,7 @@ export const uiCreateCanvas: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("UICreateCanvas", params);
+      const result = await bridge.send("unity", "UICreateCanvas", params);
       return { success: true, message: `Created canvas: ${params.name || "Canvas"}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -38,7 +37,7 @@ export const uiCreateText: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("UICreateText", params);
+      const result = await bridge.send("unity", "UICreateText", params);
       return { success: true, message: `Created text: ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -63,7 +62,7 @@ export const uiCreateButton: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("UICreateButton", params);
+      const result = await bridge.send("unity", "UICreateButton", params);
       return { success: true, message: `Created button: ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -88,7 +87,7 @@ export const uiCreateImage: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("UICreateImage", params);
+      const result = await bridge.send("unity", "UICreateImage", params);
       return { success: true, message: `Created image: ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

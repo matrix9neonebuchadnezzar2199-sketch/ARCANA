@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const ppBloom: ToolDefinition = {
   id: "pp_bloom",
   name: "Set Bloom",
@@ -15,7 +14,7 @@ const ppBloom: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PPBloom", params);
+      const result = await bridge.send("unity", "PPBloom", params);
       return { success: true, message: "Bloom configured", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -37,7 +36,7 @@ const ppColorAdjust: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PPColorAdjust", params);
+      const result = await bridge.send("unity", "PPColorAdjust", params);
       return { success: true, message: "Color adjustments configured", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -59,7 +58,7 @@ const ppDepthOfField: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PPDepthOfField", params);
+      const result = await bridge.send("unity", "PPDepthOfField", params);
       return { success: true, message: "Depth of Field configured", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -80,7 +79,7 @@ const ppVignette: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PPVignette", params);
+      const result = await bridge.send("unity", "PPVignette", params);
       return { success: true, message: "Vignette configured", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -100,7 +99,7 @@ const ppMotionBlur: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("PPMotionBlur", params);
+      const result = await bridge.send("unity", "PPMotionBlur", params);
       return { success: true, message: "Motion Blur configured", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

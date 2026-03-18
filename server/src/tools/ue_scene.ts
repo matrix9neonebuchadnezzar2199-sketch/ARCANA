@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unrealBridge } from "../bridge/unreal-bridge";
-
 const ueSceneListActors: ToolDefinition = {
   id: "ue_scene_list_actors",
   name: "List Actors",
@@ -10,7 +9,7 @@ const ueSceneListActors: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ filter: z.string().optional() }),
   handler: async (p) => {
-    const r = await unrealBridge.send("SceneListActors", p);
+    const r = await bridge.send("unreal", "SceneListActors", p);
     return r ? { success: true, message: "Actors listed", data: r }
              : { success: false, message: "Failed to list actors" };
   }
@@ -24,7 +23,7 @@ const ueSceneSpawnActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ type: z.enum(["Cube","Sphere","Cylinder","Cone","Plane","Empty","PointLight","SpotLight"]).default("Cube"), name: z.string().optional(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0) }),
   handler: async (p) => {
-    const r = await unrealBridge.send("SceneSpawnActor", p);
+    const r = await bridge.send("unreal", "SceneSpawnActor", p);
     return r ? { success: true, message: `Actor spawned: ${p.type}`, data: r }
              : { success: false, message: "Failed to spawn actor" };
   }
@@ -38,7 +37,7 @@ const ueSceneDeleteActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string() }),
   handler: async (p) => {
-    const r = await unrealBridge.send("SceneDeleteActor", p);
+    const r = await bridge.send("unreal", "SceneDeleteActor", p);
     return r ? { success: true, message: `Actor deleted: ${p.actorName}`, data: r }
              : { success: false, message: "Failed to delete actor" };
   }
@@ -52,7 +51,7 @@ const ueSceneDuplicateActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string(), newName: z.string().optional() }),
   handler: async (p) => {
-    const r = await unrealBridge.send("SceneDuplicateActor", p);
+    const r = await bridge.send("unreal", "SceneDuplicateActor", p);
     return r ? { success: true, message: `Actor duplicated: ${p.actorName}`, data: r }
              : { success: false, message: "Failed to duplicate actor" };
   }
@@ -66,7 +65,7 @@ const ueSceneRenameActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string(), newName: z.string() }),
   handler: async (p) => {
-    const r = await unrealBridge.send("SceneRenameActor", p);
+    const r = await bridge.send("unreal", "SceneRenameActor", p);
     return r ? { success: true, message: `Renamed to ${p.newName}`, data: r }
              : { success: false, message: "Failed to rename actor" };
   }
@@ -80,7 +79,7 @@ const ueSceneGetActorInfo: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string() }),
   handler: async (p) => {
-    const r = await unrealBridge.send("SceneGetActorInfo", p);
+    const r = await bridge.send("unreal", "SceneGetActorInfo", p);
     return r ? { success: true, message: `Info for ${p.actorName}`, data: r }
              : { success: false, message: "Failed to get actor info" };
   }

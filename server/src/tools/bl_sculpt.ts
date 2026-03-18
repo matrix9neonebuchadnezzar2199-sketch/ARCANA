@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 export const blSculptTools: ToolDefinition[] = [
   {
     id: "bl_sculpt_enter_mode",
@@ -16,7 +15,7 @@ export const blSculptTools: ToolDefinition[] = [
       enableDyntopo: z.boolean().optional().describe("Enable dynamic topology sculpting"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("SculptEnterMode", params);
+      const result = await bridge.send("blender", "SculptEnterMode", params);
       return { success: true, message: `Sculpt mode entered on "${params.objectName}"`, data: result };
     },
   },
@@ -34,7 +33,7 @@ export const blSculptTools: ToolDefinition[] = [
       direction: z.enum(["ADD", "SUBTRACT"]).optional().describe("Stroke direction"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("SculptSetBrush", params);
+      const result = await bridge.send("blender", "SculptSetBrush", params);
       return { success: true, message: `Brush set to ${params.brush}`, data: result };
     },
   },
@@ -55,7 +54,7 @@ export const blSculptTools: ToolDefinition[] = [
       radius: z.number().optional().describe("Override brush radius"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("SculptApplyStroke", params);
+      const result = await bridge.send("blender", "SculptApplyStroke", params);
       return { success: true, message: `Sculpt stroke applied (${params.points.length} points) on "${params.objectName}"`, data: result };
     },
   },
@@ -74,7 +73,7 @@ export const blSculptTools: ToolDefinition[] = [
       preserveVolume: z.boolean().optional().describe("Preserve volume"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("SculptRemesh", params);
+      const result = await bridge.send("blender", "SculptRemesh", params);
       return { success: true, message: `${params.mode} remesh applied to "${params.objectName}"`, data: result };
     },
   },
@@ -91,7 +90,7 @@ export const blSculptTools: ToolDefinition[] = [
       extractThickness: z.number().optional().describe("Thickness for mask extract"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("SculptMaskOperations", params);
+      const result = await bridge.send("blender", "SculptMaskOperations", params);
       return { success: true, message: `Mask ${params.operation} applied on "${params.objectName}"`, data: result };
     },
   },
@@ -108,7 +107,7 @@ export const blSculptTools: ToolDefinition[] = [
       threshold: z.number().optional().describe("Threshold angle for normal-based init"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("SculptFaceSets", params);
+      const result = await bridge.send("blender", "SculptFaceSets", params);
       return { success: true, message: `Face set ${params.operation} on "${params.objectName}"`, data: result };
     },
   },

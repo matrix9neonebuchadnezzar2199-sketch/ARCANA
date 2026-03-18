@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const tlCreate: ToolDefinition = {
   id: "timeline_create",
   name: "Create Timeline",
@@ -10,7 +9,7 @@ const tlCreate: ToolDefinition = {
   category: "timeline",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), assetPath: z.string().optional().default("Assets/Timelines/New.playable").describe("Timeline asset path") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("TimelineCreate", params); return { success: true, message: `Timeline created on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "TimelineCreate", params); return { success: true, message: `Timeline created on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -23,7 +22,7 @@ const tlAddTrack: ToolDefinition = {
   category: "timeline",
   inputSchema: z.object({ name: z.string().describe("GameObject with PlayableDirector"), trackType: z.enum(["Animation", "Audio", "Activation", "Signal"]).describe("Track type"), trackName: z.string().optional().default("New Track").describe("Track name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("TimelineAddTrack", params); return { success: true, message: `${params.trackType} track added`, data: r }; }
+    try { const r = await bridge.send("unity", "TimelineAddTrack", params); return { success: true, message: `${params.trackType} track added`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -36,7 +35,7 @@ const tlAddClip: ToolDefinition = {
   category: "timeline",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), trackIndex: z.number().describe("Track index"), startTime: z.number().optional().default(0).describe("Start time in seconds"), duration: z.number().optional().default(1).describe("Duration in seconds") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("TimelineAddClip", params); return { success: true, message: `Clip added at ${params.startTime}s`, data: r }; }
+    try { const r = await bridge.send("unity", "TimelineAddClip", params); return { success: true, message: `Clip added at ${params.startTime}s`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -49,7 +48,7 @@ const tlPlay: ToolDefinition = {
   category: "timeline",
   inputSchema: z.object({ name: z.string().describe("GameObject name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("TimelinePlay", params); return { success: true, message: `Timeline playing on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "TimelinePlay", params); return { success: true, message: `Timeline playing on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -62,7 +61,7 @@ const tlStop: ToolDefinition = {
   category: "timeline",
   inputSchema: z.object({ name: z.string().describe("GameObject name") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("TimelineStop", params); return { success: true, message: `Timeline stopped on ${params.name}`, data: r }; }
+    try { const r = await bridge.send("unity", "TimelineStop", params); return { success: true, message: `Timeline stopped on ${params.name}`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };
@@ -75,7 +74,7 @@ const tlSetTime: ToolDefinition = {
   category: "timeline",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), time: z.number().min(0).describe("Time in seconds") }),
   handler: async (params) => {
-    try { const r = await unityBridge.send("TimelineSetTime", params); return { success: true, message: `Timeline time set to ${params.time}s`, data: r }; }
+    try { const r = await bridge.send("unity", "TimelineSetTime", params); return { success: true, message: `Timeline time set to ${params.time}s`, data: r }; }
     catch (e: any) { return { success: false, message: e.message }; }
   }
 };

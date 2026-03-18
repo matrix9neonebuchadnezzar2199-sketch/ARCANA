@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const navBake: ToolDefinition = {
   id: "nav_bake",
   name: "Bake NavMesh",
@@ -11,7 +10,7 @@ const navBake: ToolDefinition = {
   inputSchema: z.object({}),
   handler: async () => {
     try {
-      const result = await unityBridge.send("NavBake", {});
+      const result = await bridge.send("unity", "NavBake", {});
       return { success: true, message: "NavMesh baked successfully", data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -33,7 +32,7 @@ const navAddAgent: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("NavAddAgent", params);
+      const result = await bridge.send("unity", "NavAddAgent", params);
       return { success: true, message: `NavMeshAgent added to ${params.name}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -56,7 +55,7 @@ const navAddObstacle: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("NavAddObstacle", params);
+      const result = await bridge.send("unity", "NavAddObstacle", params);
       return { success: true, message: `NavMeshObstacle added to ${params.name}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -78,7 +77,7 @@ const navAddLink: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("NavAddLink", params);
+      const result = await bridge.send("unity", "NavAddLink", params);
       return { success: true, message: `OffMeshLink added to ${params.name}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

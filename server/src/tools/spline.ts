@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const splineCreate: ToolDefinition = {
   id: "spline_create",
   name: "Create Spline",
@@ -10,7 +9,7 @@ const splineCreate: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ name: z.string().optional(), type: z.enum(["catmullrom","bezier","linear"]).default("catmullrom") }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineCreate", p);
+    const r = await bridge.send("unity", "SplineCreate", p);
     return r ? { success: true, message: `Spline created: ${p.name ?? "NewSpline"}`, data: r }
              : { success: false, message: "Failed to create spline" };
   }
@@ -24,7 +23,7 @@ const splineAddKnot: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ splineName: z.string(), x: z.number(), y: z.number(), z: z.number(), index: z.number().optional() }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineAddKnot", p);
+    const r = await bridge.send("unity", "SplineAddKnot", p);
     return r ? { success: true, message: `Knot added to ${p.splineName}`, data: r }
              : { success: false, message: "Failed to add knot" };
   }
@@ -38,7 +37,7 @@ const splineRemoveKnot: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ splineName: z.string(), index: z.number() }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineRemoveKnot", p);
+    const r = await bridge.send("unity", "SplineRemoveKnot", p);
     return r ? { success: true, message: `Knot ${p.index} removed`, data: r }
              : { success: false, message: "Failed to remove knot" };
   }
@@ -52,7 +51,7 @@ const splineSetTangent: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ splineName: z.string(), index: z.number(), inX: z.number(), inY: z.number(), inZ: z.number(), outX: z.number(), outY: z.number(), outZ: z.number() }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineSetTangent", p);
+    const r = await bridge.send("unity", "SplineSetTangent", p);
     return r ? { success: true, message: `Tangent set at knot ${p.index}`, data: r }
              : { success: false, message: "Failed to set tangent" };
   }
@@ -66,7 +65,7 @@ const splineAnimate: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ objectName: z.string(), splineName: z.string(), duration: z.number().default(5), loop: z.boolean().default(false) }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineAnimate", p);
+    const r = await bridge.send("unity", "SplineAnimate", p);
     return r ? { success: true, message: `${p.objectName} animating along ${p.splineName}`, data: r }
              : { success: false, message: "Failed to animate along spline" };
   }
@@ -80,7 +79,7 @@ const splineExtrude: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ splineName: z.string(), radius: z.number().default(0.5), sides: z.number().default(8), segments: z.number().default(32) }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineExtrude", p);
+    const r = await bridge.send("unity", "SplineExtrude", p);
     return r ? { success: true, message: `Extruded mesh on ${p.splineName}`, data: r }
              : { success: false, message: "Failed to extrude" };
   }
@@ -94,7 +93,7 @@ const splineEvaluate: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ splineName: z.string(), t: z.number().min(0).max(1) }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineEvaluate", p);
+    const r = await bridge.send("unity", "SplineEvaluate", p);
     return r ? { success: true, message: `Evaluated at t=${p.t}`, data: r }
              : { success: false, message: "Failed to evaluate" };
   }
@@ -108,7 +107,7 @@ const splineGetLength: ToolDefinition = {
   category: "spline",
   inputSchema: z.object({ splineName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("SplineGetLength", p);
+    const r = await bridge.send("unity", "SplineGetLength", p);
     return r ? { success: true, message: `Spline length retrieved`, data: r }
              : { success: false, message: "Failed to get length" };
   }

@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 export const blCharacterExpressionTools: ToolDefinition[] = [
   {
     id: "bl_char_create_unified_shapekeys",
@@ -14,7 +13,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       includeExtended: z.boolean().optional().describe("Include extended tongue and cheek shapes (default true)"),
       defaultStrength: z.number().min(0).max(1).optional().describe("Default deformation strength for generated keys (default 1.0)"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_create_unified_shapekeys", params),
+    handler: async (params) => bridge.send("blender", "bl_char_create_unified_shapekeys", params),
   },
   {
     id: "bl_char_set_shapekey_value",
@@ -27,7 +26,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       shapeKeyName: z.string().describe("Shape key name (e.g. EyeClosedLeft, MouthSmileRight)"),
       value: z.number().min(0).max(1).describe("Shape key value"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_set_shapekey_value", params),
+    handler: async (params) => bridge.send("blender", "bl_char_set_shapekey_value", params),
   },
   {
     id: "bl_char_create_expression_preset",
@@ -40,7 +39,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       presetName: z.string().describe("Expression preset name (e.g. happy, angry, sad, surprised)"),
       shapeKeys: z.record(z.number().min(0).max(1)).describe("Map of shape key names to values"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_create_expression_preset", params),
+    handler: async (params) => bridge.send("blender", "bl_char_create_expression_preset", params),
   },
   {
     id: "bl_char_setup_viseme",
@@ -53,7 +52,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       style: z.enum(["realistic", "anime", "minimal"]).optional().describe("Viseme deformation style (default realistic)"),
       strength: z.number().min(0).max(1).optional().describe("Overall viseme strength (default 1.0)"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_setup_viseme", params),
+    handler: async (params) => bridge.send("blender", "bl_char_setup_viseme", params),
   },
   {
     id: "bl_char_create_custom_shapekey",
@@ -66,7 +65,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       keyName: z.string().describe("Name for the new shape key"),
       category: z.enum(["face", "body", "clothing", "other"]).optional().describe("Shape key category for organization"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_create_custom_shapekey", params),
+    handler: async (params) => bridge.send("blender", "bl_char_create_custom_shapekey", params),
   },
   {
     id: "bl_char_mirror_shapekeys",
@@ -79,7 +78,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       direction: z.enum(["left_to_right", "right_to_left"]).optional().describe("Mirror direction (default left_to_right)"),
       filter: z.string().optional().describe("Only mirror shape keys containing this string (e.g. Eye, Mouth)"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_mirror_shapekeys", params),
+    handler: async (params) => bridge.send("blender", "bl_char_mirror_shapekeys", params),
   },
   {
     id: "bl_char_batch_shapekeys",
@@ -92,7 +91,7 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       values: z.record(z.number().min(0).max(1)).describe("Map of shape key names to values"),
       resetOthers: z.boolean().optional().describe("Reset unlisted shape keys to 0 (default false)"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_batch_shapekeys", params),
+    handler: async (params) => bridge.send("blender", "bl_char_batch_shapekeys", params),
   },
   {
     id: "bl_char_export_expressions",
@@ -105,6 +104,6 @@ export const blCharacterExpressionTools: ToolDefinition[] = [
       outputPath: z.string().optional().describe("Output JSON file path (default: same dir as .blend)"),
       includePresets: z.boolean().optional().describe("Include custom expression presets (default true)"),
     }),
-    handler: async (params) => blenderBridge.send("bl_char_export_expressions", params),
+    handler: async (params) => bridge.send("blender", "bl_char_export_expressions", params),
   },
 ];

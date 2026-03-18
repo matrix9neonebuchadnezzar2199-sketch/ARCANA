@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const componentAdd: ToolDefinition = {
   id: "component_add",
   name: "Add Component",
@@ -14,7 +13,7 @@ export const componentAdd: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ComponentAdd", params);
+      const result = await bridge.send("unity", "ComponentAdd", params);
       return { success: true, message: `Added ${params.componentType} to ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -34,7 +33,7 @@ export const componentRemove: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ComponentRemove", params);
+      const result = await bridge.send("unity", "ComponentRemove", params);
       return { success: true, message: `Removed ${params.componentType} from ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -55,7 +54,7 @@ export const componentSetEnabled: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ComponentSetEnabled", params);
+      const result = await bridge.send("unity", "ComponentSetEnabled", params);
       return { success: true, message: `Set ${params.componentType} enabled=${params.enabled} on ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -74,7 +73,7 @@ export const componentList: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ComponentList", params);
+      const result = await bridge.send("unity", "ComponentList", params);
       return { success: true, message: `Components on ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

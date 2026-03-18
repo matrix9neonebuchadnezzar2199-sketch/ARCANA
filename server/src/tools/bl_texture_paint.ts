@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 export const blTexturePaintTools: ToolDefinition[] = [
   {
     id: "bl_tpaint_enter_mode",
@@ -17,7 +16,7 @@ export const blTexturePaintTools: ToolDefinition[] = [
       baseColor: z.object({ r: z.number(), g: z.number(), b: z.number(), a: z.number().optional() }).optional().describe("Base fill color for new image"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("TexturePaintEnterMode", params);
+      const result = await bridge.send("blender", "TexturePaintEnterMode", params);
       return { success: true, message: `Texture paint mode entered on "${params.objectName}"`, data: result };
     },
   },
@@ -36,7 +35,7 @@ export const blTexturePaintTools: ToolDefinition[] = [
       blendMode: z.enum(["MIX", "DARKEN", "MULTIPLY", "LIGHTEN", "SCREEN", "ADD", "SUBTRACT", "OVERLAY", "SOFTLIGHT", "ERASE_ALPHA", "ADD_ALPHA"]).optional().describe("Blend mode"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("TexturePaintSetBrush", params);
+      const result = await bridge.send("blender", "TexturePaintSetBrush", params);
       return { success: true, message: `Paint brush set to ${params.brush}`, data: result };
     },
   },
@@ -57,7 +56,7 @@ export const blTexturePaintTools: ToolDefinition[] = [
       strength: z.number().optional().describe("Override strength"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("TexturePaintApplyStroke", params);
+      const result = await bridge.send("blender", "TexturePaintApplyStroke", params);
       return { success: true, message: `Paint stroke applied (${params.points.length} points) on "${params.objectName}"`, data: result };
     },
   },
@@ -73,7 +72,7 @@ export const blTexturePaintTools: ToolDefinition[] = [
       imageName: z.string().optional().describe("Specific image name to fill (default: active paint slot)"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("TexturePaintFillLayer", params);
+      const result = await bridge.send("blender", "TexturePaintFillLayer", params);
       return { success: true, message: `Paint layer filled on "${params.objectName}"`, data: result };
     },
   },
@@ -89,7 +88,7 @@ export const blTexturePaintTools: ToolDefinition[] = [
       format: z.enum(["PNG", "JPEG", "BMP", "TIFF", "OPEN_EXR", "TARGA"]).optional().describe("Image format"),
     }),
     handler: async (params) => {
-      const result = await blenderBridge.send("TexturePaintSaveImage", params);
+      const result = await bridge.send("blender", "TexturePaintSaveImage", params);
       return { success: true, message: `Paint image saved${params.imageName ? ": " + params.imageName : ""}`, data: result };
     },
   },

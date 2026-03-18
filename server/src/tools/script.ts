@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const scriptCreate: ToolDefinition = {
   id: "script_create",
   name: "Create C# Script",
@@ -15,7 +14,7 @@ const scriptCreate: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ScriptCreate", params);
+      const result = await bridge.send("unity", "ScriptCreate", params);
       return { success: true, message: `Script ${params.className}.cs created in ${params.folder}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -35,7 +34,7 @@ const scriptAttach: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ScriptAttach", params);
+      const result = await bridge.send("unity", "ScriptAttach", params);
       return { success: true, message: `${params.scriptName} attached to ${params.objectName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -57,7 +56,7 @@ const scriptSetVariable: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ScriptSetVariable", params);
+      const result = await bridge.send("unity", "ScriptSetVariable", params);
       return { success: true, message: `${params.variableName} set to ${params.value} on ${params.scriptName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };
@@ -79,7 +78,7 @@ const scriptInvokeMethod: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("ScriptInvokeMethod", params);
+      const result = await bridge.send("unity", "ScriptInvokeMethod", params);
       return { success: true, message: `${params.methodName} invoked on ${params.scriptName}`, data: result };
     } catch (e: any) {
       return { success: false, message: e.message };

@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 const tagmgrAddTag: ToolDefinition = {
   id: "tagmgr_add_tag",
   name: "Add Custom Tag",
@@ -10,7 +9,7 @@ const tagmgrAddTag: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({ tagName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("TagmgrAddTag", p);
+    const r = await bridge.send("unity", "TagmgrAddTag", p);
     return r ? { success: true, message: `Tag added: ${p.tagName}`, data: r }
              : { success: false, message: "Failed to add tag" };
   }
@@ -24,7 +23,7 @@ const tagmgrAddLayer: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({ layerName: z.string(), layerIndex: z.number().optional() }),
   handler: async (p) => {
-    const r = await unityBridge.send("TagmgrAddLayer", p);
+    const r = await bridge.send("unity", "TagmgrAddLayer", p);
     return r ? { success: true, message: `Layer added: ${p.layerName}`, data: r }
              : { success: false, message: "Failed to add layer" };
   }
@@ -38,7 +37,7 @@ const tagmgrAddSortingLayer: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({ layerName: z.string() }),
   handler: async (p) => {
-    const r = await unityBridge.send("TagmgrAddSortingLayer", p);
+    const r = await bridge.send("unity", "TagmgrAddSortingLayer", p);
     return r ? { success: true, message: `Sorting layer added: ${p.layerName}`, data: r }
              : { success: false, message: "Failed to add sorting layer" };
   }
@@ -52,7 +51,7 @@ const tagmgrListAll: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({}),
   handler: async (p) => {
-    const r = await unityBridge.send("TagmgrListAll", p);
+    const r = await bridge.send("unity", "TagmgrListAll", p);
     return r ? { success: true, message: "Tags and layers listed", data: r }
              : { success: false, message: "Failed to list tags and layers" };
   }

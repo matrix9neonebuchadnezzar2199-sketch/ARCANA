@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const audioAddSource: ToolDefinition = {
   id: "audio_add_source",
   name: "Add Audio Source",
@@ -17,7 +16,7 @@ export const audioAddSource: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AudioAddSource", params);
+      const result = await bridge.send("unity", "AudioAddSource", params);
       return { success: true, message: `Added audio source to ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const audioSetVolume: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AudioSetVolume", params);
+      const result = await bridge.send("unity", "AudioSetVolume", params);
       return { success: true, message: `Set volume of ${params.name} to ${params.volume}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -59,7 +58,7 @@ export const audioSetSpatial: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("AudioSetSpatial", params);
+      const result = await bridge.send("unity", "AudioSetSpatial", params);
       return { success: true, message: `Set spatial audio on ${params.name}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

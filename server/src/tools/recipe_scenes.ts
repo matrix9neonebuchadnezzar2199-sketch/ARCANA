@@ -1,9 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-import { unrealBridge } from "../bridge/unreal-bridge";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 export const recipeSceneTools: ToolDefinition[] = [
   {
     id: "recipe_fps_scene",
@@ -18,8 +15,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       spawnCount: z.number().optional().describe("Number of spawn points (default 8)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_fps_scene", params);
+      return bridge.send(params.editor, "recipe_fps_scene", params);
     },
   },
   {
@@ -34,8 +30,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       coverCount: z.number().optional().describe("Number of cover objects (default 20)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_tps_scene", params);
+      return bridge.send(params.editor, "recipe_tps_scene", params);
     },
   },
   {
@@ -51,8 +46,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       platformCount: z.number().optional().describe("Number of platforms (default 15)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_platformer_scene", params);
+      return bridge.send(params.editor, "recipe_platformer_scene", params);
     },
   },
   {
@@ -67,8 +61,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       fogDensity: z.number().optional().describe("Fog density 0.0-1.0 (default 0.6)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_horror_scene", params);
+      return bridge.send(params.editor, "recipe_horror_scene", params);
     },
   },
   {
@@ -83,8 +76,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       lapCount: z.number().optional().describe("Number of laps (default 3)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_racing_scene", params);
+      return bridge.send(params.editor, "recipe_racing_scene", params);
     },
   },
   {
@@ -100,8 +92,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       hasBoss: z.boolean().optional().describe("Include boss room (default true)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_rpg_dungeon", params);
+      return bridge.send(params.editor, "recipe_rpg_dungeon", params);
     },
   },
   {
@@ -116,8 +107,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       biome: z.enum(["temperate", "tropical", "arctic", "desert"]).optional().describe("Primary biome"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_open_world_base", params);
+      return bridge.send(params.editor, "recipe_open_world_base", params);
     },
   },
   {
@@ -132,8 +122,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       interactableCount: z.number().optional().describe("Grabbable objects (default 10)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_vr_room", params);
+      return bridge.send(params.editor, "recipe_vr_room", params);
     },
   },
   {
@@ -148,8 +137,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       title: z.string().optional().describe("Game title text"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_ui_main_menu", params);
+      return bridge.send(params.editor, "recipe_ui_main_menu", params);
     },
   },
   {
@@ -163,8 +151,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       genre: z.enum(["fps", "rpg", "racing", "platformer"]).optional().describe("Genre preset"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_ui_hud", params);
+      return bridge.send(params.editor, "recipe_ui_hud", params);
     },
   },
   {
@@ -179,8 +166,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       columns: z.number().optional().describe("Grid columns (default 6)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_ui_inventory", params);
+      return bridge.send(params.editor, "recipe_ui_inventory", params);
     },
   },
   {
@@ -195,8 +181,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       style: z.enum(["jrpg", "visual_novel", "western", "minimal"]).optional().describe("Dialogue style"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_ui_dialogue", params);
+      return bridge.send(params.editor, "recipe_ui_dialogue", params);
     },
   },
   {
@@ -210,8 +195,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       preset: z.enum(["soft", "dramatic", "product", "portrait"]).optional().describe("Lighting mood"),
     }),
     handler: async (params) => {
-      const bridgeMap: any = { unity: unityBridge, unreal: unrealBridge, blender: blenderBridge };
-      return bridgeMap[params.editor].send("recipe_lighting_studio", params);
+      return bridge.send(params.editor, "recipe_lighting_studio", params);
     },
   },
   {
@@ -226,8 +210,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       tiling: z.number().optional().describe("UV tiling (default 1)"),
     }),
     handler: async (params) => {
-      const bridgeMap: any = { unity: unityBridge, unreal: unrealBridge, blender: blenderBridge };
-      return bridgeMap[params.editor].send("recipe_pbr_material", params);
+      return bridge.send(params.editor, "recipe_pbr_material", params);
     },
   },
   {
@@ -241,8 +224,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       mood: z.enum(["cinematic", "vibrant", "noir", "retro", "horror"]).optional().describe("Visual mood preset"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("recipe_post_process", params);
+      return bridge.send(params.editor, "recipe_post_process", params);
     },
   },
 ];

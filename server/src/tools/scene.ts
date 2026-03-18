@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const sceneListObjects: ToolDefinition = {
   id: "scene_list_objects",
   name: "List Scene Objects",
@@ -13,7 +12,7 @@ export const sceneListObjects: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("SceneListObjects", params);
+      const result = await bridge.send("unity", "SceneListObjects", params);
       return {
         success: true,
         message: "Scene objects retrieved",
@@ -46,7 +45,7 @@ export const sceneCreateGameObject: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("SceneCreateGameObject", params);
+      const result = await bridge.send("unity", "SceneCreateGameObject", params);
       return {
         success: true,
         message: `Created GameObject: ${params.name}`,
@@ -72,7 +71,7 @@ export const sceneDeleteGameObject: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("SceneDeleteGameObject", params);
+      const result = await bridge.send("unity", "SceneDeleteGameObject", params);
       return {
         success: true,
         message: `Deleted GameObject: ${params.name}`,

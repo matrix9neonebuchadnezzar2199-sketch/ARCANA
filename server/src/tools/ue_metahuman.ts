@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unrealBridge } from "../bridge/unreal-bridge";
-
 export const ueMetahumanTools: ToolDefinition[] = [
   {
     id: "ue_metahuman_create",
@@ -15,7 +14,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       ageRange: z.enum(["young_adult", "adult", "middle_aged", "elderly"]).optional().describe("Age range (default adult)"),
       bodyType: z.enum(["average", "athletic", "heavy", "slim"]).optional().describe("Body type (default average)"),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_create", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_create", params),
   },
   {
     id: "ue_metahuman_set_face",
@@ -38,7 +37,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       foreheadHeight: z.number().min(0).max(1).optional(),
       earSize: z.number().min(0).max(1).optional(),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_set_face", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_set_face", params),
   },
   {
     id: "ue_metahuman_set_body",
@@ -56,7 +55,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       muscle: z.number().min(0).max(1).optional(),
       fat: z.number().min(0).max(1).optional(),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_set_body", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_set_body", params),
   },
   {
     id: "ue_metahuman_set_hair",
@@ -72,7 +71,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       roughness: z.number().min(0).max(1).optional().describe("Hair roughness"),
       groomDensity: z.number().min(0).max(1).optional().describe("Groom strand density"),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_set_hair", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_set_hair", params),
   },
   {
     id: "ue_metahuman_set_skin",
@@ -89,7 +88,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       poreDetail: z.number().min(0).max(1).optional().describe("Pore detail visibility"),
       subsurface: z.number().min(0).max(1).optional().describe("Subsurface scattering strength"),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_set_skin", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_set_skin", params),
   },
   {
     id: "ue_metahuman_set_clothing",
@@ -106,7 +105,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       topColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Top color override RGB"),
       bottomColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Bottom color override RGB"),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_set_clothing", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_set_clothing", params),
   },
   {
     id: "ue_metahuman_set_expression",
@@ -120,7 +119,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       morphTargets: z.record(z.number().min(0).max(1)).optional().describe("Individual morph target values"),
       blendStrength: z.number().min(0).max(1).optional().describe("Preset blend strength (default 1.0)"),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_set_expression", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_set_expression", params),
   },
   {
     id: "ue_metahuman_export",
@@ -136,6 +135,6 @@ export const ueMetahumanTools: ToolDefinition[] = [
       includeTextures: z.boolean().optional().describe("Include textures (default true)"),
       lodLevel: z.number().min(0).max(4).optional().describe("LOD level to export (default 0 = highest)"),
     }),
-    handler: async (params) => unrealBridge.send("ue_metahuman_export", params),
+    handler: async (params) => bridge.send("unreal", "ue_metahuman_export", params),
   },
 ];

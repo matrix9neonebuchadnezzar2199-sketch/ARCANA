@@ -1,9 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-import { unrealBridge } from "../bridge/unreal-bridge";
-import { blenderBridge } from "../bridge/blender-bridge";
-
 export const recipeProjectTools: ToolDefinition[] = [
   {
     id: "project_health_check",
@@ -16,8 +13,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       checks: z.array(z.enum(["missing_refs", "unused_assets", "duplicate_materials", "script_errors", "all"])).optional().describe("Checks to run (default all)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_health_check", params);
+      return bridge.send(params.editor, "project_health_check", params);
     },
   },
   {
@@ -31,8 +27,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       maxSize: z.number().optional().describe("Max recommended texture size in px (default 2048)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_texture_audit", params);
+      return bridge.send(params.editor, "project_texture_audit", params);
     },
   },
   {
@@ -46,8 +41,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       budget: z.number().optional().describe("Total polygon budget (default 500000)"),
     }),
     handler: async (params) => {
-      const bridgeMap: any = { unity: unityBridge, unreal: unrealBridge, blender: blenderBridge };
-      return bridgeMap[params.editor].send("project_polygon_budget", params);
+      return bridge.send(params.editor, "project_polygon_budget", params);
     },
   },
   {
@@ -61,8 +55,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       convention: z.enum(["unity_standard", "ue_standard", "custom"]).optional().describe("Naming convention set"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_naming_convention", params);
+      return bridge.send(params.editor, "project_naming_convention", params);
     },
   },
   {
@@ -75,8 +68,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_build_size_report", params);
+      return bridge.send(params.editor, "project_build_size_report", params);
     },
   },
   {
@@ -89,8 +81,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_scene_profiler", params);
+      return bridge.send(params.editor, "project_scene_profiler", params);
     },
   },
   {
@@ -104,8 +95,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       mode: z.enum(["report", "remove", "suggest"]).optional().describe("Fix mode (default report)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_missing_reference_fix", params);
+      return bridge.send(params.editor, "project_missing_reference_fix", params);
     },
   },
   {
@@ -120,8 +110,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       customLayers: z.array(z.string()).optional().describe("Custom layer names (if template is custom)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_layer_tag_setup", params);
+      return bridge.send(params.editor, "project_layer_tag_setup", params);
     },
   },
   {
@@ -135,8 +124,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       genre: z.enum(["fps", "rpg", "platformer", "simulation", "general"]).optional().describe("Game genre for tailored structure"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_folder_structure", params);
+      return bridge.send(params.editor, "project_folder_structure", params);
     },
   },
   {
@@ -150,8 +138,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       extras: z.array(z.string()).optional().describe("Extra ignore patterns"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_gitignore_setup", params);
+      return bridge.send(params.editor, "project_gitignore_setup", params);
     },
   },
   {
@@ -165,8 +152,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       template: z.enum(["fps", "rpg", "platformer", "custom"]).describe("Game template"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_collision_matrix", params);
+      return bridge.send(params.editor, "project_collision_matrix", params);
     },
   },
   {
@@ -180,8 +166,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       platform: z.enum(["pc", "mobile", "console", "vr"]).optional().describe("Target platform"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_quality_settings", params);
+      return bridge.send(params.editor, "project_quality_settings", params);
     },
   },
   {
@@ -195,8 +180,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       genre: z.enum(["fps", "tps", "rpg", "platformer", "racing", "fighting"]).describe("Game genre"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_input_preset", params);
+      return bridge.send(params.editor, "project_input_preset", params);
     },
   },
   {
@@ -210,8 +194,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       groups: z.array(z.string()).optional().describe("Mixer groups (default BGM, SFX, Voice, Ambience)"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_audio_setup", params);
+      return bridge.send(params.editor, "project_audio_setup", params);
     },
   },
   {
@@ -226,8 +209,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       description: z.string().optional().describe("Template description"),
     }),
     handler: async (params) => {
-      const bridge = params.editor === "unity" ? unityBridge : unrealBridge;
-      return bridge.send("project_scene_template_save", params);
+      return bridge.send(params.editor, "project_scene_template_save", params);
     },
   },
 ];

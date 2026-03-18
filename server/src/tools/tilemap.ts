@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unityBridge } from "../bridge/unity-bridge";
-
 export const tilemapTools: ToolDefinition[] = [
   {
     id: "tilemap_create",
@@ -17,7 +16,7 @@ export const tilemapTools: ToolDefinition[] = [
       sortingOrder: z.number().optional().describe("Sorting order in layer"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("TilemapCreate", params);
+      const result = await bridge.send("unity", "TilemapCreate", params);
       return { success: true, message: `Tilemap "${params.name || "Tilemap"}" created`, data: result };
     },
   },
@@ -36,7 +35,7 @@ export const tilemapTools: ToolDefinition[] = [
       })).describe("Array of tile placements"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("TilemapSetTiles", params);
+      const result = await bridge.send("unity", "TilemapSetTiles", params);
       return { success: true, message: `${params.tiles.length} tiles placed on "${params.tilemapName}"`, data: result };
     },
   },
@@ -55,7 +54,7 @@ export const tilemapTools: ToolDefinition[] = [
       height: z.number().describe("Rectangle height in cells"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("TilemapFillRect", params);
+      const result = await bridge.send("unity", "TilemapFillRect", params);
       return { success: true, message: `Filled ${params.width}x${params.height} area on "${params.tilemapName}"`, data: result };
     },
   },
@@ -73,7 +72,7 @@ export const tilemapTools: ToolDefinition[] = [
       }).optional().describe("Region to clear (omit to clear all)"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("TilemapClear", params);
+      const result = await bridge.send("unity", "TilemapClear", params);
       const msg = params.region ? `Region cleared on "${params.tilemapName}"` : `All tiles cleared from "${params.tilemapName}"`;
       return { success: true, message: msg, data: result };
     },
@@ -91,7 +90,7 @@ export const tilemapTools: ToolDefinition[] = [
       physicsLayer: z.string().optional().describe("Physics layer name"),
     }),
     handler: async (params) => {
-      const result = await unityBridge.send("TilemapAddCollider", params);
+      const result = await bridge.send("unity", "TilemapAddCollider", params);
       return { success: true, message: `Collider added to "${params.tilemapName}"${params.useComposite !== false ? " (composite)" : ""}`, data: result };
     },
   },

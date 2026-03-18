@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const materialSetColor: ToolDefinition = {
   id: "material_set_color",
   name: "Set Material Color",
@@ -14,7 +13,7 @@ export const materialSetColor: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("MaterialSetColor", params);
+      const result = await bridge.send("unity", "MaterialSetColor", params);
       return { success: true, message: `Set color of ${params.name} to ${params.color}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -34,7 +33,7 @@ export const materialSetTransparency: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("MaterialSetTransparency", params);
+      const result = await bridge.send("unity", "MaterialSetTransparency", params);
       return { success: true, message: `Set transparency of ${params.name} to ${params.alpha}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -55,7 +54,7 @@ export const materialSetEmission: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("MaterialSetEmission", params);
+      const result = await bridge.send("unity", "MaterialSetEmission", params);
       return { success: true, message: `Set emission of ${params.name} to ${params.color}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -75,7 +74,7 @@ export const materialSetShader: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("MaterialSetShader", params);
+      const result = await bridge.send("unity", "MaterialSetShader", params);
       return { success: true, message: `Set shader of ${params.name} to ${params.shader}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -95,7 +94,7 @@ export const materialSetTexture: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("MaterialSetTexture", params);
+      const result = await bridge.send("unity", "MaterialSetTexture", params);
       return { success: true, message: `Set texture of ${params.name} to ${params.texturePath}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };

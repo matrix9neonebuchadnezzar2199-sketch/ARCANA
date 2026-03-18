@@ -1,7 +1,6 @@
-import { ToolDefinition } from "../core/registry";
+﻿import { ToolDefinition } from "../core/registry";
+import { bridge } from "../bridge";
 import { z } from "zod";
-import { unrealBridge } from "../bridge/unreal-bridge";
-
 export const ueEnhancedInputTools: ToolDefinition[] = [
   {
     id: "ue_einput_create_action",
@@ -16,7 +15,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       consumeInput: z.boolean().optional().describe("Consume input (default: true)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("EnhancedInputCreateAction", params);
+      const result = await bridge.send("unreal", "EnhancedInputCreateAction", params);
       return { success: true, message: `Input Action "${params.name}" created (${params.valueType})`, data: result };
     },
   },
@@ -31,7 +30,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("EnhancedInputCreateMappingContext", params);
+      const result = await bridge.send("unreal", "EnhancedInputCreateMappingContext", params);
       return { success: true, message: `Mapping Context "${params.name}" created`, data: result };
     },
   },
@@ -47,7 +46,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       key: z.string().describe("Key name (e.g. W, SpaceBar, Gamepad_Left2D, MouseXY2D)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("EnhancedInputAddMapping", params);
+      const result = await bridge.send("unreal", "EnhancedInputAddMapping", params);
       return { success: true, message: `Key "${params.key}" mapped to "${params.actionName}" in "${params.contextName}"`, data: result };
     },
   },
@@ -71,7 +70,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       deadZoneUpper: z.number().optional().describe("Dead zone upper threshold"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("EnhancedInputAddModifier", params);
+      const result = await bridge.send("unreal", "EnhancedInputAddModifier", params);
       return { success: true, message: `Modifier ${params.modifierType} added to "${params.key}" on "${params.actionName}"`, data: result };
     },
   },
@@ -91,7 +90,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       interval: z.number().optional().describe("Pulse interval in seconds (for Pulse trigger)"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("EnhancedInputAddTrigger", params);
+      const result = await bridge.send("unreal", "EnhancedInputAddTrigger", params);
       return { success: true, message: `Trigger ${params.triggerType} added to "${params.key}" on "${params.actionName}"`, data: result };
     },
   },
@@ -105,7 +104,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       contextName: z.string().describe("Mapping Context name"),
     }),
     handler: async (params) => {
-      const result = await unrealBridge.send("EnhancedInputListContext", params);
+      const result = await bridge.send("unreal", "EnhancedInputListContext", params);
       return { success: true, message: `Mappings listed for "${params.contextName}"`, data: result };
     },
   },

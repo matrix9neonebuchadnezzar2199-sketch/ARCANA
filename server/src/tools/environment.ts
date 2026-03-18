@@ -1,7 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { unityBridge } from "../bridge/unity-bridge";
-
+import { bridge } from "../bridge";
 export const envSetSkybox: ToolDefinition = {
   id: "env_set_skybox",
   name: "Set Skybox",
@@ -13,7 +12,7 @@ export const envSetSkybox: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EnvSetSkybox", params);
+      const result = await bridge.send("unity", "EnvSetSkybox", params);
       return { success: true, message: `Set skybox to ${params.materialPath}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -37,7 +36,7 @@ export const envSetFog: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EnvSetFog", params);
+      const result = await bridge.send("unity", "EnvSetFog", params);
       return { success: true, message: `Fog ${params.enabled ? "enabled" : "disabled"}`, data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
@@ -58,7 +57,7 @@ export const envSetReflection: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("EnvSetReflection", params);
+      const result = await bridge.send("unity", "EnvSetReflection", params);
       return { success: true, message: "Environment reflection updated", data: result };
     } catch (error: any) {
       return { success: false, message: `Failed: ${error.message}` };
