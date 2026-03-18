@@ -1,0 +1,17 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { blenderBridge } from "../bridge/blender-bridge";
+
+const blCamCreate: ToolDefinition = { id: "bl_camera_create", name: "Create Camera", description: "Create a new camera", descriptionJa: "新しいカメラを作成", category: "bl_camera", inputSchema: z.object({ x: z.number().default(0), y: z.number().default(-10), z: z.number().default(5), type: z.enum(["PERSP","ORTHO","PANO"]).default("PERSP") }), handler: async (p) => { const r = await blenderBridge.send("CameraCreate", p); return r ? { success: true, message: `Camera created (${p.type})`, data: r } : { success: false, message: "Failed" }; } };
+
+const blCamFocalLength: ToolDefinition = { id: "bl_camera_set_focal", name: "Set Focal Length", description: "Set camera focal length in mm", descriptionJa: "カメラの焦点距離をmmで設定", category: "bl_camera", inputSchema: z.object({ name: z.string(), focalLength: z.number().default(50) }), handler: async (p) => { const r = await blenderBridge.send("CameraSetFocal", p); return r ? { success: true, message: `Focal: ${p.focalLength}mm`, data: r } : { success: false, message: "Failed" }; } };
+
+const blCamDOF: ToolDefinition = { id: "bl_camera_set_dof", name: "Set Depth of Field", description: "Configure camera depth of field", descriptionJa: "カメラの被写界深度を設定", category: "bl_camera", inputSchema: z.object({ name: z.string(), enable: z.boolean().default(true), focusDistance: z.number().default(10), fStop: z.number().default(2.8) }), handler: async (p) => { const r = await blenderBridge.send("CameraSetDOF", p); return r ? { success: true, message: `DOF ${p.enable ? "on" : "off"}, f/${p.fStop}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blCamSetActive: ToolDefinition = { id: "bl_camera_set_active", name: "Set Active Camera", description: "Set camera as active scene camera", descriptionJa: "アクティブシーンカメラに設定", category: "bl_camera", inputSchema: z.object({ name: z.string() }), handler: async (p) => { const r = await blenderBridge.send("CameraSetActive", p); return r ? { success: true, message: `Active camera: ${p.name}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blCamTrackTo: ToolDefinition = { id: "bl_camera_track_to", name: "Track To Object", description: "Add Track To constraint to follow an object", descriptionJa: "オブジェクトを追跡するTrack Toコンストレイントを追加", category: "bl_camera", inputSchema: z.object({ camera: z.string(), target: z.string() }), handler: async (p) => { const r = await blenderBridge.send("CameraTrackTo", p); return r ? { success: true, message: `Tracking ${p.target}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blCamBgImage: ToolDefinition = { id: "bl_camera_set_bg_image", name: "Set Background Image", description: "Set camera background reference image", descriptionJa: "カメラの背景参照画像を設定", category: "bl_camera", inputSchema: z.object({ name: z.string(), imagePath: z.string(), opacity: z.number().default(0.5) }), handler: async (p) => { const r = await blenderBridge.send("CameraSetBgImage", p); return r ? { success: true, message: "Background image set", data: r } : { success: false, message: "Failed" }; } };
+
+export const blCameraTools: ToolDefinition[] = [ blCamCreate, blCamFocalLength, blCamDOF, blCamSetActive, blCamTrackTo, blCamBgImage ];

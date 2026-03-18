@@ -1,0 +1,17 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { blenderBridge } from "../bridge/blender-bridge";
+
+const blLightCreate: ToolDefinition = { id: "bl_light_create", name: "Create Light", description: "Create a light (Point/Sun/Spot/Area)", descriptionJa: "ライトを作成（Point/Sun/Spot/Area）", category: "bl_light", inputSchema: z.object({ type: z.enum(["POINT","SUN","SPOT","AREA"]).default("POINT"), x: z.number().default(0), y: z.number().default(0), z: z.number().default(5) }), handler: async (p) => { const r = await blenderBridge.send("LightCreate", p); return r ? { success: true, message: `Light created: ${p.type}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blLightSetColor: ToolDefinition = { id: "bl_light_set_color", name: "Set Light Color", description: "Set light color RGB", descriptionJa: "ライトの色をRGBで設定", category: "bl_light", inputSchema: z.object({ name: z.string(), r: z.number().default(1), g: z.number().default(1), b: z.number().default(1) }), handler: async (p) => { const r = await blenderBridge.send("LightSetColor", p); return r ? { success: true, message: "Light color set", data: r } : { success: false, message: "Failed" }; } };
+
+const blLightSetPower: ToolDefinition = { id: "bl_light_set_power", name: "Set Light Power", description: "Set light power in watts", descriptionJa: "ライトの出力をワットで設定", category: "bl_light", inputSchema: z.object({ name: z.string(), power: z.number().default(1000) }), handler: async (p) => { const r = await blenderBridge.send("LightSetPower", p); return r ? { success: true, message: `Power: ${p.power}W`, data: r } : { success: false, message: "Failed" }; } };
+
+const blLightSetShadow: ToolDefinition = { id: "bl_light_set_shadow", name: "Set Light Shadow", description: "Enable or disable shadow and set softness", descriptionJa: "影の有効/無効とソフトネスを設定", category: "bl_light", inputSchema: z.object({ name: z.string(), enable: z.boolean().default(true), softness: z.number().default(0.25) }), handler: async (p) => { const r = await blenderBridge.send("LightSetShadow", p); return r ? { success: true, message: `Shadow ${p.enable ? "on" : "off"}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blLightSetSize: ToolDefinition = { id: "bl_light_set_size", name: "Set Light Size", description: "Set light source size (radius or area dimensions)", descriptionJa: "ライトソースのサイズを設定", category: "bl_light", inputSchema: z.object({ name: z.string(), size: z.number().default(0.25) }), handler: async (p) => { const r = await blenderBridge.send("LightSetSize", p); return r ? { success: true, message: `Size: ${p.size}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blLightSetType: ToolDefinition = { id: "bl_light_set_type", name: "Change Light Type", description: "Change light type (Point/Sun/Spot/Area)", descriptionJa: "ライトタイプを変更", category: "bl_light", inputSchema: z.object({ name: z.string(), type: z.enum(["POINT","SUN","SPOT","AREA"]) }), handler: async (p) => { const r = await blenderBridge.send("LightSetType", p); return r ? { success: true, message: `Type changed to ${p.type}`, data: r } : { success: false, message: "Failed" }; } };
+
+export const blLightTools: ToolDefinition[] = [ blLightCreate, blLightSetColor, blLightSetPower, blLightSetShadow, blLightSetSize, blLightSetType ];

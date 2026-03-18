@@ -1,0 +1,21 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { blenderBridge } from "../bridge/blender-bridge";
+
+const blParticleAdd: ToolDefinition = { id: "bl_particle_add", name: "Add Particle System", description: "Add emitter particle system", descriptionJa: "エミッターパーティクルシステムを追加", category: "bl_particle", inputSchema: z.object({ name: z.string(), count: z.number().default(1000) }), handler: async (p) => { const r = await blenderBridge.send("ParticleAdd", p); return r ? { success: true, message: `Particles added (${p.count})`, data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleHair: ToolDefinition = { id: "bl_particle_add_hair", name: "Add Hair System", description: "Add hair particle system", descriptionJa: "ヘアーパーティクルシステムを追加", category: "bl_particle", inputSchema: z.object({ name: z.string(), count: z.number().default(500), length: z.number().default(1) }), handler: async (p) => { const r = await blenderBridge.send("ParticleAddHair", p); return r ? { success: true, message: `Hair added (${p.count})`, data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleSetCount: ToolDefinition = { id: "bl_particle_set_count", name: "Set Emission Count", description: "Set number of emitted particles", descriptionJa: "放出パーティクル数を設定", category: "bl_particle", inputSchema: z.object({ name: z.string(), count: z.number() }), handler: async (p) => { const r = await blenderBridge.send("ParticleSetCount", p); return r ? { success: true, message: `Count: ${p.count}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleSetVelocity: ToolDefinition = { id: "bl_particle_set_velocity", name: "Set Velocity", description: "Set particle initial velocity", descriptionJa: "パーティクルの初速を設定", category: "bl_particle", inputSchema: z.object({ name: z.string(), normal: z.number().default(1), random: z.number().default(0) }), handler: async (p) => { const r = await blenderBridge.send("ParticleSetVelocity", p); return r ? { success: true, message: "Velocity set", data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleSetLifetime: ToolDefinition = { id: "bl_particle_set_lifetime", name: "Set Lifetime", description: "Set particle lifetime in frames", descriptionJa: "パーティクルの寿命をフレームで設定", category: "bl_particle", inputSchema: z.object({ name: z.string(), lifetime: z.number().default(50), random: z.number().default(0) }), handler: async (p) => { const r = await blenderBridge.send("ParticleSetLifetime", p); return r ? { success: true, message: `Lifetime: ${p.lifetime}f`, data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleSetGravity: ToolDefinition = { id: "bl_particle_set_gravity", name: "Set Particle Gravity", description: "Set gravity effect on particles", descriptionJa: "パーティクルへの重力効果を設定", category: "bl_particle", inputSchema: z.object({ name: z.string(), factor: z.number().default(1) }), handler: async (p) => { const r = await blenderBridge.send("ParticleSetGravity", p); return r ? { success: true, message: `Gravity factor: ${p.factor}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleSetRender: ToolDefinition = { id: "bl_particle_set_render", name: "Set Render Type", description: "Set particle render type (Halo/Object/Collection/Path)", descriptionJa: "パーティクルのレンダータイプを設定", category: "bl_particle", inputSchema: z.object({ name: z.string(), renderType: z.enum(["HALO","OBJECT","COLLECTION","PATH","NONE"]).default("HALO") }), handler: async (p) => { const r = await blenderBridge.send("ParticleSetRender", p); return r ? { success: true, message: `Render: ${p.renderType}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blParticleRemove: ToolDefinition = { id: "bl_particle_remove", name: "Remove Particle System", description: "Remove particle system from object", descriptionJa: "オブジェクトからパーティクルシステムを削除", category: "bl_particle", inputSchema: z.object({ name: z.string() }), handler: async (p) => { const r = await blenderBridge.send("ParticleRemove", p); return r ? { success: true, message: "Particles removed", data: r } : { success: false, message: "Failed" }; } };
+
+export const blParticleTools: ToolDefinition[] = [ blParticleAdd, blParticleHair, blParticleSetCount, blParticleSetVelocity, blParticleSetLifetime, blParticleSetGravity, blParticleSetRender, blParticleRemove ];

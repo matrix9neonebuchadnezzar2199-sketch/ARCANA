@@ -1,0 +1,21 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { blenderBridge } from "../bridge/blender-bridge";
+
+const blSculptBrush: ToolDefinition = { id: "bl_sculpt_set_brush", name: "Set Sculpt Brush", description: "Set active sculpt brush type", descriptionJa: "スカルプトブラシタイプを設定", category: "bl_sculpt", inputSchema: z.object({ brush: z.enum(["DRAW","CLAY","CLAY_STRIPS","INFLATE","GRAB","SMOOTH","FLATTEN","CREASE","PINCH","SNAKE_HOOK"]).default("DRAW") }), handler: async (p) => { const r = await blenderBridge.send("SculptSetBrush", p); return r ? { success: true, message: `Brush: ${p.brush}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptStrength: ToolDefinition = { id: "bl_sculpt_set_strength", name: "Set Brush Strength", description: "Set sculpt brush strength", descriptionJa: "ブラシ強度を設定", category: "bl_sculpt", inputSchema: z.object({ value: z.number().min(0).max(1).default(0.5) }), handler: async (p) => { const r = await blenderBridge.send("SculptSetStrength", p); return r ? { success: true, message: `Strength: ${p.value}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptRadius: ToolDefinition = { id: "bl_sculpt_set_radius", name: "Set Brush Radius", description: "Set sculpt brush radius in pixels", descriptionJa: "ブラシ半径をピクセルで設定", category: "bl_sculpt", inputSchema: z.object({ value: z.number().min(1).max(500).default(50) }), handler: async (p) => { const r = await blenderBridge.send("SculptSetRadius", p); return r ? { success: true, message: `Radius: ${p.value}px`, data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptDyntopo: ToolDefinition = { id: "bl_sculpt_dyntopo", name: "Toggle Dyntopo", description: "Enable or disable dynamic topology", descriptionJa: "ダイナミックトポロジーの有効/無効を切替", category: "bl_sculpt", inputSchema: z.object({ enable: z.boolean().default(true), detail: z.number().default(12) }), handler: async (p) => { const r = await blenderBridge.send("SculptDyntopo", p); return r ? { success: true, message: p.enable ? "Dyntopo enabled" : "Dyntopo disabled", data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptMultires: ToolDefinition = { id: "bl_sculpt_add_multires", name: "Add Multires", description: "Add multiresolution modifier and subdivide", descriptionJa: "マルチレゾリューションモディファイアを追加", category: "bl_sculpt", inputSchema: z.object({ name: z.string(), levels: z.number().default(2) }), handler: async (p) => { const r = await blenderBridge.send("SculptAddMultires", p); return r ? { success: true, message: `Multires added (${p.levels} levels)`, data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptMask: ToolDefinition = { id: "bl_sculpt_mask", name: "Sculpt Mask", description: "Fill, clear, or invert sculpt mask", descriptionJa: "スカルプトマスクの塗り潰し・クリア・反転", category: "bl_sculpt", inputSchema: z.object({ action: z.enum(["FILL","CLEAR","INVERT"]).default("CLEAR") }), handler: async (p) => { const r = await blenderBridge.send("SculptMask", p); return r ? { success: true, message: `Mask: ${p.action}`, data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptRemesh: ToolDefinition = { id: "bl_sculpt_remesh", name: "Voxel Remesh", description: "Remesh with voxel size", descriptionJa: "ボクセルサイズでリメッシュ", category: "bl_sculpt", inputSchema: z.object({ name: z.string(), voxelSize: z.number().default(0.05) }), handler: async (p) => { const r = await blenderBridge.send("SculptRemesh", p); return r ? { success: true, message: `Remeshed (voxel ${p.voxelSize})`, data: r } : { success: false, message: "Failed" }; } };
+
+const blSculptMode: ToolDefinition = { id: "bl_sculpt_toggle_mode", name: "Toggle Sculpt Mode", description: "Enter or exit sculpt mode", descriptionJa: "スカルプトモードの切替", category: "bl_sculpt", inputSchema: z.object({ name: z.string(), enter: z.boolean().default(true) }), handler: async (p) => { const r = await blenderBridge.send("SculptToggleMode", p); return r ? { success: true, message: p.enter ? "Entered sculpt mode" : "Exited sculpt mode", data: r } : { success: false, message: "Failed" }; } };
+
+export const blSculptTools: ToolDefinition[] = [ blSculptBrush, blSculptStrength, blSculptRadius, blSculptDyntopo, blSculptMultires, blSculptMask, blSculptRemesh, blSculptMode ];

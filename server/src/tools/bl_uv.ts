@@ -1,0 +1,21 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { blenderBridge } from "../bridge/blender-bridge";
+
+const blUVUnwrap: ToolDefinition = { id: "bl_uv_unwrap", name: "UV Unwrap", description: "Unwrap UVs using standard method", descriptionJa: "標準方式でUV展開", category: "bl_uv", inputSchema: z.object({ name: z.string(), method: z.enum(["ANGLE_BASED","CONFORMAL"]).default("ANGLE_BASED") }), handler: async (p) => { const r = await blenderBridge.send("UVUnwrap", p); return r ? { success: true, message: `Unwrapped (${p.method})`, data: r } : { success: false, message: "Failed" }; } };
+
+const blUVProject: ToolDefinition = { id: "bl_uv_smart_project", name: "Smart UV Project", description: "Smart UV projection with angle limit", descriptionJa: "角度制限付きスマートUV投影", category: "bl_uv", inputSchema: z.object({ name: z.string(), angleLimit: z.number().default(66), islandMargin: z.number().default(0.02) }), handler: async (p) => { const r = await blenderBridge.send("UVSmartProject", p); return r ? { success: true, message: "Smart UV projected", data: r } : { success: false, message: "Failed" }; } };
+
+const blUVMarkSeam: ToolDefinition = { id: "bl_uv_mark_seam", name: "Mark Seam", description: "Mark edges as UV seams", descriptionJa: "辺をUVシームとしてマーク", category: "bl_uv", inputSchema: z.object({ name: z.string(), edgeIndices: z.array(z.number()) }), handler: async (p) => { const r = await blenderBridge.send("UVMarkSeam", p); return r ? { success: true, message: "Seams marked", data: r } : { success: false, message: "Failed" }; } };
+
+const blUVClearSeam: ToolDefinition = { id: "bl_uv_clear_seam", name: "Clear Seam", description: "Clear UV seams from edges", descriptionJa: "辺のUVシームをクリア", category: "bl_uv", inputSchema: z.object({ name: z.string() }), handler: async (p) => { const r = await blenderBridge.send("UVClearSeam", p); return r ? { success: true, message: "Seams cleared", data: r } : { success: false, message: "Failed" }; } };
+
+const blUVPack: ToolDefinition = { id: "bl_uv_pack_islands", name: "Pack UV Islands", description: "Pack UV islands to fit in 0-1 space", descriptionJa: "UVアイランドを0-1空間にパック", category: "bl_uv", inputSchema: z.object({ name: z.string(), margin: z.number().default(0.01) }), handler: async (p) => { const r = await blenderBridge.send("UVPackIslands", p); return r ? { success: true, message: "Islands packed", data: r } : { success: false, message: "Failed" }; } };
+
+const blUVAverage: ToolDefinition = { id: "bl_uv_average_scale", name: "Average Island Scale", description: "Equalize UV island sizes", descriptionJa: "UVアイランドのスケールを均等化", category: "bl_uv", inputSchema: z.object({ name: z.string() }), handler: async (p) => { const r = await blenderBridge.send("UVAverageScale", p); return r ? { success: true, message: "Scales averaged", data: r } : { success: false, message: "Failed" }; } };
+
+const blUVRotate: ToolDefinition = { id: "bl_uv_rotate", name: "Rotate UVs", description: "Rotate UV coordinates by degrees", descriptionJa: "UV座標を度単位で回転", category: "bl_uv", inputSchema: z.object({ name: z.string(), angle: z.number().default(90) }), handler: async (p) => { const r = await blenderBridge.send("UVRotate", p); return r ? { success: true, message: `UVs rotated ${p.angle} deg`, data: r } : { success: false, message: "Failed" }; } };
+
+const blUVScale: ToolDefinition = { id: "bl_uv_scale", name: "Scale UVs", description: "Scale UV coordinates", descriptionJa: "UV座標をスケール", category: "bl_uv", inputSchema: z.object({ name: z.string(), scaleX: z.number().default(1), scaleY: z.number().default(1) }), handler: async (p) => { const r = await blenderBridge.send("UVScale", p); return r ? { success: true, message: `UVs scaled (${p.scaleX}, ${p.scaleY})`, data: r } : { success: false, message: "Failed" }; } };
+
+export const blUVTools: ToolDefinition[] = [ blUVUnwrap, blUVProject, blUVMarkSeam, blUVClearSeam, blUVPack, blUVAverage, blUVRotate, blUVScale ];

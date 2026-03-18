@@ -74,6 +74,21 @@ import { ueLevelTools } from "./tools/ue_level";
 import { ueFoliageTools } from "./tools/ue_foliage";
 import { uePcgTools } from "./tools/ue_pcg";
 import { ueMetaHumanTools } from "./tools/ue_metahuman";
+import { blObjectTools } from "./tools/bl_object";
+import { blMeshTools } from "./tools/bl_mesh";
+import { blMaterialTools } from "./tools/bl_material";
+import { blModifierTools } from "./tools/bl_modifier";
+import { blSculptTools } from "./tools/bl_sculpt";
+import { blAnimationTools } from "./tools/bl_animation";
+import { blCameraTools } from "./tools/bl_camera";
+import { blLightTools } from "./tools/bl_light";
+import { blRenderTools } from "./tools/bl_render";
+import { blSceneTools } from "./tools/bl_scene";
+import { blNodeTools } from "./tools/bl_node";
+import { blUVTools } from "./tools/bl_uv";
+import { blParticleTools } from "./tools/bl_particle";
+import { blArmatureTools } from "./tools/bl_armature";
+import { blGreasePencilTools } from "./tools/bl_greasepencil";
 import { vrchatTools } from "./tools/vrchat";
 import { addressablesTools } from "./tools/addressables";
 import { localizationTools } from "./tools/localization";
@@ -127,6 +142,21 @@ const allTools = [
   ...ueFoliageTools,
   ...uePcgTools,
   ...ueMetaHumanTools,
+    ...blObjectTools,
+    ...blMeshTools,
+    ...blMaterialTools,
+    ...blModifierTools,
+    ...blSculptTools,
+    ...blAnimationTools,
+    ...blCameraTools,
+    ...blLightTools,
+    ...blRenderTools,
+    ...blSceneTools,
+    ...blNodeTools,
+    ...blUVTools,
+    ...blParticleTools,
+    ...blArmatureTools,
+    ...blGreasePencilTools,
   ...vrchatTools, ...addressablesTools, ...localizationTools, ...debugTools, ...testingTools, ...profilerTools
 ];
 
@@ -161,7 +191,7 @@ async function main() {
   unityBridge.connect().catch(() => console.log("[ARCANA] Unity not connected yet - will retry on first tool call"));
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP Server running (v5.0.0 - 438 tools)");
+  console.log("[ARCANA] MCP Server running (v6.0.0 - 578 tools)");
 }
 
 main().catch(console.error);
