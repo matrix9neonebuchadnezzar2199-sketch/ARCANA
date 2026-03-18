@@ -148,8 +148,7 @@ const analyzeImageTool: ToolDefinition = {
     imageBase64: z.string().optional().describe("Base64 encoded image data"),
     mode: z.enum(["character", "scene", "full"]).default("full").describe("Analysis mode: character only, scene only, or full (both)"),
   }),
-  handler: async (params: any) => {
-    const mode = params.mode || "full";
+  handler: async (params: any) => { try { const mode = params.mode || "full";
     let prompt = "";
     if (mode === "character") prompt = CHARACTER_ANALYSIS_PROMPT;
     else if (mode === "scene") prompt = SCENE_ANALYSIS_PROMPT;
@@ -164,8 +163,7 @@ const analyzeImageTool: ToolDefinition = {
       prompt: prompt,
       instruction: "Send this prompt along with the image to a Vision-capable AI (Claude, GPT-4V). The AI will return structured JSON parameters. Pass the result to arcana_image_to_character, arcana_image_to_scene, or arcana_image_to_world.",
       note: "This tool provides the analysis schema. The actual vision analysis is performed by the AI client (Claude Vision, etc.) which then feeds parameters to ARCANA execution tools.",
-    } };
-  },
+    } }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
 };
 
 // ============================================================
@@ -184,8 +182,7 @@ const imageToCharacterTool: ToolDefinition = {
     autoExpressions: z.boolean().default(true).describe("Generate Unified Expression shape keys"),
     exportFormat: z.enum(["none", "vrm", "fbx"]).default("none"),
   }),
-  handler: async (params: any) => {
-    const data = params.analysisJson;
+  handler: async (params: any) => { try { const data = params.analysisJson;
     const editor = params.targetEditor || "blender";
 
     // Build the tool execution pipeline from analysis data
@@ -338,8 +335,7 @@ const imageToCharacterTool: ToolDefinition = {
       stepCount: pipeline.length,
       instruction: "Execute this pipeline using arcana_compose or sequentially with arcana_execute.",
       analysisUsed: Object.keys(data),
-    } };
-  },
+    } }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
 };
 
 // ============================================================
@@ -356,8 +352,7 @@ const imageToSceneTool: ToolDefinition = {
     targetEditor: z.enum(["blender", "unity", "unreal"]).default("blender"),
     quality: z.enum(["draft", "normal", "high"]).default("normal"),
   }),
-  handler: async (params: any) => {
-    const data = params.analysisJson;
+  handler: async (params: any) => { try { const data = params.analysisJson;
     const editor = params.targetEditor || "blender";
     const prefix = editor === "blender" ? "bl_" : editor === "unity" ? "" : "ue_";
     const pipeline: any[] = [];
@@ -505,8 +500,7 @@ const imageToSceneTool: ToolDefinition = {
       instruction: "Execute this pipeline using arcana_compose or sequentially with arcana_execute.",
       sceneType: data.environment?.type,
       mood: data.atmosphere?.mood,
-    } };
-  },
+    } }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
 };
 
 // ============================================================
@@ -525,8 +519,7 @@ const imageToWorldTool: ToolDefinition = {
     autoExpressions: z.boolean().default(true),
     quality: z.enum(["draft", "normal", "high"]).default("normal"),
   }),
-  handler: async (params: any) => {
-    const data = params.analysisJson;
+  handler: async (params: any) => { try { const data = params.analysisJson;
     const pipeline: any[] = [];
 
     // Scene first
@@ -572,8 +565,7 @@ const imageToWorldTool: ToolDefinition = {
       characterCount: data.characters?.length || 0,
       hasScene: !!data.scene,
       instruction: "Execute the scene pipeline first, then each character pipeline. Use arcana_compose for sequential execution.",
-    } };
-  },
+    } }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
 };
 
 // ============================================================

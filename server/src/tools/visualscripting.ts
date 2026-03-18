@@ -9,9 +9,13 @@ const vsCreateGraph: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), graphType: z.enum(["script","state"]).default("script") }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsCreateGraph", p);
-    return r ? { success: true, message: `Graph created on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to create graph" };
+    try {
+      const r = await bridge.send("unity", "VsCreateGraph", p);
+      return r ? { success: true, message: `Graph created on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to create graph" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const vsAddNode: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), nodeType: z.string(), posX: z.number().default(0), posY: z.number().default(0) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsAddNode", p);
-    return r ? { success: true, message: `Node ${p.nodeType} added`, data: r }
-             : { success: false, message: "Failed to add node" };
+    try {
+      const r = await bridge.send("unity", "VsAddNode", p);
+      return r ? { success: true, message: `Node ${p.nodeType} added`, data: r }
+               : { success: false, message: "Failed to add node" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const vsConnectNodes: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), fromNodeId: z.string(), fromPort: z.string(), toNodeId: z.string(), toPort: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsConnectNodes", p);
-    return r ? { success: true, message: `Nodes connected: ${p.fromNodeId} -> ${p.toNodeId}`, data: r }
-             : { success: false, message: "Failed to connect nodes" };
+    try {
+      const r = await bridge.send("unity", "VsConnectNodes", p);
+      return r ? { success: true, message: `Nodes connected: ${p.fromNodeId} -> ${p.toNodeId}`, data: r }
+               : { success: false, message: "Failed to connect nodes" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const vsSetVariable: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), varName: z.string(), varType: z.enum(["float","int","bool","string","vector3"]).default("float"), value: z.any() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsSetVariable", p);
-    return r ? { success: true, message: `Variable ${p.varName} set`, data: r }
-             : { success: false, message: "Failed to set variable" };
+    try {
+      const r = await bridge.send("unity", "VsSetVariable", p);
+      return r ? { success: true, message: `Variable ${p.varName} set`, data: r }
+               : { success: false, message: "Failed to set variable" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const vsAddEvent: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), eventType: z.enum(["OnStart","OnUpdate","OnFixedUpdate","OnTriggerEnter","OnTriggerExit","OnCollisionEnter","OnCollisionExit","OnDestroy"]) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsAddEvent", p);
-    return r ? { success: true, message: `Event ${p.eventType} added`, data: r }
-             : { success: false, message: "Failed to add event" };
+    try {
+      const r = await bridge.send("unity", "VsAddEvent", p);
+      return r ? { success: true, message: `Event ${p.eventType} added`, data: r }
+               : { success: false, message: "Failed to add event" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -79,9 +99,13 @@ const vsRemoveNode: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), nodeId: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsRemoveNode", p);
-    return r ? { success: true, message: `Node ${p.nodeId} removed`, data: r }
-             : { success: false, message: "Failed to remove node" };
+    try {
+      const r = await bridge.send("unity", "VsRemoveNode", p);
+      return r ? { success: true, message: `Node ${p.nodeId} removed`, data: r }
+               : { success: false, message: "Failed to remove node" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -93,9 +117,13 @@ const vsAddSubgraph: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string(), subgraphAsset: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsAddSubgraph", p);
-    return r ? { success: true, message: `Subgraph ${p.subgraphAsset} embedded`, data: r }
-             : { success: false, message: "Failed to add subgraph" };
+    try {
+      const r = await bridge.send("unity", "VsAddSubgraph", p);
+      return r ? { success: true, message: `Subgraph ${p.subgraphAsset} embedded`, data: r }
+               : { success: false, message: "Failed to add subgraph" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -107,9 +135,13 @@ const vsListNodes: ToolDefinition = {
   category: "visualscripting",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "VsListNodes", p);
-    return r ? { success: true, message: "Nodes listed", data: r }
-             : { success: false, message: "Failed to list nodes" };
+    try {
+      const r = await bridge.send("unity", "VsListNodes", p);
+      return r ? { success: true, message: "Nodes listed", data: r }
+               : { success: false, message: "Failed to list nodes" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 

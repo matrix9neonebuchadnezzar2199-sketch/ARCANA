@@ -13,8 +13,12 @@ export const localizationTools: ToolDefinition[] = [
       setAsDefault: z.boolean().optional().describe("Set as project default locale"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "LocalizationAddLocale", params);
-      return { success: true, message: `Locale "${params.localeCode}" added${params.setAsDefault ? " (default)" : ""}`, data: result };
+      try {
+        const result = await bridge.send("unity", "LocalizationAddLocale", params);
+        return { success: true, message: `Locale "${params.localeCode}" added${params.setAsDefault ? " (default)" : ""}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -28,8 +32,12 @@ export const localizationTools: ToolDefinition[] = [
       path: z.string().optional().describe("Asset path relative to Assets/ (default: Assets/Localization)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "LocalizationCreateStringTable", params);
-      return { success: true, message: `String table "${params.tableName}" created`, data: result };
+      try {
+        const result = await bridge.send("unity", "LocalizationCreateStringTable", params);
+        return { success: true, message: `String table "${params.tableName}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -44,9 +52,13 @@ export const localizationTools: ToolDefinition[] = [
       values: z.record(z.string()).describe("Locale-to-value map, e.g. { en: 'Start', ja: 'スタート' }"),
     }),
     handler: async (params) => {
-      const localeCount = Object.keys(params.values).length;
-      const result = await bridge.send("unity", "LocalizationAddEntry", params);
-      return { success: true, message: `Entry "${params.key}" added to "${params.tableName}" for ${localeCount} locale(s)`, data: result };
+      try {
+        const localeCount = Object.keys(params.values).length;
+        const result = await bridge.send("unity", "LocalizationAddEntry", params);
+        return { success: true, message: `Entry "${params.key}" added to "${params.tableName}" for ${localeCount} locale(s)`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -64,8 +76,12 @@ export const localizationTools: ToolDefinition[] = [
       overwrite: z.boolean().optional().describe("Overwrite existing keys (default: false)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "LocalizationBatchImport", params);
-      return { success: true, message: `${params.entries.length} entries imported to "${params.tableName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "LocalizationBatchImport", params);
+        return { success: true, message: `${params.entries.length} entries imported to "${params.tableName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -80,8 +96,12 @@ export const localizationTools: ToolDefinition[] = [
       entryKey: z.string().describe("Entry key to bind"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "LocalizationBindUI", params);
-      return { success: true, message: `"${params.objectName}" bound to "${params.tableName}/${params.entryKey}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "LocalizationBindUI", params);
+        return { success: true, message: `"${params.objectName}" bound to "${params.tableName}/${params.entryKey}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

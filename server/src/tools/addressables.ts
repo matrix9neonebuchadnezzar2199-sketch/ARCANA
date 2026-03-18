@@ -15,8 +15,12 @@ export const addressablesTools: ToolDefinition[] = [
       bundleMode: z.enum(["PackTogether", "PackSeparately", "PackTogetherByLabel"]).optional().describe("Bundle packing mode"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "AddressablesCreateGroup", params);
-      return { success: true, message: `Addressable group "${params.groupName}" created`, data: result };
+      try {
+        const result = await bridge.send("unity", "AddressablesCreateGroup", params);
+        return { success: true, message: `Addressable group "${params.groupName}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -32,8 +36,12 @@ export const addressablesTools: ToolDefinition[] = [
       labels: z.array(z.string()).optional().describe("Labels to assign"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "AddressablesMarkAsset", params);
-      return { success: true, message: `Asset "${params.assetPath}" marked as Addressable`, data: result };
+      try {
+        const result = await bridge.send("unity", "AddressablesMarkAsset", params);
+        return { success: true, message: `Asset "${params.assetPath}" marked as Addressable`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -48,8 +56,12 @@ export const addressablesTools: ToolDefinition[] = [
       removeLabels: z.array(z.string()).optional().describe("Labels to remove"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "AddressablesSetLabels", params);
-      return { success: true, message: `Labels updated for "${params.address}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "AddressablesSetLabels", params);
+        return { success: true, message: `Labels updated for "${params.address}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -63,8 +75,12 @@ export const addressablesTools: ToolDefinition[] = [
       profileName: z.string().optional().describe("Build profile name to use"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "AddressablesBuild", params);
-      return { success: true, message: `Addressables build ${params.cleanBuild ? "(clean) " : ""}completed`, data: result };
+      try {
+        const result = await bridge.send("unity", "AddressablesBuild", params);
+        return { success: true, message: `Addressables build ${params.cleanBuild ? "(clean) " : ""}completed`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -78,8 +94,12 @@ export const addressablesTools: ToolDefinition[] = [
       groupFilter: z.string().optional().describe("Filter groups by name pattern"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "AddressablesListGroups", params);
-      return { success: true, message: "Addressable groups listed", data: result };
+      try {
+        const result = await bridge.send("unity", "AddressablesListGroups", params);
+        return { success: true, message: "Addressable groups listed", data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -93,8 +113,12 @@ export const addressablesTools: ToolDefinition[] = [
       autoFix: z.boolean().optional().describe("Auto-fix detected issues"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "AddressablesAnalyze", params);
-      return { success: true, message: "Addressables analysis completed", data: result };
+      try {
+        const result = await bridge.send("unity", "AddressablesAnalyze", params);
+        return { success: true, message: "Addressables analysis completed", data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

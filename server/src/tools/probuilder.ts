@@ -15,8 +15,12 @@ export const probuilderTools: ToolDefinition[] = [
       size: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Size"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderCreateShape", params);
-      return { success: true, message: `ProBuilder ${params.shape} created`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderCreateShape", params);
+        return { success: true, message: `ProBuilder ${params.shape} created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -31,8 +35,12 @@ export const probuilderTools: ToolDefinition[] = [
       distance: z.number().describe("Extrusion distance"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderExtrudeFaces", params);
-      return { success: true, message: `Extruded ${params.faceIndices.length} faces by ${params.distance}`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderExtrudeFaces", params);
+        return { success: true, message: `Extruded ${params.faceIndices.length} faces by ${params.distance}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -46,8 +54,12 @@ export const probuilderTools: ToolDefinition[] = [
       iterations: z.number().optional().describe("Number of subdivision iterations (default: 1)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderSubdivide", params);
-      return { success: true, message: `Mesh "${params.objectName}" subdivided`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderSubdivide", params);
+        return { success: true, message: `Mesh "${params.objectName}" subdivided`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -61,8 +73,12 @@ export const probuilderTools: ToolDefinition[] = [
       resultName: z.string().optional().describe("Name for the merged object"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderMergeObjects", params);
-      return { success: true, message: `Merged ${params.objectNames.length} objects`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderMergeObjects", params);
+        return { success: true, message: `Merged ${params.objectNames.length} objects`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -77,8 +93,12 @@ export const probuilderTools: ToolDefinition[] = [
       operation: z.enum(["Union", "Subtract", "Intersect"]).describe("Boolean operation type"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderBooleanOperation", params);
-      return { success: true, message: `Boolean ${params.operation}: ${params.objectA} & ${params.objectB}`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderBooleanOperation", params);
+        return { success: true, message: `Boolean ${params.operation}: ${params.objectA} & ${params.objectB}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -95,8 +115,12 @@ export const probuilderTools: ToolDefinition[] = [
       })).describe("Material assignments per face group"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderSetMaterialPerFace", params);
-      return { success: true, message: `Materials assigned on "${params.objectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderSetMaterialPerFace", params);
+        return { success: true, message: `Materials assigned on "${params.objectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -112,8 +136,12 @@ export const probuilderTools: ToolDefinition[] = [
       tilingY: z.number().optional().describe("Tiling Y"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderGenerateUV", params);
-      return { success: true, message: `UV generated for "${params.objectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderGenerateUV", params);
+        return { success: true, message: `UV generated for "${params.objectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -128,8 +156,12 @@ export const probuilderTools: ToolDefinition[] = [
       path: z.string().optional().describe("Export path relative to Assets/"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "ProBuilderExportMesh", params);
-      return { success: true, message: `Mesh "${params.objectName}" exported as ${params.format || "Asset"}`, data: result };
+      try {
+        const result = await bridge.send("unity", "ProBuilderExportMesh", params);
+        return { success: true, message: `Mesh "${params.objectName}" exported as ${params.format || "Asset"}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

@@ -15,8 +15,12 @@ export const recipePipelineTools: ToolDefinition[] = [
       applyTransform: z.boolean().optional().describe("Apply transform on export (default true)"),
     }),
     handler: async (params) => {
-      await bridge.send("blender", "pipeline_export_fbx", params);
-      return bridge.send("unity", "pipeline_import_fbx", params);
+      try {
+        await bridge.send("blender", "pipeline_export_fbx", params);
+        return bridge.send("unity", "pipeline_import_fbx", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -31,8 +35,12 @@ export const recipePipelineTools: ToolDefinition[] = [
       generateCollision: z.boolean().optional().describe("Auto-generate collision (default true)"),
     }),
     handler: async (params) => {
-      await bridge.send("blender", "pipeline_export_fbx_ue", params);
-      return bridge.send("unreal", "pipeline_import_fbx", params);
+      try {
+        await bridge.send("blender", "pipeline_export_fbx_ue", params);
+        return bridge.send("unreal", "pipeline_import_fbx", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -46,8 +54,12 @@ export const recipePipelineTools: ToolDefinition[] = [
       unrealPath: z.string().optional().describe("Unreal destination path"),
     }),
     handler: async (params) => {
-      await bridge.send("unity", "pipeline_export_prefab", params);
-      return bridge.send("unreal", "pipeline_import_converted", params);
+      try {
+        await bridge.send("unity", "pipeline_export_prefab", params);
+        return bridge.send("unreal", "pipeline_import_converted", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -63,7 +75,11 @@ export const recipePipelineTools: ToolDefinition[] = [
       maxResolution: z.number().optional().describe("Max resolution (default 2048)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "pipeline_texture_batch_convert", params);
+      try {
+        return bridge.send(params.editor, "pipeline_texture_batch_convert", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -79,7 +95,11 @@ export const recipePipelineTools: ToolDefinition[] = [
       boneMapping: z.record(z.string()).optional().describe("Custom bone name mapping overrides"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "pipeline_animation_retarget", params);
+      try {
+        return bridge.send(params.editor, "pipeline_animation_retarget", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -95,8 +115,12 @@ export const recipePipelineTools: ToolDefinition[] = [
       reductionRatios: z.array(z.number()).optional().describe("Polygon reduction ratios per level (default [1.0, 0.5, 0.25])"),
     }),
     handler: async (params) => {
-      await bridge.send("blender", "pipeline_generate_lods", params);
-      return bridge.send(params.targetEditor, "pipeline_import_lod_group", params);
+      try {
+        await bridge.send("blender", "pipeline_generate_lods", params);
+        return bridge.send(params.targetEditor, "pipeline_import_lod_group", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -111,8 +135,12 @@ export const recipePipelineTools: ToolDefinition[] = [
       targetMaterialPath: z.string().optional().describe("Target material asset path"),
     }),
     handler: async (params) => {
-      const matData = await bridge.send("blender", "pipeline_read_material", params);
-      return bridge.send(params.targetEditor, "pipeline_apply_material", { ...params, matData });
+      try {
+        const matData = await bridge.send("blender", "pipeline_read_material", params);
+        return bridge.send(params.targetEditor, "pipeline_apply_material", { ...params, matData });
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -127,8 +155,12 @@ export const recipePipelineTools: ToolDefinition[] = [
       samples: z.number().optional().describe("Bake samples (default 128)"),
     }),
     handler: async (params) => {
-      const bakeResult = await bridge.send("blender", "pipeline_bake_lightmap", params);
-      return bridge.send(params.targetEditor, "pipeline_import_lightmap", { ...params, bakeResult });
+      try {
+        const bakeResult = await bridge.send("blender", "pipeline_bake_lightmap", params);
+        return bridge.send(params.targetEditor, "pipeline_import_lightmap", { ...params, bakeResult });
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -145,7 +177,11 @@ export const recipePipelineTools: ToolDefinition[] = [
       maxBones: z.number().optional().describe("Max bone count (default 256)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "pipeline_asset_validator", params);
+      try {
+        return bridge.send(params.editor, "pipeline_asset_validator", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -162,7 +198,11 @@ export const recipePipelineTools: ToolDefinition[] = [
       targetEditor: z.enum(["unity", "unreal"]).optional().describe("Optimize settings for target editor"),
     }),
     handler: async (params) => {
-      return bridge.send("blender", "pipeline_batch_export", params);
+      try {
+        return bridge.send("blender", "pipeline_batch_export", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

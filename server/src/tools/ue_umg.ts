@@ -14,8 +14,12 @@ export const ueUmgTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path (e.g. /Game/UI/)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGCreateWidget", params);
-      return { success: true, message: `Widget "${params.name}" created`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGCreateWidget", params);
+        return { success: true, message: `Widget "${params.name}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -33,8 +37,12 @@ export const ueUmgTools: ToolDefinition[] = [
       alignment: z.object({ x: z.number(), y: z.number() }).optional().describe("Alignment (0-1)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGAddElement", params);
-      return { success: true, message: `${params.elementType} "${params.elementName}" added to "${params.widgetName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGAddElement", params);
+        return { success: true, message: `${params.elementType} "${params.elementName}" added to "${params.widgetName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -50,8 +58,12 @@ export const ueUmgTools: ToolDefinition[] = [
       parentSlot: z.string().optional().describe("Parent element name"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGAddLayoutPanel", params);
-      return { success: true, message: `${params.panelType} "${params.panelName}" added to "${params.widgetName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGAddLayoutPanel", params);
+        return { success: true, message: `${params.panelType} "${params.panelName}" added to "${params.widgetName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -71,8 +83,12 @@ export const ueUmgTools: ToolDefinition[] = [
       offsetBottom: z.number().optional().describe("Bottom offset"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGSetAnchors", params);
-      return { success: true, message: `Anchors set on "${params.elementName}" in "${params.widgetName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGSetAnchors", params);
+        return { success: true, message: `Anchors set on "${params.elementName}" in "${params.widgetName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -90,8 +106,12 @@ export const ueUmgTools: ToolDefinition[] = [
       visibility: z.enum(["Visible", "Collapsed", "Hidden", "HitTestInvisible", "SelfHitTestInvisible"]).optional().describe("Visibility state"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGSetStyle", params);
-      return { success: true, message: `Style updated on "${params.elementName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGSetStyle", params);
+        return { success: true, message: `Style updated on "${params.elementName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -107,8 +127,12 @@ export const ueUmgTools: ToolDefinition[] = [
       functionName: z.string().describe("Function name to bind to"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGBindEvent", params);
-      return { success: true, message: `${params.eventType} on "${params.elementName}" bound to "${params.functionName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGBindEvent", params);
+        return { success: true, message: `${params.eventType} on "${params.elementName}" bound to "${params.functionName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -132,8 +156,12 @@ export const ueUmgTools: ToolDefinition[] = [
       looping: z.boolean().optional().describe("Loop the animation"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGAddAnimation", params);
-      return { success: true, message: `Animation "${params.animationName}" created in "${params.widgetName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGAddAnimation", params);
+        return { success: true, message: `Animation "${params.animationName}" created in "${params.widgetName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -148,9 +176,13 @@ export const ueUmgTools: ToolDefinition[] = [
       zOrder: z.number().optional().describe("Z-order (higher = on top)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "UMGShowWidget", params);
-      const msg = params.action === "AddToViewport" ? `"${params.widgetName}" added to viewport` : `"${params.widgetName}" removed`;
-      return { success: true, message: msg, data: result };
+      try {
+        const result = await bridge.send("unreal", "UMGShowWidget", params);
+        const msg = params.action === "AddToViewport" ? `"${params.widgetName}" added to viewport` : `"${params.widgetName}" removed`;
+        return { success: true, message: msg, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

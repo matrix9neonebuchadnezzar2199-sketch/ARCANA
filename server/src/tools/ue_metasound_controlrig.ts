@@ -15,8 +15,12 @@ export const ueMetaSoundTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path (e.g. /Game/Audio/)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "MetaSoundCreateSource", params);
-      return { success: true, message: `MetaSound source "${params.name}" created`, data: result };
+      try {
+        const result = await bridge.send("unreal", "MetaSoundCreateSource", params);
+        return { success: true, message: `MetaSound source "${params.name}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -31,8 +35,12 @@ export const ueMetaSoundTools: ToolDefinition[] = [
       nodeName: z.string().optional().describe("Custom node label"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "MetaSoundAddNode", params);
-      return { success: true, message: `${params.nodeType} node added to "${params.sourceName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "MetaSoundAddNode", params);
+        return { success: true, message: `${params.nodeType} node added to "${params.sourceName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -49,8 +57,12 @@ export const ueMetaSoundTools: ToolDefinition[] = [
       toPin: z.string().describe("Input pin name"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "MetaSoundConnectNodes", params);
-      return { success: true, message: `Connected ${params.fromNode}.${params.fromPin} -> ${params.toNode}.${params.toPin}`, data: result };
+      try {
+        const result = await bridge.send("unreal", "MetaSoundConnectNodes", params);
+        return { success: true, message: `Connected ${params.fromNode}.${params.fromPin} -> ${params.toNode}.${params.toPin}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -66,8 +78,12 @@ export const ueMetaSoundTools: ToolDefinition[] = [
       value: z.number().describe("Parameter value"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "MetaSoundSetParameter", params);
-      return { success: true, message: `${params.parameterName} = ${params.value} on "${params.nodeName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "MetaSoundSetParameter", params);
+        return { success: true, message: `${params.parameterName} = ${params.value} on "${params.nodeName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -84,8 +100,12 @@ export const ueMetaSoundTools: ToolDefinition[] = [
       defaultValue: z.number().optional().describe("Default value (for numeric types)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "MetaSoundAddInputOutput", params);
-      return { success: true, message: `${params.direction} "${params.paramName}" (${params.paramType}) added to "${params.sourceName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "MetaSoundAddInputOutput", params);
+        return { success: true, message: `${params.direction} "${params.paramName}" (${params.paramType}) added to "${params.sourceName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];
@@ -105,8 +125,12 @@ export const ueControlRigTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "ControlRigCreate", params);
-      return { success: true, message: `Control Rig "${params.name}" created`, data: result };
+      try {
+        const result = await bridge.send("unreal", "ControlRigCreate", params);
+        return { success: true, message: `Control Rig "${params.name}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -124,8 +148,12 @@ export const ueControlRigTools: ToolDefinition[] = [
       color: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Gizmo color"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "ControlRigAddControl", params);
-      return { success: true, message: `Control "${params.controlName}" (${params.controlType}) added to "${params.rigName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "ControlRigAddControl", params);
+        return { success: true, message: `Control "${params.controlName}" (${params.controlType}) added to "${params.rigName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -143,8 +171,12 @@ export const ueControlRigTools: ToolDefinition[] = [
       createControls: z.boolean().optional().describe("Auto-create controls for the chain (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "ControlRigAddBoneChain", params);
-      return { success: true, message: `${params.chainType} chain set from "${params.startBone}" to "${params.endBone}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "ControlRigAddBoneChain", params);
+        return { success: true, message: `${params.chainType} chain set from "${params.startBone}" to "${params.endBone}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -162,8 +194,12 @@ export const ueControlRigTools: ToolDefinition[] = [
       maintainOffset: z.boolean().optional().describe("Maintain current offset"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "ControlRigAddConstraint", params);
-      return { success: true, message: `${params.constraintType} constraint: "${params.targetElement}" -> "${params.sourceElement}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "ControlRigAddConstraint", params);
+        return { success: true, message: `${params.constraintType} constraint: "${params.targetElement}" -> "${params.sourceElement}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -177,8 +213,12 @@ export const ueControlRigTools: ToolDefinition[] = [
       rigAssetPath: z.string().describe("Control Rig asset path"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "ControlRigAssignToMesh", params);
-      return { success: true, message: `Control Rig assigned to "${params.actorName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "ControlRigAssignToMesh", params);
+        return { success: true, message: `Control Rig assigned to "${params.actorName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

@@ -9,9 +9,13 @@ const streamingLoadScene: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string(), mode: z.enum(["Single","Additive"]).default("Additive") }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "StreamingLoadScene", p);
-    return r ? { success: true, message: `Scene ${p.sceneName} loading (${p.mode})`, data: r }
-             : { success: false, message: "Failed to load scene" };
+    try {
+      const r = await bridge.send("unity", "StreamingLoadScene", p);
+      return r ? { success: true, message: `Scene ${p.sceneName} loading (${p.mode})`, data: r }
+               : { success: false, message: "Failed to load scene" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const streamingUnloadScene: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "StreamingUnloadScene", p);
-    return r ? { success: true, message: `Scene ${p.sceneName} unloading`, data: r }
-             : { success: false, message: "Failed to unload scene" };
+    try {
+      const r = await bridge.send("unity", "StreamingUnloadScene", p);
+      return r ? { success: true, message: `Scene ${p.sceneName} unloading`, data: r }
+               : { success: false, message: "Failed to unload scene" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const streamingSetActiveScene: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "StreamingSetActiveScene", p);
-    return r ? { success: true, message: `Active scene set to ${p.sceneName}`, data: r }
-             : { success: false, message: "Failed to set active scene" };
+    try {
+      const r = await bridge.send("unity", "StreamingSetActiveScene", p);
+      return r ? { success: true, message: `Active scene set to ${p.sceneName}`, data: r }
+               : { success: false, message: "Failed to set active scene" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const streamingGetLoadedScenes: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({}),
   handler: async (p) => {
-    const r = await bridge.send("unity", "StreamingGetLoadedScenes", p);
-    return r ? { success: true, message: "Loaded scenes retrieved", data: r }
-             : { success: false, message: "Failed to get loaded scenes" };
+    try {
+      const r = await bridge.send("unity", "StreamingGetLoadedScenes", p);
+      return r ? { success: true, message: "Loaded scenes retrieved", data: r }
+               : { success: false, message: "Failed to get loaded scenes" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const streamingPreload: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "StreamingPreload", p);
-    return r ? { success: true, message: `Scene ${p.sceneName} preloading`, data: r }
-             : { success: false, message: "Failed to preload scene" };
+    try {
+      const r = await bridge.send("unity", "StreamingPreload", p);
+      return r ? { success: true, message: `Scene ${p.sceneName} preloading`, data: r }
+               : { success: false, message: "Failed to preload scene" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -79,9 +99,13 @@ const streamingGetProgress: ToolDefinition = {
   category: "streaming",
   inputSchema: z.object({ sceneName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "StreamingGetProgress", p);
-    return r ? { success: true, message: "Loading progress retrieved", data: r }
-             : { success: false, message: "Failed to get progress" };
+    try {
+      const r = await bridge.send("unity", "StreamingGetProgress", p);
+      return r ? { success: true, message: "Loading progress retrieved", data: r }
+               : { success: false, message: "Failed to get progress" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 

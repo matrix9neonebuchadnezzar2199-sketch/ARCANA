@@ -13,8 +13,12 @@ export const uePcgTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path (e.g. /Game/PCG/)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "PCGCreateGraph", params);
-      return { success: true, message: `PCG graph "${params.name}" created`, data: result };
+      try {
+        const result = await bridge.send("unreal", "PCGCreateGraph", params);
+        return { success: true, message: `PCG graph "${params.name}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -34,8 +38,12 @@ export const uePcgTools: ToolDefinition[] = [
       seed: z.number().optional().describe("Random seed"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "PCGAddScatterNode", params);
-      return { success: true, message: `Scatter node added to "${params.graphName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "PCGAddScatterNode", params);
+        return { success: true, message: `Scatter node added to "${params.graphName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -53,8 +61,12 @@ export const uePcgTools: ToolDefinition[] = [
       invert: z.boolean().optional().describe("Invert filter result"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "PCGAddFilterNode", params);
-      return { success: true, message: `${params.filterType} filter added to "${params.graphName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "PCGAddFilterNode", params);
+        return { success: true, message: `${params.filterType} filter added to "${params.graphName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -71,8 +83,12 @@ export const uePcgTools: ToolDefinition[] = [
       fillMode: z.enum(["None", "Interior", "Exterior"]).optional().describe("Area fill mode"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "PCGAddSplineSampler", params);
-      return { success: true, message: `Spline sampler added to "${params.graphName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "PCGAddSplineSampler", params);
+        return { success: true, message: `Spline sampler added to "${params.graphName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -88,8 +104,12 @@ export const uePcgTools: ToolDefinition[] = [
       generateOnLoad: z.boolean().optional().describe("Generate on level load (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "PCGSpawnActor", params);
-      return { success: true, message: `PCG volume placed for "${params.graphName}"`, data: result };
+      try {
+        const result = await bridge.send("unreal", "PCGSpawnActor", params);
+        return { success: true, message: `PCG volume placed for "${params.graphName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -103,9 +123,13 @@ export const uePcgTools: ToolDefinition[] = [
       newSeed: z.number().optional().describe("New random seed"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unreal", "PCGRegenerate", params);
-      const target = params.actorName || "all PCG actors";
-      return { success: true, message: `PCG regenerated: ${target}`, data: result };
+      try {
+        const result = await bridge.send("unreal", "PCGRegenerate", params);
+        const target = params.actorName || "all PCG actors";
+        return { success: true, message: `PCG regenerated: ${target}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

@@ -17,8 +17,12 @@ export const cinemachineTools: ToolDefinition[] = [
       priority: z.number().optional().describe("Camera priority"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineCreateVirtualCamera", params);
-      return { success: true, message: `Virtual camera "${params.name}" created`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineCreateVirtualCamera", params);
+        return { success: true, message: `Virtual camera "${params.name}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -39,8 +43,12 @@ export const cinemachineTools: ToolDefinition[] = [
       bottomRigRadius: z.number().optional().describe("Bottom rig radius"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineCreateFreeLook", params);
-      return { success: true, message: `FreeLook camera "${params.name}" created`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineCreateFreeLook", params);
+        return { success: true, message: `FreeLook camera "${params.name}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -56,8 +64,12 @@ export const cinemachineTools: ToolDefinition[] = [
       style: z.enum(["EaseInOut", "EaseIn", "EaseOut", "HardIn", "HardOut", "Linear", "Cut"]).optional().describe("Blend curve style"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineSetBlend", params);
-      return { success: true, message: `Blend set: ${params.fromCamera} -> ${params.toCamera} (${params.blendTime}s)`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineSetBlend", params);
+        return { success: true, message: `Blend set: ${params.fromCamera} -> ${params.toCamera} (${params.blendTime}s)`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -75,8 +87,12 @@ export const cinemachineTools: ToolDefinition[] = [
       looped: z.boolean().optional().describe("Whether the track loops"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineCreateDollyTrack", params);
-      return { success: true, message: `Dolly track "${params.name}" created with ${params.waypoints.length} waypoints`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineCreateDollyTrack", params);
+        return { success: true, message: `Dolly track "${params.name}" created with ${params.waypoints.length} waypoints`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -92,8 +108,12 @@ export const cinemachineTools: ToolDefinition[] = [
       frequencyGain: z.number().optional().describe("Frequency multiplier"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineSetNoise", params);
-      return { success: true, message: `Noise "${params.profile}" applied to "${params.cameraName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineSetNoise", params);
+        return { success: true, message: `Noise "${params.profile}" applied to "${params.cameraName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -109,8 +129,12 @@ export const cinemachineTools: ToolDefinition[] = [
       is2D: z.boolean().optional().describe("Use 2D confiner mode"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineSetConfiner", params);
-      return { success: true, message: `Confiner set on "${params.cameraName}" bounded by "${params.boundsObjectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineSetConfiner", params);
+        return { success: true, message: `Confiner set on "${params.cameraName}" bounded by "${params.boundsObjectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -124,8 +148,12 @@ export const cinemachineTools: ToolDefinition[] = [
       priority: z.number().describe("New priority value (higher = more likely active)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineSetPriority", params);
-      return { success: true, message: `Priority of "${params.cameraName}" set to ${params.priority}`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineSetPriority", params);
+        return { success: true, message: `Priority of "${params.cameraName}" set to ${params.priority}`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -142,8 +170,12 @@ export const cinemachineTools: ToolDefinition[] = [
       activationPriority: z.number().optional().describe("Priority when activated"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "CinemachineCreateCameraTrigger", params);
-      return { success: true, message: `Camera trigger "${params.name}" created for "${params.cameraName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "CinemachineCreateCameraTrigger", params);
+        return { success: true, message: `Camera trigger "${params.name}" created for "${params.cameraName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

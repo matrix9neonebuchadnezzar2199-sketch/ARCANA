@@ -7,7 +7,7 @@ const ueMaterialCreate: ToolDefinition = {
   descriptionJa: "新しいマテリアルアセットを作成",
   category: "ue_material",
   inputSchema: z.object({ name: z.string(), path: z.string().default("/Game/Materials") }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialCreate", p); return r ? { success: true, message: `Material created: ${p.name}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialCreate", p); return r ? { success: true, message: `Material created: ${p.name}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialSetColor: ToolDefinition = {
@@ -16,7 +16,7 @@ const ueMaterialSetColor: ToolDefinition = {
   descriptionJa: "マテリアルのベースカラーを設定",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), r: z.number().default(1), g: z.number().default(1), b: z.number().default(1), a: z.number().default(1) }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialSetColor", p); return r ? { success: true, message: `Color set on ${p.actorName}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialSetColor", p); return r ? { success: true, message: `Color set on ${p.actorName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialSetMetallic: ToolDefinition = {
@@ -25,7 +25,7 @@ const ueMaterialSetMetallic: ToolDefinition = {
   descriptionJa: "マテリアルのメタリック値を設定",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), value: z.number().min(0).max(1).default(0) }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialSetMetallic", p); return r ? { success: true, message: `Metallic set to ${p.value}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialSetMetallic", p); return r ? { success: true, message: `Metallic set to ${p.value}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialSetRoughness: ToolDefinition = {
@@ -34,7 +34,7 @@ const ueMaterialSetRoughness: ToolDefinition = {
   descriptionJa: "マテリアルのラフネス値を設定",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), value: z.number().min(0).max(1).default(0.5) }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialSetRoughness", p); return r ? { success: true, message: `Roughness set to ${p.value}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialSetRoughness", p); return r ? { success: true, message: `Roughness set to ${p.value}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialSetEmissive: ToolDefinition = {
@@ -43,7 +43,7 @@ const ueMaterialSetEmissive: ToolDefinition = {
   descriptionJa: "エミッシブカラーと強度を設定",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), r: z.number().default(1), g: z.number().default(1), b: z.number().default(1), intensity: z.number().default(1) }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialSetEmissive", p); return r ? { success: true, message: `Emissive set on ${p.actorName}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialSetEmissive", p); return r ? { success: true, message: `Emissive set on ${p.actorName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialSetTexture: ToolDefinition = {
@@ -52,7 +52,7 @@ const ueMaterialSetTexture: ToolDefinition = {
   descriptionJa: "マテリアルパラメータにテクスチャを設定",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), texturePath: z.string(), parameter: z.string().default("BaseColor") }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialSetTexture", p); return r ? { success: true, message: `Texture set: ${p.parameter}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialSetTexture", p); return r ? { success: true, message: `Texture set: ${p.parameter}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialSetOpacity: ToolDefinition = {
@@ -61,7 +61,7 @@ const ueMaterialSetOpacity: ToolDefinition = {
   descriptionJa: "マテリアルの不透明度とブレンドモードを設定",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), opacity: z.number().min(0).max(1).default(1), blendMode: z.enum(["Opaque","Translucent","Masked","Additive"]).default("Opaque") }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialSetOpacity", p); return r ? { success: true, message: `Opacity set to ${p.opacity}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialSetOpacity", p); return r ? { success: true, message: `Opacity set to ${p.opacity}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 const ueMaterialAssign: ToolDefinition = {
@@ -70,7 +70,7 @@ const ueMaterialAssign: ToolDefinition = {
   descriptionJa: "アセットパスでアクターにマテリアルを割り当て",
   category: "ue_material",
   inputSchema: z.object({ actorName: z.string(), materialPath: z.string(), slotIndex: z.number().default(0) }),
-  handler: async (p) => { const r = await bridge.send("unreal", "MaterialAssign", p); return r ? { success: true, message: `Material assigned to ${p.actorName}`, data: r } : { success: false, message: "Failed" }; }
+  handler: async (p) => { try { const r = await bridge.send("unreal", "MaterialAssign", p); return r ? { success: true, message: `Material assigned to ${p.actorName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
 };
 
 export const ueMaterialTools: ToolDefinition[] = [

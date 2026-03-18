@@ -13,7 +13,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       checks: z.array(z.enum(["missing_refs", "unused_assets", "duplicate_materials", "script_errors", "all"])).optional().describe("Checks to run (default all)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_health_check", params);
+      try {
+        return bridge.send(params.editor, "project_health_check", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -27,7 +31,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       maxSize: z.number().optional().describe("Max recommended texture size in px (default 2048)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_texture_audit", params);
+      try {
+        return bridge.send(params.editor, "project_texture_audit", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -41,7 +49,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       budget: z.number().optional().describe("Total polygon budget (default 500000)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_polygon_budget", params);
+      try {
+        return bridge.send(params.editor, "project_polygon_budget", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -55,7 +67,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       convention: z.enum(["unity_standard", "ue_standard", "custom"]).optional().describe("Naming convention set"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_naming_convention", params);
+      try {
+        return bridge.send(params.editor, "project_naming_convention", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -68,7 +84,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_build_size_report", params);
+      try {
+        return bridge.send(params.editor, "project_build_size_report", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -81,7 +101,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_scene_profiler", params);
+      try {
+        return bridge.send(params.editor, "project_scene_profiler", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -95,7 +119,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       mode: z.enum(["report", "remove", "suggest"]).optional().describe("Fix mode (default report)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_missing_reference_fix", params);
+      try {
+        return bridge.send(params.editor, "project_missing_reference_fix", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -110,7 +138,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       customLayers: z.array(z.string()).optional().describe("Custom layer names (if template is custom)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_layer_tag_setup", params);
+      try {
+        return bridge.send(params.editor, "project_layer_tag_setup", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -124,7 +156,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       genre: z.enum(["fps", "rpg", "platformer", "simulation", "general"]).optional().describe("Game genre for tailored structure"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_folder_structure", params);
+      try {
+        return bridge.send(params.editor, "project_folder_structure", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -138,7 +174,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       extras: z.array(z.string()).optional().describe("Extra ignore patterns"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_gitignore_setup", params);
+      try {
+        return bridge.send(params.editor, "project_gitignore_setup", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -152,7 +192,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       template: z.enum(["fps", "rpg", "platformer", "custom"]).describe("Game template"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_collision_matrix", params);
+      try {
+        return bridge.send(params.editor, "project_collision_matrix", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -166,7 +210,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       platform: z.enum(["pc", "mobile", "console", "vr"]).optional().describe("Target platform"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_quality_settings", params);
+      try {
+        return bridge.send(params.editor, "project_quality_settings", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -180,7 +228,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       genre: z.enum(["fps", "tps", "rpg", "platformer", "racing", "fighting"]).describe("Game genre"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_input_preset", params);
+      try {
+        return bridge.send(params.editor, "project_input_preset", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -194,7 +246,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       groups: z.array(z.string()).optional().describe("Mixer groups (default BGM, SFX, Voice, Ambience)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_audio_setup", params);
+      try {
+        return bridge.send(params.editor, "project_audio_setup", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -209,7 +265,11 @@ export const recipeProjectTools: ToolDefinition[] = [
       description: z.string().optional().describe("Template description"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "project_scene_template_save", params);
+      try {
+        return bridge.send(params.editor, "project_scene_template_save", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

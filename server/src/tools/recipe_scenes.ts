@@ -15,7 +15,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       spawnCount: z.number().optional().describe("Number of spawn points (default 8)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_fps_scene", params);
+      try {
+        return bridge.send(params.editor, "recipe_fps_scene", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -30,7 +34,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       coverCount: z.number().optional().describe("Number of cover objects (default 20)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_tps_scene", params);
+      try {
+        return bridge.send(params.editor, "recipe_tps_scene", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -46,7 +54,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       platformCount: z.number().optional().describe("Number of platforms (default 15)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_platformer_scene", params);
+      try {
+        return bridge.send(params.editor, "recipe_platformer_scene", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -61,7 +73,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       fogDensity: z.number().optional().describe("Fog density 0.0-1.0 (default 0.6)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_horror_scene", params);
+      try {
+        return bridge.send(params.editor, "recipe_horror_scene", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -76,7 +92,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       lapCount: z.number().optional().describe("Number of laps (default 3)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_racing_scene", params);
+      try {
+        return bridge.send(params.editor, "recipe_racing_scene", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -92,7 +112,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       hasBoss: z.boolean().optional().describe("Include boss room (default true)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_rpg_dungeon", params);
+      try {
+        return bridge.send(params.editor, "recipe_rpg_dungeon", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -107,7 +131,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       biome: z.enum(["temperate", "tropical", "arctic", "desert"]).optional().describe("Primary biome"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_open_world_base", params);
+      try {
+        return bridge.send(params.editor, "recipe_open_world_base", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -122,7 +150,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       interactableCount: z.number().optional().describe("Grabbable objects (default 10)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_vr_room", params);
+      try {
+        return bridge.send(params.editor, "recipe_vr_room", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -137,7 +169,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       title: z.string().optional().describe("Game title text"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_ui_main_menu", params);
+      try {
+        return bridge.send(params.editor, "recipe_ui_main_menu", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -151,7 +187,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       genre: z.enum(["fps", "rpg", "racing", "platformer"]).optional().describe("Genre preset"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_ui_hud", params);
+      try {
+        return bridge.send(params.editor, "recipe_ui_hud", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -166,7 +206,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       columns: z.number().optional().describe("Grid columns (default 6)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_ui_inventory", params);
+      try {
+        return bridge.send(params.editor, "recipe_ui_inventory", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -181,7 +225,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       style: z.enum(["jrpg", "visual_novel", "western", "minimal"]).optional().describe("Dialogue style"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_ui_dialogue", params);
+      try {
+        return bridge.send(params.editor, "recipe_ui_dialogue", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -195,7 +243,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       preset: z.enum(["soft", "dramatic", "product", "portrait"]).optional().describe("Lighting mood"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_lighting_studio", params);
+      try {
+        return bridge.send(params.editor, "recipe_lighting_studio", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -210,7 +262,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       tiling: z.number().optional().describe("UV tiling (default 1)"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_pbr_material", params);
+      try {
+        return bridge.send(params.editor, "recipe_pbr_material", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -224,7 +280,11 @@ export const recipeSceneTools: ToolDefinition[] = [
       mood: z.enum(["cinematic", "vibrant", "noir", "retro", "horror"]).optional().describe("Visual mood preset"),
     }),
     handler: async (params) => {
-      return bridge.send(params.editor, "recipe_post_process", params);
+      try {
+        return bridge.send(params.editor, "recipe_post_process", params);
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

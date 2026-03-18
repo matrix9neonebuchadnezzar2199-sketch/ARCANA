@@ -9,9 +9,13 @@ const clothAdd: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "ClothAdd", p);
-    return r ? { success: true, message: `Cloth added to ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to add cloth" };
+    try {
+      const r = await bridge.send("unity", "ClothAdd", p);
+      return r ? { success: true, message: `Cloth added to ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to add cloth" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const clothSetParams: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), damping: z.number().min(0).max(1).default(0.1), stiffness: z.number().min(0).max(1).default(0.5), stretchLimit: z.number().default(0.1), friction: z.number().min(0).max(1).default(0.5) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "ClothSetParams", p);
-    return r ? { success: true, message: `Cloth params updated on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to set cloth params" };
+    try {
+      const r = await bridge.send("unity", "ClothSetParams", p);
+      return r ? { success: true, message: `Cloth params updated on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to set cloth params" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const clothSetGravity: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), useGravity: z.boolean().default(true), externalX: z.number().default(0), externalY: z.number().default(0), externalZ: z.number().default(0) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "ClothSetGravity", p);
-    return r ? { success: true, message: `Cloth gravity set on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to set cloth gravity" };
+    try {
+      const r = await bridge.send("unity", "ClothSetGravity", p);
+      return r ? { success: true, message: `Cloth gravity set on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to set cloth gravity" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const clothAddCollider: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), colliderObject: z.string(), colliderType: z.enum(["sphere","capsule"]).default("sphere") }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "ClothAddCollider", p);
-    return r ? { success: true, message: `Cloth collider added from ${p.colliderObject}`, data: r }
-             : { success: false, message: "Failed to add cloth collider" };
+    try {
+      const r = await bridge.send("unity", "ClothAddCollider", p);
+      return r ? { success: true, message: `Cloth collider added from ${p.colliderObject}`, data: r }
+               : { success: false, message: "Failed to add cloth collider" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const clothRemove: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "ClothRemove", p);
-    return r ? { success: true, message: `Cloth removed from ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to remove cloth" };
+    try {
+      const r = await bridge.send("unity", "ClothRemove", p);
+      return r ? { success: true, message: `Cloth removed from ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to remove cloth" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 

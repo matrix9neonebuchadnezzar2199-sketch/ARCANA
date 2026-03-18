@@ -19,8 +19,12 @@ export const textmeshproTools: ToolDefinition[] = [
       position: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Position"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "TMPCreateText", params);
-      return { success: true, message: `TMP text "${params.name || "Text"}" created`, data: result };
+      try {
+        const result = await bridge.send("unity", "TMPCreateText", params);
+        return { success: true, message: `TMP text "${params.name || "Text"}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -35,8 +39,12 @@ export const textmeshproTools: ToolDefinition[] = [
       richText: z.boolean().optional().describe("Enable rich text tags (default: true)"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "TMPSetText", params);
-      return { success: true, message: `Text updated on "${params.objectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "TMPSetText", params);
+        return { success: true, message: `Text updated on "${params.objectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -59,8 +67,12 @@ export const textmeshproTools: ToolDefinition[] = [
       autoSizeMax: z.number().optional().describe("Max font size for auto-size"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "TMPSetStyle", params);
-      return { success: true, message: `Style updated on "${params.objectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "TMPSetStyle", params);
+        return { success: true, message: `Style updated on "${params.objectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -77,8 +89,12 @@ export const textmeshproTools: ToolDefinition[] = [
       bottomRight: z.object({ r: z.number(), g: z.number(), b: z.number() }).describe("Bottom-right color"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "TMPSetColorGradient", params);
-      return { success: true, message: `Color gradient applied on "${params.objectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "TMPSetColorGradient", params);
+        return { success: true, message: `Color gradient applied on "${params.objectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -93,8 +109,12 @@ export const textmeshproTools: ToolDefinition[] = [
       materialPreset: z.string().optional().describe("Material preset name"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "TMPSetFontAsset", params);
-      return { success: true, message: `Font changed to "${params.fontAssetName}" on "${params.objectName}"`, data: result };
+      try {
+        const result = await bridge.send("unity", "TMPSetFontAsset", params);
+        return { success: true, message: `Font changed to "${params.fontAssetName}" on "${params.objectName}"`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
   {
@@ -113,8 +133,12 @@ export const textmeshproTools: ToolDefinition[] = [
       fontSize: z.number().optional().describe("Font size"),
     }),
     handler: async (params) => {
-      const result = await bridge.send("unity", "TMPCreateInputField", params);
-      return { success: true, message: `TMP Input Field "${params.name || "InputField"}" created`, data: result };
+      try {
+        const result = await bridge.send("unity", "TMPCreateInputField", params);
+        return { success: true, message: `TMP Input Field "${params.name || "InputField"}" created`, data: result };
+      } catch (error: any) {
+        return { success: false, message: `Error: ${error.message}` };
+      }
     },
   },
 ];

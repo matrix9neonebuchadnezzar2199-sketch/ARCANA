@@ -9,9 +9,13 @@ const ueTransformSetLocation: ToolDefinition = {
   category: "ue_transform",
   inputSchema: z.object({ actorName: z.string(), x: z.number(), y: z.number(), z: z.number() }),
   handler: async (p) => {
-    const r = await bridge.send("unreal", "TransformSetLocation", p);
-    return r ? { success: true, message: `Location set on ${p.actorName}`, data: r }
-             : { success: false, message: "Failed to set location" };
+    try {
+      const r = await bridge.send("unreal", "TransformSetLocation", p);
+      return r ? { success: true, message: `Location set on ${p.actorName}`, data: r }
+               : { success: false, message: "Failed to set location" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const ueTransformSetRotation: ToolDefinition = {
   category: "ue_transform",
   inputSchema: z.object({ actorName: z.string(), pitch: z.number().default(0), yaw: z.number().default(0), roll: z.number().default(0) }),
   handler: async (p) => {
-    const r = await bridge.send("unreal", "TransformSetRotation", p);
-    return r ? { success: true, message: `Rotation set on ${p.actorName}`, data: r }
-             : { success: false, message: "Failed to set rotation" };
+    try {
+      const r = await bridge.send("unreal", "TransformSetRotation", p);
+      return r ? { success: true, message: `Rotation set on ${p.actorName}`, data: r }
+               : { success: false, message: "Failed to set rotation" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const ueTransformSetScale: ToolDefinition = {
   category: "ue_transform",
   inputSchema: z.object({ actorName: z.string(), x: z.number().default(1), y: z.number().default(1), z: z.number().default(1) }),
   handler: async (p) => {
-    const r = await bridge.send("unreal", "TransformSetScale", p);
-    return r ? { success: true, message: `Scale set on ${p.actorName}`, data: r }
-             : { success: false, message: "Failed to set scale" };
+    try {
+      const r = await bridge.send("unreal", "TransformSetScale", p);
+      return r ? { success: true, message: `Scale set on ${p.actorName}`, data: r }
+               : { success: false, message: "Failed to set scale" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const ueTransformAttach: ToolDefinition = {
   category: "ue_transform",
   inputSchema: z.object({ actorName: z.string(), parentName: z.string(), socketName: z.string().optional() }),
   handler: async (p) => {
-    const r = await bridge.send("unreal", "TransformAttach", p);
-    return r ? { success: true, message: `${p.actorName} attached to ${p.parentName}`, data: r }
-             : { success: false, message: "Failed to attach actor" };
+    try {
+      const r = await bridge.send("unreal", "TransformAttach", p);
+      return r ? { success: true, message: `${p.actorName} attached to ${p.parentName}`, data: r }
+               : { success: false, message: "Failed to attach actor" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const ueTransformDetach: ToolDefinition = {
   category: "ue_transform",
   inputSchema: z.object({ actorName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unreal", "TransformDetach", p);
-    return r ? { success: true, message: `${p.actorName} detached`, data: r }
-             : { success: false, message: "Failed to detach actor" };
+    try {
+      const r = await bridge.send("unreal", "TransformDetach", p);
+      return r ? { success: true, message: `${p.actorName} detached`, data: r }
+               : { success: false, message: "Failed to detach actor" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -79,9 +99,13 @@ const ueTransformSnapToGrid: ToolDefinition = {
   category: "ue_transform",
   inputSchema: z.object({ actorName: z.string(), gridSize: z.number().default(10) }),
   handler: async (p) => {
-    const r = await bridge.send("unreal", "TransformSnapToGrid", p);
-    return r ? { success: true, message: `${p.actorName} snapped to grid (${p.gridSize})`, data: r }
-             : { success: false, message: "Failed to snap to grid" };
+    try {
+      const r = await bridge.send("unreal", "TransformSnapToGrid", p);
+      return r ? { success: true, message: `${p.actorName} snapped to grid (${p.gridSize})`, data: r }
+               : { success: false, message: "Failed to snap to grid" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 

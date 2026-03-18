@@ -16,7 +16,7 @@ export const blCharacterExportTools: ToolDefinition[] = [
       license: z.enum(["CC0", "CC_BY", "CC_BY_NC", "CC_BY_SA", "CC_BY_NC_SA", "CC_BY_ND", "CC_BY_NC_ND", "other"]).optional().describe("License type (default CC_BY_NC)"),
       version: z.enum(["0.x", "1.0"]).optional().describe("VRM version (default 1.0)"),
     }),
-    handler: async (params) => bridge.send("blender", "bl_char_export_vrm", params),
+    handler: async (params) => { try { return await bridge.send("blender", "bl_char_export_vrm", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
   },
   {
     id: "bl_char_export_fbx",
@@ -31,7 +31,7 @@ export const blCharacterExportTools: ToolDefinition[] = [
       includeShapeKeys: z.boolean().optional().describe("Include shape keys / blend shapes (default true)"),
       applyModifiers: z.boolean().optional().describe("Apply modifiers before export (default true)"),
     }),
-    handler: async (params) => bridge.send("blender", "bl_char_export_fbx", params),
+    handler: async (params) => { try { return await bridge.send("blender", "bl_char_export_fbx", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
   },
   {
     id: "bl_char_validate_avatar",
@@ -43,7 +43,7 @@ export const blCharacterExportTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character armature name"),
       targetRank: z.enum(["excellent", "good", "medium", "poor"]).optional().describe("Target VRChat performance rank (default good)"),
     }),
-    handler: async (params) => bridge.send("blender", "bl_char_validate_avatar", params),
+    handler: async (params) => { try { return await bridge.send("blender", "bl_char_validate_avatar", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
   },
   {
     id: "bl_char_optimize_avatar",
@@ -59,7 +59,7 @@ export const blCharacterExportTools: ToolDefinition[] = [
       mergeMeshes: z.boolean().optional().describe("Merge meshes by category (default true)"),
       removeUnusedShapeKeys: z.boolean().optional().describe("Remove shape keys with 0 influence (default false)"),
     }),
-    handler: async (params) => bridge.send("blender", "bl_char_optimize_avatar", params),
+    handler: async (params) => { try { return await bridge.send("blender", "bl_char_optimize_avatar", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
   },
   {
     id: "bl_char_setup_springbone",
@@ -83,6 +83,6 @@ export const blCharacterExportTools: ToolDefinition[] = [
         offset: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional(),
       })).optional().describe("Collider groups for collision avoidance (head, chest, etc.)"),
     }),
-    handler: async (params) => bridge.send("blender", "bl_char_setup_springbone", params),
+    handler: async (params) => { try { return await bridge.send("blender", "bl_char_setup_springbone", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
   },
 ];

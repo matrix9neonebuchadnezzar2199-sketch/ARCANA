@@ -9,9 +9,13 @@ const decalCreate: ToolDefinition = {
   category: "decal",
   inputSchema: z.object({ name: z.string().optional(), materialPath: z.string(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "DecalCreate", p);
-    return r ? { success: true, message: `Decal created: ${p.name ?? "NewDecal"}`, data: r }
-             : { success: false, message: "Failed to create decal" };
+    try {
+      const r = await bridge.send("unity", "DecalCreate", p);
+      return r ? { success: true, message: `Decal created: ${p.name ?? "NewDecal"}`, data: r }
+               : { success: false, message: "Failed to create decal" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const decalSetSize: ToolDefinition = {
   category: "decal",
   inputSchema: z.object({ objectName: z.string(), width: z.number().default(1), height: z.number().default(1), depth: z.number().default(1) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "DecalSetSize", p);
-    return r ? { success: true, message: `Decal size set on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to set decal size" };
+    try {
+      const r = await bridge.send("unity", "DecalSetSize", p);
+      return r ? { success: true, message: `Decal size set on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to set decal size" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const decalSetMaterial: ToolDefinition = {
   category: "decal",
   inputSchema: z.object({ objectName: z.string(), materialPath: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "DecalSetMaterial", p);
-    return r ? { success: true, message: `Material changed on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to set decal material" };
+    try {
+      const r = await bridge.send("unity", "DecalSetMaterial", p);
+      return r ? { success: true, message: `Material changed on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to set decal material" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const decalSetOpacity: ToolDefinition = {
   category: "decal",
   inputSchema: z.object({ objectName: z.string(), opacity: z.number().min(0).max(1).default(1) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "DecalSetOpacity", p);
-    return r ? { success: true, message: `Opacity set to ${p.opacity} on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to set opacity" };
+    try {
+      const r = await bridge.send("unity", "DecalSetOpacity", p);
+      return r ? { success: true, message: `Opacity set to ${p.opacity} on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to set opacity" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const decalRemove: ToolDefinition = {
   category: "decal",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "DecalRemove", p);
-    return r ? { success: true, message: `Decal removed: ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to remove decal" };
+    try {
+      const r = await bridge.send("unity", "DecalRemove", p);
+      return r ? { success: true, message: `Decal removed: ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to remove decal" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 

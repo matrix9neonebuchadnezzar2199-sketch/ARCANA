@@ -9,9 +9,13 @@ const lodCreateGroup: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), levels: z.number().default(3) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "LodCreateGroup", p);
-    return r ? { success: true, message: `LOD Group created on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to create LOD Group" };
+    try {
+      const r = await bridge.send("unity", "LodCreateGroup", p);
+      return r ? { success: true, message: `LOD Group created on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to create LOD Group" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const lodSetTransitions: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), transitions: z.array(z.number()) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "LodSetTransitions", p);
-    return r ? { success: true, message: `LOD transitions set on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to set transitions" };
+    try {
+      const r = await bridge.send("unity", "LodSetTransitions", p);
+      return r ? { success: true, message: `LOD transitions set on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to set transitions" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const lodAssignRenderer: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), lodLevel: z.number(), rendererName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "LodAssignRenderer", p);
-    return r ? { success: true, message: `Renderer assigned to LOD ${p.lodLevel}`, data: r }
-             : { success: false, message: "Failed to assign renderer" };
+    try {
+      const r = await bridge.send("unity", "LodAssignRenderer", p);
+      return r ? { success: true, message: `Renderer assigned to LOD ${p.lodLevel}`, data: r }
+               : { success: false, message: "Failed to assign renderer" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const lodSetFadeMode: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), fadeMode: z.enum(["None","CrossFade","SpeedTree"]).default("CrossFade") }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "LodSetFadeMode", p);
-    return r ? { success: true, message: `Fade mode set to ${p.fadeMode}`, data: r }
-             : { success: false, message: "Failed to set fade mode" };
+    try {
+      const r = await bridge.send("unity", "LodSetFadeMode", p);
+      return r ? { success: true, message: `Fade mode set to ${p.fadeMode}`, data: r }
+               : { success: false, message: "Failed to set fade mode" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const lodGetInfo: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "LodGetInfo", p);
-    return r ? { success: true, message: "LOD info retrieved", data: r }
-             : { success: false, message: "Failed to get LOD info" };
+    try {
+      const r = await bridge.send("unity", "LodGetInfo", p);
+      return r ? { success: true, message: "LOD info retrieved", data: r }
+               : { success: false, message: "Failed to get LOD info" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -79,9 +99,13 @@ const lodRemove: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "LodRemove", p);
-    return r ? { success: true, message: `LOD Group removed from ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to remove LOD Group" };
+    try {
+      const r = await bridge.send("unity", "LodRemove", p);
+      return r ? { success: true, message: `LOD Group removed from ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to remove LOD Group" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 

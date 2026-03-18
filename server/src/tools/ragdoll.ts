@@ -9,9 +9,13 @@ const ragdollCreate: ToolDefinition = {
   category: "ragdoll",
   inputSchema: z.object({ objectName: z.string(), totalMass: z.number().default(70) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "RagdollCreate", p);
-    return r ? { success: true, message: `Ragdoll created on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to create ragdoll" };
+    try {
+      const r = await bridge.send("unity", "RagdollCreate", p);
+      return r ? { success: true, message: `Ragdoll created on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to create ragdoll" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -23,9 +27,13 @@ const ragdollEnable: ToolDefinition = {
   category: "ragdoll",
   inputSchema: z.object({ objectName: z.string(), enabled: z.boolean().default(true) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "RagdollEnable", p);
-    return r ? { success: true, message: `Ragdoll ${p.enabled ? "enabled" : "disabled"} on ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to toggle ragdoll" };
+    try {
+      const r = await bridge.send("unity", "RagdollEnable", p);
+      return r ? { success: true, message: `Ragdoll ${p.enabled ? "enabled" : "disabled"} on ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to toggle ragdoll" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -37,9 +45,13 @@ const ragdollSetJointLimits: ToolDefinition = {
   category: "ragdoll",
   inputSchema: z.object({ objectName: z.string(), boneName: z.string(), lowTwist: z.number().default(-20), highTwist: z.number().default(20), swing1: z.number().default(30), swing2: z.number().default(30) }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "RagdollSetJointLimits", p);
-    return r ? { success: true, message: `Joint limits set on ${p.boneName}`, data: r }
-             : { success: false, message: "Failed to set joint limits" };
+    try {
+      const r = await bridge.send("unity", "RagdollSetJointLimits", p);
+      return r ? { success: true, message: `Joint limits set on ${p.boneName}`, data: r }
+               : { success: false, message: "Failed to set joint limits" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -51,9 +63,13 @@ const ragdollAddForce: ToolDefinition = {
   category: "ragdoll",
   inputSchema: z.object({ objectName: z.string(), boneName: z.string(), forceX: z.number(), forceY: z.number(), forceZ: z.number(), mode: z.enum(["Force","Impulse","VelocityChange"]).default("Impulse") }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "RagdollAddForce", p);
-    return r ? { success: true, message: `Force applied to ${p.boneName}`, data: r }
-             : { success: false, message: "Failed to add force" };
+    try {
+      const r = await bridge.send("unity", "RagdollAddForce", p);
+      return r ? { success: true, message: `Force applied to ${p.boneName}`, data: r }
+               : { success: false, message: "Failed to add force" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -65,9 +81,13 @@ const ragdollSetCollision: ToolDefinition = {
   category: "ragdoll",
   inputSchema: z.object({ objectName: z.string(), mode: z.enum(["Discrete","Continuous","ContinuousDynamic","ContinuousSpeculative"]).default("Continuous") }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "RagdollSetCollision", p);
-    return r ? { success: true, message: `Collision mode set to ${p.mode}`, data: r }
-             : { success: false, message: "Failed to set collision mode" };
+    try {
+      const r = await bridge.send("unity", "RagdollSetCollision", p);
+      return r ? { success: true, message: `Collision mode set to ${p.mode}`, data: r }
+               : { success: false, message: "Failed to set collision mode" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
@@ -79,9 +99,13 @@ const ragdollRemove: ToolDefinition = {
   category: "ragdoll",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    const r = await bridge.send("unity", "RagdollRemove", p);
-    return r ? { success: true, message: `Ragdoll removed from ${p.objectName}`, data: r }
-             : { success: false, message: "Failed to remove ragdoll" };
+    try {
+      const r = await bridge.send("unity", "RagdollRemove", p);
+      return r ? { success: true, message: `Ragdoll removed from ${p.objectName}`, data: r }
+               : { success: false, message: "Failed to remove ragdoll" };
+    } catch (error: any) {
+      return { success: false, message: `Error: ${error.message}` };
+    }
   }
 };
 
