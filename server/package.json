@@ -1,7 +1,7 @@
 ﻿{
   "name": "@arcana/mcp-server",
   "version": "0.1.0",
-  "description": "ARCANA MCP Server - Natural language bridge for Unity and Blender",
+  "description": "ARCANA MCP Server - Natural language bridge for Unity, Unreal Engine and Blender",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,6 +15,7 @@
   "keywords": [
     "mcp",
     "unity",
+    "unreal-engine",
     "blender",
     "ai",
     "natural-language",
