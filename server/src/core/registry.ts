@@ -21,7 +21,7 @@ export class ToolRegistry {
 
   register(tool: ToolDefinition): void {
     if (this.tools.has(tool.id)) {
-      throw new Error(`Tool already registered: ${tool.id}`);
+      console.warn(`[ARCANA] Duplicate tool skipped: ${tool.id}`); return;
     }
     this.tools.set(tool.id, tool);
     console.log(`[ARCANA] Registered tool: ${tool.id}`);

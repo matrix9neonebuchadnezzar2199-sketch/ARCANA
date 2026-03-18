@@ -20,7 +20,7 @@ export const templateTool: ToolDefinition = {
   }),
   handler: async (params) => {
     try {
-      const result = await unityBridge.send("CategoryAction", params);
+      const result = await bridge.send("unity", "CategoryAction", params);
       return {
         success: true,
         message: "Action completed successfully",
