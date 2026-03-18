@@ -8,8 +8,8 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/Tools-438-brightgreen.svg" alt="438 Tools">
-  <img src="https://img.shields.io/badge/Categories-66-orange.svg" alt="66 Categories">
+  <img src="https://img.shields.io/badge/Tools-578-brightgreen.svg" alt="438 Tools">
+  <img src="https://img.shields.io/badge/Categories-81-orange.svg" alt="66 Categories">
   <img src="https://img.shields.io/badge/Unity-2022.3+-black?logo=unity" alt="Unity 2022.3+">
   <img src="https://img.shields.io/badge/Unreal_Engine-5.x-black?logo=unrealengine" alt="UE 5.x">
   <img src="https://img.shields.io/badge/Blender-3.6+-orange?logo=blender" alt="Blender 3.6+">
@@ -24,11 +24,11 @@
 ## Why ARCANA?
 
 Most MCP editor tools support one editor with 20-60 tools.
-ARCANA provides **438 tools across 3 editors and 66 categories** from a single server.
+ARCANA provides **578 tools across 3 editors and 81 categories** from a single server.
 
 | | ARCANA | Unity-MCP | Blender-MCP | Unreal-MCP |
 |---|---|---|---|---|
-| **Tools** | **438** | ~20 | ~15 | ~30 |
+| **Tools** | **578** | ~20 | ~15 | ~30 |
 | **Editors** | Unity + UE + Blender | Unity | Blender | UE |
 | **SuperSave** | 4 meta-tools | - | - | - |
 
@@ -38,7 +38,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Un
 
 ## Key Features
 
-- **438 Tools / 66 Categories** - Unity 302, Unreal Engine 136, Blender planned
+- **578 Tools / 81 Categories** - Unity 302, Unreal Engine 136, Blender 140
 - **3 Editor Support** - One server controls Unity, UE, and Blender
 - **Natural Language** - Describe what you want, AI does it
 - **Any AI Client** - Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
@@ -53,7 +53,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Un
 ```
 AI Client           MCP            ARCANA Server        Editors
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT, etc.    stdio/SSE    438 tools / 66 cat  ----> UE 5    :9878
+ChatGPT, etc.    stdio/SSE    578 tools / 81 cat  ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
 ## Tool Overview
@@ -151,9 +151,35 @@ ChatGPT, etc.    stdio/SSE    438 tools / 66 cat  ----> UE 5    :9878
 | UE MetaHuman | 6 | ue_mh_spawn, ue_mh_set_body, ue_mh_set_face |
 
 </details>
+
+### Blender Tools (140 tools / 15 categories)
+
+<details>
+<summary>Click to expand Blender tool list</summary>
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| BL Object | 10 | bl_object_create, bl_object_delete, bl_object_duplicate |
+| BL Mesh | 10 | bl_mesh_edit_vertices, bl_mesh_extrude_faces, bl_mesh_bevel |
+| BL Material | 8 | bl_material_create, bl_material_set_color, bl_material_assign |
+| BL Modifier | 10 | bl_mod_subsurf, bl_mod_mirror, bl_mod_boolean |
+| BL Sculpt | 8 | bl_sculpt_set_brush, bl_sculpt_set_strength, bl_sculpt_remesh |
+| BL Animation | 10 | bl_anim_insert_keyframe, bl_anim_create_bone, bl_anim_bake |
+| BL Camera | 6 | bl_camera_create, bl_camera_set_focal, bl_camera_set_dof |
+| BL Light | 6 | bl_light_create, bl_light_set_color, bl_light_set_power |
+| BL Render | 10 | bl_render_set_engine, bl_render_set_resolution, bl_render_execute |
+| BL Scene | 8 | bl_scene_list, bl_scene_create, bl_scene_set_world |
+| BL Node | 10 | bl_node_add, bl_node_connect, bl_node_set_value |
+| BL UV | 8 | bl_uv_unwrap, bl_uv_smart_project, bl_uv_pack_islands |
+| BL Particle | 8 | bl_particle_add, bl_particle_add_hair, bl_particle_set_count |
+| BL Armature | 10 | bl_armature_create, bl_armature_add_bone, bl_armature_auto_weights |
+| BL Grease Pencil | 8 | bl_gp_create, bl_gp_add_layer, bl_gp_set_brush |
+
+</details>
+
 ## SuperSave Mode
 
-Instead of registering all 438 tools, SuperSave exposes only **4 meta-tools**:
+Instead of registering all 578 tools, SuperSave exposes only **4 meta-tools**:
 
 | Meta-Tool | Purpose |
 |---|---|
@@ -216,8 +242,8 @@ npm run build
 | 1 | Done | Core MCP server, SuperSave, Bridge architecture |
 | 2 | Done | Unity 302 tools (46 categories) |
 | 3 | Done | Unreal Engine 136 tools (20 categories) |
-| 4 | Next | Blender addon + 100-200 Blender tools |
-| 5 | Planned | Cross-editor workflows, 600+ tools, Recipe system |
+| 4 | Done | Blender 140 tools (15 categories) |
+| 5 | Next | Cross-editor workflows, 700+ tools, Recipe system |
 
 ## Contributing
 

@@ -8,8 +8,8 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/Tools-438-brightgreen.svg" alt="438 Tools">
-  <img src="https://img.shields.io/badge/Categories-66-orange.svg" alt="66 Categories">
+  <img src="https://img.shields.io/badge/Tools-578-brightgreen.svg" alt="438 Tools">
+  <img src="https://img.shields.io/badge/Categories-81-orange.svg" alt="66 Categories">
   <img src="https://img.shields.io/badge/Unity-2022.3+-black?logo=unity" alt="Unity 2022.3+">
   <img src="https://img.shields.io/badge/Unreal_Engine-5.x-black?logo=unrealengine" alt="UE 5.x">
   <img src="https://img.shields.io/badge/Blender-3.6+-orange?logo=blender" alt="Blender 3.6+">
@@ -24,11 +24,11 @@
 ## なぜ ARCANA？
 
 既存のMCPエディタツールは1エディタ・20〜60ツール程度です。
-ARCANAは **3エディタ・66カテゴリ・438ツール** を1つのサーバーで提供します。
+ARCANAは **3エディタ・81カテゴリ・578ツール** を1つのサーバーで提供します。
 
 | | ARCANA | Unity-MCP | Blender-MCP | Unreal-MCP |
 |---|---|---|---|---|
-| **ツール数** | **438** | ~20 | ~15 | ~30 |
+| **ツール数** | **578** | ~20 | ~15 | ~30 |
 | **エディタ** | Unity + UE + Blender | Unity | Blender | UE |
 | **SuperSave** | 4メタツール | - | - | - |
 
@@ -38,7 +38,7 @@ ARCANAはAIアシスタント（Claude, ChatGPT, Gemini, Copilot, Cursor）を [
 
 ## 主な特徴
 
-- **438ツール / 66カテゴリ** - Unity 302、Unreal Engine 136、Blender 予定
+- **578ツール / 81カテゴリ** - Unity 302、Unreal Engine 136、Blender 140
 - **3エディタ対応** - 1つのサーバーでUnity・UE・Blenderを同時制御
 - **自然言語操作** - やりたいことを言葉で伝えるだけ
 - **任意のAIクライアント** - Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
@@ -53,7 +53,7 @@ ARCANAはAIアシスタント（Claude, ChatGPT, Gemini, Copilot, Cursor）を [
 ```
 AIクライアント       MCP            ARCANAサーバー          エディタ
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT 等       stdio/SSE    438ツール/66カテゴリ ----> UE 5    :9878
+ChatGPT 等       stdio/SSE    578ツール/81カテゴリ ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
 
@@ -153,9 +153,35 @@ ChatGPT 等       stdio/SSE    438ツール/66カテゴリ ----> UE 5    :9878
 
 </details>
 
+
+### Blender ツール（140 / 15カテゴリ）
+
+<details>
+<summary>クリックでBlenderツール一覧を展開</summary>
+
+| カテゴリ | 数 | 主なツール |
+|----------|-----|-----------|
+| BL Object | 10 | bl_object_create, bl_object_delete, bl_object_duplicate |
+| BL Mesh | 10 | bl_mesh_edit_vertices, bl_mesh_extrude_faces, bl_mesh_bevel |
+| BL Material | 8 | bl_material_create, bl_material_set_color, bl_material_assign |
+| BL Modifier | 10 | bl_mod_subsurf, bl_mod_mirror, bl_mod_boolean |
+| BL Sculpt | 8 | bl_sculpt_set_brush, bl_sculpt_set_strength, bl_sculpt_remesh |
+| BL Animation | 10 | bl_anim_insert_keyframe, bl_anim_create_bone, bl_anim_bake |
+| BL Camera | 6 | bl_camera_create, bl_camera_set_focal, bl_camera_set_dof |
+| BL Light | 6 | bl_light_create, bl_light_set_color, bl_light_set_power |
+| BL Render | 10 | bl_render_set_engine, bl_render_set_resolution, bl_render_execute |
+| BL Scene | 8 | bl_scene_list, bl_scene_create, bl_scene_set_world |
+| BL Node | 10 | bl_node_add, bl_node_connect, bl_node_set_value |
+| BL UV | 8 | bl_uv_unwrap, bl_uv_smart_project, bl_uv_pack_islands |
+| BL Particle | 8 | bl_particle_add, bl_particle_add_hair, bl_particle_set_count |
+| BL Armature | 10 | bl_armature_create, bl_armature_add_bone, bl_armature_auto_weights |
+| BL Grease Pencil | 8 | bl_gp_create, bl_gp_add_layer, bl_gp_set_brush |
+
+</details>
+
 ## SuperSave モード
 
-438ツール全てを登録する代わりに、**4つのメタツール**のみ公開：
+578ツール全てを登録する代わりに、**4つのメタツール**のみ公開：
 
 | メタツール | 用途 |
 |---|---|
@@ -218,8 +244,8 @@ npm run build
 | 1 | 完了 | コアMCPサーバー、SuperSave、ブリッジアーキテクチャ |
 | 2 | 完了 | Unity 302ツール（46カテゴリ） |
 | 3 | 完了 | Unreal Engine 136ツール（20カテゴリ） |
-| 4 | 次 | Blenderアドオン + 100〜200 Blenderツール |
-| 5 | 予定 | クロスエディタワークフロー、600+ツール、レシピシステム |
+| 4 | 完了 | Blender 140ツール（15カテゴリ） |
+| 5 | 次 | クロスエディタワークフロー、700+ツール、レシピシステム |
 
 ## コントリビュート
 
