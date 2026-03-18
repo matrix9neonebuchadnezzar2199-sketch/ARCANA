@@ -489,9 +489,32 @@ Gemini が起動したら:
 <details>
 <summary><strong>Blender（初心者おすすめ）</strong></summary>
 
-> **重要:** Blender のバージョンによってアドオンのインストール方法が異なります。お使いのバージョンの手順に従ってください。
+> **v6.1 新機能:** 単一ファイル `addon.py` でインストールが大幅に簡単になりました。フォルダコピー不要です。
 
-#### 全バージョン共通: ファイルのコピー
+#### 方法 A: ディスクからインストール（最も簡単・全バージョン対応）
+
+1. このリポジトリから [`addon.py`](addon.py) をダウンロード
+2. Blender を開く
+3. **Edit > Preferences > Add-ons** を開く
+   - **Blender 4.2+/5.x:** ドロップダウン矢印をクリック → **「ディスクからインストール」** を選択
+   - **Blender 3.6-4.1:** **「インストール...」** をクリック
+4. ダウンロードした `addon.py` を選択
+5. **ARCANA Bridge** のチェックボックスをONにして有効化
+   - **Blender 4.2+/5.x:** **「旧アドオン（Legacy Add-ons）」** セクションを探す
+6. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
+
+#### 方法 B: ZIPからインストール
+
+1. このリポジトリから [`arcana_bridge.zip`](arcana_bridge.zip) をダウンロード
+2. Blender > **Edit > Preferences > Add-ons** を開く
+3. **「ディスクからインストール」**（旧バージョンは **「インストール...」**）をクリック
+4. ダウンロードした ZIP ファイルを選択
+5. 方法 A の手順 5-6 と同様に有効化・接続
+
+<details>
+<summary><b>方法 C: 手動フォルダコピー（上級者向け）</b></summary>
+
+方法 A/B がうまくいかない場合、手動でコピー：
 
 1. Blender のアドオンフォルダを開く:
    - **Windows:** `C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\`
@@ -508,7 +531,6 @@ Gemini が起動したら:
 3. ARCANA の `blender-plugin/` 内の **全ファイル** をコピー
 
 4. **重要 (Windows):** `__init__.py` が **BOMなしUTF-8** であることを確認
-   PowerShell でコピーすると BOM が付与され、Blender が `bl_info` を認識できなくなります。
    ```powershell
    $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\__init__.py"
    $text = [System.IO.File]::ReadAllText($path)
@@ -516,56 +538,15 @@ Gemini が起動したら:
    [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
    ```
 
----
+5. **Blender 4.2+/5.x:** フォルダ内の `blender_manifest.toml` を削除
 
-<details>
-<summary><b>Blender 3.6 - 4.1</b></summary>
-
-1. Blender を再起動
-2. **Edit > Preferences > Add-ons** を開く
-3. **"ARCANA"** で検索
-4. **ARCANA Bridge** のチェックボックスをON
-5. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
+6. Blender を再起動 → **Edit > Preferences > Add-ons**
+   - **Blender 4.2+/5.x:** **「旧アドオン（Legacy Add-ons）」** セクションを探す
+   - **"ARCANA"** で検索、有効化、**Nキー** → **ARCANA** タブ → **接続**
 
 </details>
 
-<details>
-<summary><b>Blender 4.2 - 4.4</b></summary>
-
-Blender 4.2 で **Extension** システムが導入されました。レガシーアドオンは別セクションに移動しています。
-
-1. `arcana_bridge` フォルダ内の `blender_manifest.toml` を **削除**（Extension システムと競合するため）
-2. Blender を再起動
-3. **Edit > Preferences > Add-ons** を開く
-4. ドロップダウンまたは **「旧アドオン（Legacy Add-ons）」** セクションを探す
-5. **"ARCANA"** で検索
-6. **ARCANA Bridge** のチェックボックスをON
-7. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
-
-</details>
-
-<details>
-<summary><b>Blender 5.0+</b></summary>
-
-Blender 5.x では Extension とレガシーアドオンが完全に分離されています。追加手順が必要です。
-
-1. `arcana_bridge` フォルダ内の `blender_manifest.toml` を **削除**
-2. `__init__.py` に **UTF-8 BOM がないこと** を確認（上記手順4を参照）
-3. Blender を再起動
-4. **Edit > Preferences > Add-ons** を開く
-5. **「旧アドオン（Legacy Add-ons）」** セクションを探す（タブまたはドロップダウン）
-6. **"ARCANA"** で検索
-7. **ARCANA Bridge** のチェックボックスをON
-8. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
-
-> **トラブルシューティング:** ARCANA が表示されない場合:
-> - **Window > Toggle System Console** でエラーログを確認（"arcana" を含む行を探す）
-> - `__init__.py` の先頭に `bl_info` が存在するか確認
-> - BOM 修正が適用されたか確認（先頭3バイトが `EF BB BF` でないこと）
-
-</details>
-
-> **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は Gemini 起動時に自動で立ち上がります。単体で使う場合は `cd ARCANA/server && node dist/index.js` を実行してください。
+> **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は自動で起動します。単体の場合は `cd ARCANA/server && node dist/index.js` を実行してください。
 
 </details>
 

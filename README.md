@@ -490,16 +490,39 @@ You should see:
 <details>
 <summary><strong>Blender (Recommended for beginners)</strong></summary>
 
-> **Important:** The add-on install method differs by Blender version. Follow the steps for your version.
+> **New in v6.1:** Single-file `addon.py` makes installation much easier. No folder copying needed.
 
-#### All Versions: Copy Files First
+#### Method A: Install from Disk (Easiest - All Blender versions)
+
+1. Download [`addon.py`](addon.py) from this repository
+2. Open Blender
+3. Go to **Edit > Preferences > Add-ons**
+   - **Blender 4.2+/5.x:** Click the dropdown arrow, select **"Install from Disk"**
+   - **Blender 3.6-4.1:** Click **"Install..."**
+4. Select the downloaded `addon.py` file
+5. Enable **ARCANA Bridge** by checking the box
+   - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section
+6. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
+
+#### Method B: Install from ZIP
+
+1. Download [`arcana_bridge.zip`](arcana_bridge.zip) from this repository
+2. Open Blender > **Edit > Preferences > Add-ons**
+3. Click **"Install from Disk"** (or **"Install..."** on older versions)
+4. Select the downloaded ZIP file
+5. Enable **ARCANA Bridge** and connect (same as Method A steps 5-6)
+
+<details>
+<summary><b>Method C: Manual folder copy (Advanced)</b></summary>
+
+If Methods A/B do not work, copy files manually:
 
 1. Find your Blender add-ons directory:
    - **Windows:** `C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\`
    - **Mac:** `~/Library/Application Support/Blender/<version>/scripts/addons/`
    - **Linux:** `~/.config/blender/<version>/scripts/addons/`
 
-   > **Tip (Windows):** Open the folder directly in PowerShell:
+   > **Tip (Windows):** Open the folder directly:
    > ```powershell
    > explorer "$env:APPDATA\Blender Foundation\Blender\<version>\scripts\addons"
    > ```
@@ -509,7 +532,6 @@ You should see:
 3. Copy **all files** from ARCANA's `blender-plugin/` into that folder
 
 4. **Critical (Windows):** Make sure `__init__.py` is **UTF-8 without BOM**.
-   PowerShell may add a BOM that prevents Blender from reading `bl_info`.
    ```powershell
    $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\__init__.py"
    $text = [System.IO.File]::ReadAllText($path)
@@ -517,52 +539,11 @@ You should see:
    [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
    ```
 
----
+5. **Blender 4.2+/5.x:** Delete `blender_manifest.toml` from the folder if it exists
 
-<details>
-<summary><b>Blender 3.6 - 4.1</b></summary>
-
-1. Restart Blender
-2. Go to **Edit > Preferences > Add-ons**
-3. Search for **"ARCANA"**
-4. Check the box to enable **ARCANA Bridge**
-5. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
-
-</details>
-
-<details>
-<summary><b>Blender 4.2 - 4.4</b></summary>
-
-Blender 4.2 introduced the **Extension** system. Legacy add-ons still work but are in a separate section.
-
-1. **Delete** `blender_manifest.toml` from the `arcana_bridge` folder if it exists (it conflicts with the Extension system)
-2. Restart Blender
-3. Go to **Edit > Preferences > Add-ons**
-4. Click the dropdown or look for the **"Legacy Add-ons"** section
-5. Search for **"ARCANA"**
-6. Check the box to enable **ARCANA Bridge**
-7. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
-
-</details>
-
-<details>
-<summary><b>Blender 5.0+</b></summary>
-
-Blender 5.x fully separates Extensions from Legacy Add-ons. Extra steps are needed.
-
-1. **Delete** `blender_manifest.toml` from the `arcana_bridge` folder if it exists
-2. Make sure `__init__.py` has **no UTF-8 BOM** (see step 4 above)
-3. Restart Blender
-4. Go to **Edit > Preferences > Add-ons**
-5. Look for the **"Legacy Add-ons"** section (it may be a separate tab or dropdown)
-6. Search for **"ARCANA"**
-7. Check the box to enable **ARCANA Bridge**
-8. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
-
-> **Troubleshooting:** If ARCANA does not appear:
-> - Open **Window > Toggle System Console** and look for errors containing "arcana"
-> - Verify `bl_info` exists at the top of `__init__.py`
-> - Confirm the BOM fix was applied (first 3 bytes should NOT be `EF BB BF`)
+6. Restart Blender, go to **Edit > Preferences > Add-ons**
+   - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section
+   - Search for **"ARCANA"**, enable it, then press **N** > **ARCANA** tab > **Connect**
 
 </details>
 
