@@ -394,12 +394,6 @@ npm run build
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. All skill levels welcome.
 
-## Acknowledgements
-
-- [Synaptic AI Pro](https://synaptic-ai.net/) — Inspiration and proof of concept
-- [Model Context Protocol](https://modelcontextprotocol.io/) — The protocol standard
-- [Unity-MCP](https://github.com/IvanMurzak/Unity-MCP) — Architecture reference
-
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.

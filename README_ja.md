@@ -394,12 +394,6 @@ npm run build
 
 ガイドラインは [CONTRIBUTING.md](CONTRIBUTING.md) を参照。すべてのスキルレベル歓迎。
 
-## 謝辞
-
-- [Synaptic AI Pro](https://synaptic-ai.net/) — インスピレーションとProof of Concept
-- [Model Context Protocol](https://modelcontextprotocol.io/) — プロトコル標準
-- [Unity-MCP](https://github.com/IvanMurzak/Unity-MCP) — アーキテクチャ参考
-
 ## ライセンス
 
 MIT License. 詳細は [LICENSE](LICENSE) を参照。
