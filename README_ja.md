@@ -1,11 +1,11 @@
-﻿[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
+[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
 
 **Advanced Runtime for Creative AI & Natural-language Automation**
 
 **Unity**、**Unreal Engine**、**Blender** を自然言語で操作。
 一言でシーン構築。ゲーム感覚でキャラクリエイト。オープンソース、永久無料。
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![93 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 3.6+](https://img.shields.io/badge/Blender-3.6%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![93 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 4.2+](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 [English](README.md) | 日本語
 
@@ -387,7 +387,7 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 | エディタ | 費用 | アカウント登録 | インストール容量 | こんな人向け |
 |----------|------|---------------|-----------------|-------------|
-| **Blender 3.6+** | 無料 | 不要 | 約500 MB | 初心者、キャラ作成、VRChat |
+| **Blender 4.2+** | 無料 | 不要 | 約500 MB | 初心者、キャラ作成、VRChat |
 | **Unity 2022.3+** | 無料（Personal） | 必要（Unity ID） | 約5 GB | ゲーム開発 |
 | **UE 5.x** | 無料 | 必要（Epic Games） | 約60 GB | ハイエンド映像、AAA |
 

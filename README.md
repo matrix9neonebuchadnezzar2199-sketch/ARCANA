@@ -1,11 +1,11 @@
-﻿[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
+[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
 
 **Advanced Runtime for Creative AI & Natural-language Automation**
 
 Control **Unity**, **Unreal Engine**, and **Blender** with natural language.
 Build scenes in seconds. Create characters like a game. Free and open source, forever.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#tool-overview) [![94 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 3.6+](https://img.shields.io/badge/Blender-3.6%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#tool-overview) [![94 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 4.2+](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 [日本語版はこちら](README_ja.md) | English
 
@@ -388,7 +388,7 @@ Setup Flow:
 
 | Editor | Cost | Account Needed? | Install Size | Best For |
 |--------|------|-----------------|-------------|----------|
-| **Blender 3.6+** | Free | No | ~500 MB | Beginners, character creation, VRChat |
+| **Blender 4.2+** | Free | No | ~500 MB | Beginners, character creation, VRChat |
 | **Unity 2022.3+** | Free (Personal) | Yes (Unity ID) | ~5 GB | Game development |
 | **UE 5.x** | Free | Yes (Epic Games) | ~60 GB | High-end visuals, AAA games |
 
