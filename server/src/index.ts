@@ -54,6 +54,26 @@ import { occlusionTools } from "./tools/occlusion";
 import { streamingTools } from "./tools/streaming";
 import { tagManagerTools } from "./tools/tagmanager";
 import { screenshotTools } from "./tools/screenshot";
+import { ueSceneTools } from "./tools/ue_scene";
+import { ueTransformTools } from "./tools/ue_transform";
+import { ueMaterialTools } from "./tools/ue_material";
+import { ueLightingTools } from "./tools/ue_lighting";
+import { ueLandscapeTools } from "./tools/ue_landscape";
+import { ueAudioTools } from "./tools/ue_audio";
+import { ueCameraTools } from "./tools/ue_camera";
+import { ueMeshTools } from "./tools/ue_mesh";
+import { ueBlueprintTools } from "./tools/ue_blueprint";
+import { ueNiagaraTools } from "./tools/ue_niagara";
+import { ueAnimationTools } from "./tools/ue_animation";
+import { ueUiTools } from "./tools/ue_ui";
+import { ueAiTools } from "./tools/ue_ai";
+import { uePhysicsTools } from "./tools/ue_physics";
+import { ueSequencerTools } from "./tools/ue_sequencer";
+import { ueBuildTools } from "./tools/ue_build";
+import { ueLevelTools } from "./tools/ue_level";
+import { ueFoliageTools } from "./tools/ue_foliage";
+import { uePcgTools } from "./tools/ue_pcg";
+import { ueMetaHumanTools } from "./tools/ue_metahuman";
 import { vrchatTools } from "./tools/vrchat";
 import { addressablesTools } from "./tools/addressables";
 import { localizationTools } from "./tools/localization";
@@ -87,6 +107,26 @@ const allTools = [
   ...streamingTools,
   ...tagManagerTools,
   ...screenshotTools,
+  ...ueSceneTools,
+  ...ueTransformTools,
+  ...ueMaterialTools,
+  ...ueLightingTools,
+  ...ueLandscapeTools,
+  ...ueAudioTools,
+  ...ueCameraTools,
+  ...ueMeshTools,
+  ...ueBlueprintTools,
+  ...ueNiagaraTools,
+  ...ueAnimationTools,
+  ...ueUiTools,
+  ...ueAiTools,
+  ...uePhysicsTools,
+  ...ueSequencerTools,
+  ...ueBuildTools,
+  ...ueLevelTools,
+  ...ueFoliageTools,
+  ...uePcgTools,
+  ...ueMetaHumanTools,
   ...vrchatTools, ...addressablesTools, ...localizationTools, ...debugTools, ...testingTools, ...profilerTools
 ];
 
@@ -121,7 +161,7 @@ async function main() {
   unityBridge.connect().catch(() => console.log("[ARCANA] Unity not connected yet - will retry on first tool call"));
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("[ARCANA] MCP Server running (v4.0.0 - 302 tools)");
+  console.log("[ARCANA] MCP Server running (v5.0.0 - 438 tools)");
 }
 
 main().catch(console.error);

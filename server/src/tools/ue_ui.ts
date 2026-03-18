@@ -1,0 +1,17 @@
+import { ToolDefinition } from "../core/registry";
+import { z } from "zod";
+import { unrealBridge } from "../bridge/unreal-bridge";
+
+const ueUiCreateWidget: ToolDefinition = { id: "ue_ui_create_widget", name: "Create Widget Blueprint", description: "Create a new UMG Widget Blueprint", descriptionJa: "新しいUMG Widget Blueprintを作成", category: "ue_ui", inputSchema: z.object({ name: z.string(), path: z.string().default("/Game/UI") }), handler: async (p) => { const r = await unrealBridge.send("UiCreateWidget", p); return r ? { success: true, message: `Widget created: ${p.name}`, data: r } : { success: false, message: "Failed" }; } };
+
+const ueUiAddText: ToolDefinition = { id: "ue_ui_add_text", name: "Add Text Block", description: "Add a TextBlock to a widget", descriptionJa: "ウィジェットにTextBlockを追加", category: "ue_ui", inputSchema: z.object({ widgetName: z.string(), text: z.string(), fontSize: z.number().default(24) }), handler: async (p) => { const r = await unrealBridge.send("UiAddText", p); return r ? { success: true, message: "Text block added", data: r } : { success: false, message: "Failed" }; } };
+
+const ueUiAddButton: ToolDefinition = { id: "ue_ui_add_button", name: "Add Button", description: "Add a Button widget with label", descriptionJa: "ラベル付きButtonウィジェットを追加", category: "ue_ui", inputSchema: z.object({ widgetName: z.string(), label: z.string().default("Button"), width: z.number().default(200), height: z.number().default(60) }), handler: async (p) => { const r = await unrealBridge.send("UiAddButton", p); return r ? { success: true, message: `Button added: ${p.label}`, data: r } : { success: false, message: "Failed" }; } };
+
+const ueUiAddImage: ToolDefinition = { id: "ue_ui_add_image", name: "Add Image", description: "Add an Image widget with texture", descriptionJa: "テクスチャ付きImageウィジェットを追加", category: "ue_ui", inputSchema: z.object({ widgetName: z.string(), texturePath: z.string(), width: z.number().default(100), height: z.number().default(100) }), handler: async (p) => { const r = await unrealBridge.send("UiAddImage", p); return r ? { success: true, message: "Image added", data: r } : { success: false, message: "Failed" }; } };
+
+const ueUiAddProgressBar: ToolDefinition = { id: "ue_ui_add_progress_bar", name: "Add Progress Bar", description: "Add a ProgressBar widget", descriptionJa: "ProgressBarウィジェットを追加", category: "ue_ui", inputSchema: z.object({ widgetName: z.string(), percent: z.number().min(0).max(1).default(0.5), fillColor: z.string().default("0,1,0,1") }), handler: async (p) => { const r = await unrealBridge.send("UiAddProgressBar", p); return r ? { success: true, message: "Progress bar added", data: r } : { success: false, message: "Failed" }; } };
+
+const ueUiShowWidget: ToolDefinition = { id: "ue_ui_show_widget", name: "Show/Hide Widget", description: "Add widget to viewport or remove it", descriptionJa: "ウィジェットをビューポートに追加/削除", category: "ue_ui", inputSchema: z.object({ widgetName: z.string(), visible: z.boolean().default(true) }), handler: async (p) => { const r = await unrealBridge.send("UiShowWidget", p); return r ? { success: true, message: `Widget ${p.visible ? "shown" : "hidden"}`, data: r } : { success: false, message: "Failed" }; } };
+
+export const ueUiTools: ToolDefinition[] = [ ueUiCreateWidget, ueUiAddText, ueUiAddButton, ueUiAddImage, ueUiAddProgressBar, ueUiShowWidget ];
