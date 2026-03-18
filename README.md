@@ -490,9 +490,9 @@ You should see:
 <details>
 <summary><strong>Blender (Recommended for beginners)</strong></summary>
 
-> **New in v6.1:** Single-file `addon.py` makes installation much easier. No folder copying needed.
+> **Single-file install:** Just download one file and install. No folder copying needed.
 
-#### Method A: Install from Disk (Easiest - All Blender versions)
+#### Install from Disk (All Blender versions)
 
 1. Download [`addon.py`](addon.py) from this repository
 2. Open Blender
@@ -504,48 +504,6 @@ You should see:
    - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section
 6. Press **N** in the 3D Viewport, click the **ARCANA** tab, press **Connect**
 
-#### Method B: Install from ZIP
-
-1. Download [`arcana_bridge.zip`](arcana_bridge.zip) from this repository
-2. Open Blender > **Edit > Preferences > Add-ons**
-3. Click **"Install from Disk"** (or **"Install..."** on older versions)
-4. Select the downloaded ZIP file
-5. Enable **ARCANA Bridge** and connect (same as Method A steps 5-6)
-
-<details>
-<summary><b>Method C: Manual folder copy (Advanced)</b></summary>
-
-If Methods A/B do not work, copy files manually:
-
-1. Find your Blender add-ons directory:
-   - **Windows:** `C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\`
-   - **Mac:** `~/Library/Application Support/Blender/<version>/scripts/addons/`
-   - **Linux:** `~/.config/blender/<version>/scripts/addons/`
-
-   > **Tip (Windows):** Open the folder directly:
-   > ```powershell
-   > explorer "$env:APPDATA\Blender Foundation\Blender\<version>\scripts\addons"
-   > ```
-
-2. Create a folder called `arcana_bridge` inside the addons directory
-
-3. Copy `addon.py` from the repository root into the addons directory (no subfolder needed)
-
-4. **Critical (Windows):** Make sure `addon.py` is **UTF-8 without BOM**.
-   ```powershell
-   $path = "C:\Users\<YourName>\AppData\Roaming\Blender Foundation\Blender\<version>\scripts\addons\arcana_bridge\addon.py"
-   $text = [System.IO.File]::ReadAllText($path)
-   $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-   [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
-   ```
-
-5. **Blender 4.2+/5.x:** Delete `blender_manifest.toml` from the folder if it exists
-
-6. Restart Blender, go to **Edit > Preferences > Add-ons**
-   - **Blender 4.2+/5.x:** Look under the **"Legacy Add-ons"** section
-   - Search for **"ARCANA"**, enable it, then press **N** > **ARCANA** tab > **Connect**
-
-</details>
 
 > **Note:** ARCANA's MCP server must be running for Connect to work. If you use Gemini CLI, the server starts automatically. Otherwise run `node dist/index.js` from the server directory.
 

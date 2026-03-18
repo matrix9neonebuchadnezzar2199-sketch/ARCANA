@@ -489,9 +489,9 @@ Gemini が起動したら:
 <details>
 <summary><strong>Blender（初心者おすすめ）</strong></summary>
 
-> **v6.1 新機能:** 単一ファイル `addon.py` でインストールが大幅に簡単になりました。フォルダコピー不要です。
+> **シンプルインストール:** 1ファイルをダウンロードしてインストールするだけ。フォルダコピー不要です。
 
-#### 方法 A: ディスクからインストール（最も簡単・全バージョン対応）
+#### ディスクからインストール（全バージョン対応）
 
 1. このリポジトリから [`addon.py`](addon.py) をダウンロード
 2. Blender を開く
@@ -503,48 +503,6 @@ Gemini が起動したら:
    - **Blender 4.2+/5.x:** **「旧アドオン（Legacy Add-ons）」** セクションを探す
 6. 3Dビューポートで **Nキー** → **ARCANA** タブ → **接続（Connect）**
 
-#### 方法 B: ZIPからインストール
-
-1. このリポジトリから [`arcana_bridge.zip`](arcana_bridge.zip) をダウンロード
-2. Blender > **Edit > Preferences > Add-ons** を開く
-3. **「ディスクからインストール」**（旧バージョンは **「インストール...」**）をクリック
-4. ダウンロードした ZIP ファイルを選択
-5. 方法 A の手順 5-6 と同様に有効化・接続
-
-<details>
-<summary><b>方法 C: 手動フォルダコピー（上級者向け）</b></summary>
-
-方法 A/B がうまくいかない場合、手動でコピー：
-
-1. Blender のアドオンフォルダを開く:
-   - **Windows:** `C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\`
-   - **Mac:** `~/Library/Application Support/Blender/<バージョン>/scripts/addons/`
-   - **Linux:** `~/.config/blender/<バージョン>/scripts/addons/`
-
-   > **ヒント (Windows):** PowerShell でフォルダを直接開く:
-   > ```powershell
-   > explorer "$env:APPDATA\Blender Foundation\Blender\<バージョン>\scripts\addons"
-   > ```
-
-2. addons フォルダ内に `arcana_bridge` フォルダを作成
-
-3. リポジトリのルートから `addon.py` を addons ディレクトリにコピー（サブフォルダ不要）
-
-4. **重要 (Windows):** `addon.py` が **BOMなしUTF-8** であることを確認
-   ```powershell
-   $path = "C:\Users\<ユーザー名>\AppData\Roaming\Blender Foundation\Blender\<バージョン>\scripts\addons\arcana_bridge\addon.py"
-   $text = [System.IO.File]::ReadAllText($path)
-   $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-   [System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
-   ```
-
-5. **Blender 4.2+/5.x:** フォルダ内の `blender_manifest.toml` を削除
-
-6. Blender を再起動 → **Edit > Preferences > Add-ons**
-   - **Blender 4.2+/5.x:** **「旧アドオン（Legacy Add-ons）」** セクションを探す
-   - **"ARCANA"** で検索、有効化、**Nキー** → **ARCANA** タブ → **接続**
-
-</details>
 
 > **注意:** 接続するには ARCANA の MCP サーバーが起動している必要があります。Gemini CLI を使っている場合は自動で起動します。単体の場合は `cd ARCANA/server && node dist/index.js` を実行してください。
 
