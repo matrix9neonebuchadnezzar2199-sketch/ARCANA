@@ -361,13 +361,13 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 セットアップの流れ:
 
   Step 0: 事前準備
-  Node.js + Git + 3Dエディタをインストール
-         |
-         |---> Option A: 完全無料で試す（Gemini CLI）
-         |     初心者におすすめ。Googleアカウントだけで始められます。
-         |
-         +---> Option B: 他のAIクライアントで使う
-               Claude Desktop / Cursor / VS Code をお使いの方向け。
+  Node.js + Git + 3Dエディタをインストール     
+     |
+     |---> Option A: 完全無料で試す（Claude Desktop）
+     |     初心者におすすめ。インストールするだけで始められます。
+     |
+     +---> Option B: 他のAIクライアントで使う
+           Cursor / VS Code / Gemini CLI をお使いの方向け。
 ```
 
 **1. Node.js**（ARCANAサーバーとGemini CLIの両方に必要）
@@ -395,62 +395,26 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 ---
 
-### Option A: 完全無料で試す（Gemini CLI）
+### Option A: 完全無料で試す（Claude Desktop）（おすすめ）
 
-> **費用: 0円。** Gemini CLI は Google の無料AIターミナルツールで、MCP に対応しています。
-> ARCANA と組み合わせれば、完全無料で AI から 3D を操作できます。
->
-> **無料枠: 1日1,000リクエスト / 1分60リクエスト** — シーンやキャラクターを作るには十分すぎる量です。
+> **費用: 0円。** Claude Desktop は Anthropic の無料AIアプリで、MCP に対応しています。
+> APIキー不要 — インストールするだけですぐ使えます。
 
 #### セットアップの全体フロー
 
 ```
-1. 準備・インストール ............ Step 0（前提条件）+ Step 1（Gemini CLI）
-2. APIキー取得・ビルド ........... Step 2（APIキー）+ Step 3（クローン＆ビルド）
-3. MCP 登録 ...................... Step 4（gemini mcp add）
-4. Blender 設定 .................. Step 5（addon.py → ディスクからインストール）
-5. 制作開始！ .................... Step 6（AIと対話して3Dシーンを構築）
+1. Claude Desktop インストール .... Step 1
+2. ARCANA ビルド .................. Step 2（クローン＆ビルド）
+3. MCP 設定 ...................... Step 3（claude_desktop_config.json）
+4. Blender 設定 .................. Step 4（addon.py → ディスクからインストール）
+5. 制作開始！ .................... Step 5（AIと対話して3Dシーンを構築）
 ```
 
-#### Step 1: Gemini CLI をインストール
-
-```bash
-npm install -g @google/gemini-cli
+Step 1: Claude Desktop をインストール
+claude.com/download からダウンロードしてインストール。 Anthropic のアカウントがなければ無料で作成してください。
 ```
 
-確認:
-
-```bash
-gemini --version
-```
-
-#### Step 2: API キーを取得する（無料）
-
-1. [Google AI Studio](https://aistudio.google.com/app/apikey) にアクセスし、Google アカウントでログイン
-2. **「API キーを作成」** をクリック
-3. 生成されたキーをコピー
-
-環境変数を設定：
-
-**Windows（PowerShell）:**
-```powershell
-$env:GEMINI_API_KEY = "ここにAPIキーを貼り付け"
-```
-
-> **永続化したい場合：**
-> ```powershell
-> [System.Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "ここにAPIキーを貼り付け", "User")
-> ```
-> 設定後、ターミナルを再起動してください。
-
-**Mac / Linux:**
-```bash
-export GEMINI_API_KEY="ここにAPIキーを貼り付け"
-```
-
-> **永続化：** `~/.bashrc` や `~/.zshrc` に追記してください。
-
-#### Step 3: ARCANA をダウンロード＆ビルド
+#### Step 2: ARCANA をダウンロード＆ビルド
 
 ```bash
 git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
@@ -459,43 +423,39 @@ npm install
 npm run build
 ```
 
-#### Step 4: Gemini CLI に ARCANA を登録
+#### Step 3: MCP 接続を設定
 
-> **注意:** `index.d.ts` ではなく **`index.js`** を指定してください。**フルパス（絶対パス）** を使ってください。
+> **重要:** 設定ファイルは **BOMなしのUTF-8** で保存する必要があります。以下のコマンドなら自動的にBOMなしで書き込みます。
 
-**Windows（PowerShell）:**
+**Windows（PowerShell）— 通常インストール:**
 
 ```powershell
-gemini mcp add arcana -- node C:\あなたのパス\ARCANA\server\dist\index.js
-```
+$configDir = "$env:APPDATA\Claude"
+if (!(Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force }
+$json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\ARCANA\\server\\dist\\index.js"],"timeout":30000}}}'
+[System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
 
-**Mac / Linux:**
+Windows（PowerShell）— Microsoft Store版:
+$configDir = "$env:LOCALAPPDATA\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude"
+if (!(Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force }
+$json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\ARCANA\\server\\dist\\index.js"],"timeout":30000}}}'
+[System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
 
-```bash
-gemini mcp add arcana -- node /あなたのパス/ARCANA/server/dist/index.js
-```
+Mac / Linux:
+mkdir -p ~/Library/Application\ Support/Claude
+echo '{"mcpServers":{"arcana":{"command":"node","args":["/full/path/to/ARCANA/server/dist/index.js"],"timeout":30000}}}' > ~/Library/Application\ Support/Claude/claude_desktop_config.json
 
-登録確認:
+パスは実際のARCANAディレクトリに置き換えてください。保存後、Claude Desktop を完全に再起動してください（ウィンドウを閉じるだけでなく、終了して再度開く）。
 
-```bash
-gemini
-```
+確認: 新しいチャットを開いて ARCANAの接続状態を確認して と入力。Blenderが接続済みと表示されれば成功です。
 
-Gemini が起動したら:
+トラブルシューティング:
 
-```
-/mcp
-```
+設定ファイル読み込みエラー: BOMが含まれています。上記のPowerShellコマンドを使ってください。
+「Unexpected token」エラー: ソース変更後に npm run build を再実行してください。
+MCPツールが表示されない: パスが dist/index.js（src/index.ts ではない）を指しているか確認。絶対パスを使用してください。
 
-以下が表示されれば成功です:
-```
-🟢 arcana - Ready (5 tools)
-```
-
-> **うまくいかない場合:** `GEMINI_API_KEY` が同じターミナルで設定されているか確認してください。設定後に `gemini mcp add` をやり直せば解決します。
-
-#### Step 5: エディタにプラグインをインストール
-
+#### Step 4: エディタにプラグインをインストール
 <details>
 <summary><strong>Blender（初心者おすすめ）</strong></summary>
 
@@ -543,22 +503,16 @@ Gemini が起動したら:
 
 </details>
 
-#### Step 6: 話しかけるだけ！
+#### Step 5: 話しかけるだけ！
 
-```bash
-gemini
-```
-
-あとは自然言語で指示するだけ:
-
+Claude Desktop で新しいチャットを開いて話しかけるだけ:
 ```
 > 座標(2,0,0)に赤いキューブを作って
 > 雪原と夕焼けのFPSシーンを作って
 > 160cmのアニメ風女性キャラを作って、目は大きめ、髪はアッシュブロンド
 ```
 
-> **ヒント:** Gemini がファイルを読みにいって MCP ツールを使わない場合は、明示的に指示してください:
-> ```
+> **ヒント: AI がファイルを読みにいって MCP ツールを使わない場合は、明示的に指示してください:
 > arcana_execute を使って bl_object_create を実行して。パラメータは {"type": "CUBE", "name": "MyCube", "location": [2, 0, 0]}
 > ```
 
@@ -568,7 +522,7 @@ gemini
 
 ### Option B: 他のAIクライアントで使う
 
-> Claude Desktop、Cursor、VS Code など、MCP対応のAIクライアントをすでにお使いの方はこちら。
+> Cursor、VS Code、Gemini CLI など、MCP対応の他のAIクライアントをお使いの方向け。
 
 #### Step 1: ARCANA をダウンロード＆ビルド
 
@@ -582,19 +536,6 @@ npm run build
 #### Step 2: AIクライアントの設定
 
 お使いのクライアントの設定ファイルに以下を追加。`PATH_TO` は実際のARCANAパスに置き換えてください。
-
-**Claude Desktop** (`~/.config/claude/claude_desktop_config.json` または `%APPDATA%\Claude\claude_desktop_config.json`):
-
-```json
-{
-  "mcpServers": {
-    "arcana": {
-      "command": "node",
-      "args": ["PATH_TO/ARCANA/server/dist/index.js"]
-    }
-  }
-}
-```
 
 **Cursor** (`.cursor/mcp.json`):
 
@@ -625,7 +566,9 @@ npm run build
   }
 }
 ```
-
+Gemini CLI:
+gemini mcp add arcana -- node /full/path/to/ARCANA/server/dist/index.js
+---
 設定例はリポジトリのルートにもあります: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json`
 
 #### Step 3: エディタにプラグインをインストール
