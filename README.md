@@ -180,7 +180,7 @@ Create MetaHuman, set face/body/hair/skin/clothing, expression presets, export (
 ```
 AI Client           MCP            ARCANA Server        Editors
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT, etc.    stdio/SSE    832 tools / 93 cat  ----> UE 5    :9878
+ChatGPT, etc.    stdio/SSE    832 tools / 94 cat  ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
 
@@ -448,8 +448,8 @@ See also: claude_desktop_config.example.json, cursor_mcp_config.example.json, vs
 | 3 | Done | Unreal Engine 136 tools (20 categories) |
 | 4 | Done | Blender 140 tools (15 categories) |
 | 5 | **Done** | **832 tools, Recipe system, Character creation, Cross-editor pipeline** |
-| 6 | Next | UE C++ plugin, Blender Python addon, end-to-end testing |
-| 7 | Planned | Claude Desktop integration, CI/CD, community recipes |
+| 6 | **Done** | **UE C++ plugin, Blender Python addon, WebSocket bridge, AI client configs** |
+| 7 | Next | End-to-end testing, CI/CD, community recipes |
 
 ## Contributing
 
