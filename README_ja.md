@@ -59,7 +59,99 @@ ChatGPT 等       stdio/SSE    438ツール/66カテゴリ ----> UE 5    :9878
 
 ## ツール一覧
 
-Unityツール（302）とUnreal Engineツール（136）の詳細は [英語版 README](README.md) を参照してください。
+### Unity ツール（302 / 46カテゴリ）
+
+<details>
+<summary>クリックでUnityツール一覧を展開</summary>
+
+| カテゴリ | 数 | 主なツール |
+|----------|-----|-----------|
+| Scene | 3 | scene_list_objects, scene_create_gameobject, scene_delete_gameobject |
+| Transform | 5 | transform_set_position, transform_set_rotation, transform_set_scale |
+| Material | 5 | material_set_color, material_set_transparency, material_set_emission |
+| Lighting | 5 | lighting_create_light, lighting_set_color, lighting_set_intensity |
+| Terrain | 4 | terrain_create, terrain_set_height, terrain_add_texture |
+| Audio | 3 | audio_add_source, audio_set_volume, audio_set_spatial |
+| Camera | 3 | camera_create, camera_set_fov, camera_set_background |
+| Physics | 3 | physics_add_rigidbody, physics_add_collider, physics_set_gravity |
+| VFX | 4 | vfx_create_particle, vfx_set_color, vfx_set_speed |
+| Animation | 4 | anim_add_animator, anim_set_parameter, anim_play |
+| UI | 4 | ui_create_canvas, ui_create_text, ui_create_button |
+| Optimization | 4 | opt_get_scene_stats, opt_set_static, opt_add_lod_group |
+| Component | 4 | component_add, component_remove, component_set_enabled |
+| Prefab | 3 | prefab_create, prefab_instantiate, prefab_unpack |
+| Layer / Tag | 3 | layertag_set_layer, layertag_set_tag, layertag_rename |
+| Environment | 3 | env_set_skybox, env_set_fog, env_set_reflection |
+| Navigation | 4 | nav_bake, nav_add_agent, nav_add_obstacle |
+| PostProcessing | 5 | post_set_bloom, post_set_color_adjust, post_set_dof |
+| Script | 4 | script_create, script_attach, script_set_variable |
+| Selection | 4 | select_object, select_all, select_none |
+| Constraint | 4 | constraint_position, constraint_rotation, constraint_scale |
+| Build | 6 | build_set_platform, build_add_scene, build_execute |
+| Render | 4 | render_screenshot, render_set_resolution, render_set_quality |
+| Asset | 5 | asset_import, asset_delete, asset_rename |
+| Editor | 5 | editor_play_mode, editor_save_scene, editor_load_scene |
+| Mesh | 6 | mesh_combine, mesh_separate, mesh_export |
+| Timeline | 6 | timeline_create, timeline_add_track, timeline_add_clip |
+| Cinemachine | 6 | cm_create, cm_set_follow, cm_set_look_at |
+| ProBuilder | 6 | pb_create_shape, pb_extrude_face, pb_set_material |
+| Input System | 6 | input_create_action, input_add_binding, input_enable |
+| Shader | 6 | shader_create_graph, shader_add_node, shader_connect |
+| Networking | 6 | net_setup, net_spawn, net_send_rpc |
+| 2D | 6 | 2d_create_sprite, 2d_set_sorting_layer, 2d_create_tilemap |
+| VRChat | 10 | vrc_setup_avatar, vrc_add_mirror, vrc_add_pickup |
+| Addressables | 6 | addr_mark, addr_create_group, addr_build |
+| Localization | 6 | loc_create_table, loc_add_entry, loc_add_locale |
+| Debug | 10 | debug_log, debug_draw_ray, debug_draw_line |
+| Testing | 8 | test_create, test_run, test_assert |
+| Profiler | 10 | prof_cpu_start, prof_mem_snapshot, prof_gpu |
+| XR / VR | 10 | xr_setup, xr_tracking, xr_controller |
+| AI / NavAgent | 8 | ai_set_destination, ai_patrol, ai_chase |
+| Spline | 8 | spline_create, spline_add_knot, spline_animate |
+| Visual Scripting | 8 | vs_create_graph, vs_add_node, vs_connect_nodes |
+| Ragdoll | 6 | ragdoll_create, ragdoll_enable, ragdoll_set_joint_limits |
+| Cloth | 5 | cloth_add, cloth_set_params, cloth_set_gravity |
+| Decal | 5 | decal_create, decal_set_size, decal_set_material |
+| LOD | 6 | lod_create_group, lod_set_transitions, lod_assign_renderer |
+| Gizmo | 6 | gizmo_draw_sphere, gizmo_draw_cube, gizmo_draw_line |
+| Reflection Probe | 6 | probe_create, probe_set_size, probe_bake |
+| Lightmap | 6 | lightmap_bake, lightmap_set_resolution, lightmap_clear |
+| Occlusion | 6 | occlusion_bake, occlusion_set_occluder, occlusion_clear |
+| Streaming | 6 | streaming_load_scene, streaming_unload_scene, streaming_preload |
+| Tag Manager | 4 | tagmgr_add_tag, tagmgr_add_layer, tagmgr_list_all |
+| Screenshot | 4 | screenshot_game_view, screenshot_scene_view, screenshot_360 |
+
+</details>
+
+### Unreal Engine ツール（136 / 20カテゴリ）
+
+<details>
+<summary>クリックでUEツール一覧を展開</summary>
+
+| カテゴリ | 数 | 主なツール |
+|----------|-----|-----------|
+| UE Scene | 6 | ue_scene_list_actors, ue_scene_spawn_actor, ue_scene_delete_actor |
+| UE Transform | 6 | ue_transform_set_location, ue_transform_set_rotation, ue_transform_set_scale |
+| UE Material | 8 | ue_material_create, ue_material_set_color, ue_material_set_metallic |
+| UE Lighting | 6 | ue_light_create, ue_light_set_color, ue_light_set_intensity |
+| UE Landscape | 8 | ue_landscape_create, ue_landscape_sculpt, ue_landscape_paint |
+| UE Audio | 6 | ue_audio_add_component, ue_audio_set_volume, ue_audio_set_spatial |
+| UE Camera | 6 | ue_camera_create, ue_camera_set_fov, ue_camera_set_active |
+| UE Mesh | 6 | ue_mesh_import, ue_mesh_set_collision, ue_mesh_set_nanite |
+| UE Blueprint | 10 | ue_bp_create, ue_bp_add_component, ue_bp_compile |
+| UE Niagara | 6 | ue_niagara_create, ue_niagara_set_param, ue_niagara_set_spawn_rate |
+| UE Animation | 6 | ue_anim_import, ue_anim_play, ue_anim_create_blendspace |
+| UE UI / UMG | 6 | ue_ui_create_widget, ue_ui_add_text, ue_ui_add_button |
+| UE AI | 8 | ue_ai_create_bt, ue_ai_create_bb, ue_ai_run_bt |
+| UE Physics | 6 | ue_physics_enable, ue_physics_set_mass, ue_physics_add_force |
+| UE Sequencer | 8 | ue_seq_create, ue_seq_add_track, ue_seq_render_movie |
+| UE Build | 6 | ue_build_set_platform, ue_build_package, ue_build_cook |
+| UE Level | 6 | ue_level_create, ue_level_open, ue_level_save |
+| UE Foliage | 6 | ue_foliage_add_type, ue_foliage_paint, ue_foliage_erase |
+| UE PCG | 6 | ue_pcg_create_graph, ue_pcg_add_node, ue_pcg_execute |
+| UE MetaHuman | 6 | ue_mh_spawn, ue_mh_set_body, ue_mh_set_face |
+
+</details>
 
 ## SuperSave モード
 
