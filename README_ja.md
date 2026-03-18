@@ -410,9 +410,8 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 5. 制作開始！ .................... Step 5（AIと対話して3Dシーンを構築）
 ```
 
-#### #### Step 1: Claude Desktop をインストール
-[claude.com/download](https://claude.com/download) からダウンロードしてインストール。 Anthropic のアカウントがなければ無料で作成してください。
-```
+#### Step 1: Claude Desktop をインストール
+[claude.com/download](https://claude.com/download) からダウンロードしてインストール。Anthropic のアカウントがなければ無料で作成してください。
 
 #### Step 2: ARCANA をダウンロード＆ビルド
 
@@ -436,7 +435,7 @@ $json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\
 [System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
 ```
 
-****Windows（PowerShell）— Microsoft Store版:**
+**Windows（PowerShell）— Microsoft Store版:**
 
 ```powershell
 $configDir = "$env:LOCALAPPDATA\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude"

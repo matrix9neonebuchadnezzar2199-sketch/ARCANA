@@ -414,8 +414,6 @@ Setup Flow:
 #### Step 1: Install Claude Desktop
 Download from [claude.com/download](https://claude.com/download) and install. Create a free Anthropic account if you don't have one.
 
-```
-
 #### Step 2: Download and Build ARCANA
 
 
@@ -439,7 +437,7 @@ $json = '{"mcpServers":{"arcana":{"command":"node","args":["C:\\full\\path\\to\\
 [System.IO.File]::WriteAllText("$configDir\claude_desktop_config.json", $json, (New-Object System.Text.UTF8Encoding $false))
 ```
 
-****Windows (PowerShell) — Microsoft Store install:**
+**Windows (PowerShell) — Microsoft Store install:**
 
 ```powershell
 $configDir = "$env:LOCALAPPDATA\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude"
