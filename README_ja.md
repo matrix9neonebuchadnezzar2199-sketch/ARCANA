@@ -50,6 +50,8 @@ ARCANAはAIアシスタント（Claude, ChatGPT, Gemini, Copilot, Cursor）を [
 
 ## アーキテクチャ
 
+![ARCANA アーキテクチャ](image/ARCANA%20to%20Unity%26Blender.png)
+
 ```
 AIクライアント       MCP            ARCANAサーバー          エディタ
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877

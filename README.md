@@ -50,6 +50,8 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Un
 
 ## Architecture
 
+![ARCANA Architecture](image/ARCANA%20to%20Unity%26Blender.png)
+
 ```
 AI Client           MCP            ARCANA Server        Editors
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
