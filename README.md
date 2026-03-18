@@ -5,7 +5,7 @@
 Control **Unity**, **Unreal Engine**, and **Blender** with natural language.
 Build scenes in seconds. Create characters like a game. Free and open source, forever.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![828 Tools](https://img.shields.io/badge/Tools-828-blue.svg)](#tool-overview) [![93 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 3.6+](https://img.shields.io/badge/Blender-3.6%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#tool-overview) [![94 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 3.6+](https://img.shields.io/badge/Blender-3.6%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 [日本語版はこちら](README_ja.md) | English
 
@@ -13,11 +13,11 @@ Build scenes in seconds. Create characters like a game. Free and open source, fo
 
 ## Why ARCANA?
 
-Most MCP editor tools support one editor with 20-60 tools. ARCANA provides **828 tools across 3 editors and 93 categories** from a single server — including **one-command scene generation** and **game-style character creation**.
+Most MCP editor tools support one editor with 20-60 tools. ARCANA provides **832 tools across 3 editors and 94 Categories** from a single server — including **one-command scene generation** and **game-style character creation**.
 
 |  | ARCANA | Typical MCP tool |
 | --- | --- | --- |
-| **Tools** | **828** | 20-60 |
+| **Tools** | **832** | 20-60 |
 | **Editors** | Unity + UE + Blender | Single editor |
 | **Scene Generation** | One command | - |
 | **Character Creation** | Game-style sliders | - |
@@ -78,7 +78,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Un
 
 ## Key Features
 
-- **828 Tools / 93 Categories** — Unity 358, Unreal Engine 192, Blender 238, Cross-Editor 40
+- **832 Tools / 94 Categories** — Unity 358, Unreal Engine 192, Blender 238, Cross-Editor 40
 - **3 Editor Support** — One server controls Unity, UE, and Blender simultaneously
 - **Natural Language** — Describe what you want, AI does it
 - **Any AI Client** — Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
@@ -106,6 +106,32 @@ Build complete game scenes with a single natural language command. No more hours
 | `recipe_pbr_material` | Albedo, normal, metallic, roughness, AO, emission auto-configured |
 
 Plus **project management tools**: health check, texture audit, polygon budget, naming conventions, build size report, collision matrix, quality settings, and more.
+
+
+### Key Feature: 2D-to-3D --- Image to 3D World
+
+The killer feature. Show ARCANA an illustration and it recreates the scene in 3D.
+
+1. Paste an image (character art, landscape, concept art, game screenshot)
+2. Claude Vision analyzes and extracts detailed parameters
+3. ARCANA converts parameters into a tool execution pipeline
+4. Your 3D editor builds everything automatically
+
+No external AI model needed --- uses the same Vision AI you are already chatting with.
+
+| Tool | What It Does |
+| --- | --- |
+| arcana_analyze_image | Extract 3D parameters from any image (preview JSON) |
+| arcana_image_to_character | Image to full 3D character |
+| arcana_image_to_scene | Image to full 3D scene |
+| arcana_image_to_world | Image to characters + scene together |
+
+**Example:**
+```
+User: [pastes fantasy landscape]  Build this scene
+Claude: mountain terrain, sunset, fog, castle, lake... Executing 12 tools...
+Result: Scene appears in Blender/Unity
+```
 
 ### Key Feature: Game-Style Character Creation
 
@@ -154,7 +180,7 @@ Create MetaHuman, set face/body/hair/skin/clothing, expression presets, export (
 ```
 AI Client           MCP            ARCANA Server        Editors
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT, etc.    stdio/SSE    828 tools / 93 cat  ----> UE 5    :9878
+ChatGPT, etc.    stdio/SSE    832 tools / 93 cat  ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
 
@@ -316,7 +342,7 @@ ChatGPT, etc.    stdio/SSE    828 tools / 93 cat  ----> UE 5    :9878
 
 ## SuperSave Mode
 
-Instead of registering all 828 tools, SuperSave exposes only **4 meta-tools**:
+Instead of registering all 832 tools, SuperSave exposes only **4 meta-tools**:
 
 | Meta-Tool | Purpose |
 | --- | --- |
@@ -397,7 +423,7 @@ npm run build
 | 2 | Done | Unity 302 tools (46 categories) |
 | 3 | Done | Unreal Engine 136 tools (20 categories) |
 | 4 | Done | Blender 140 tools (15 categories) |
-| 5 | **Done** | **828 tools, Recipe system, Character creation, Cross-editor pipeline** |
+| 5 | **Done** | **832 tools, Recipe system, Character creation, Cross-editor pipeline** |
 | 6 | Next | UE C++ plugin, Blender Python addon, end-to-end testing |
 | 7 | Planned | Claude Desktop integration, CI/CD, community recipes |
 
