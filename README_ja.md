@@ -1,4 +1,4 @@
-[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
+﻿[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
 
 **Advanced Runtime for Creative AI & Natural-language Automation**
 
@@ -356,6 +356,17 @@ npm run build
 2. Edit > Plugins で ARCANA プラグインを有効化
 3. WebSocketブリッジが localhost:9878 で起動
 
+
+### Blender セットアップ
+
+1. Blender 3.6+ を開く
+2. Edit > Preferences > Add-ons を開く
+3. 「Install...」をクリックし、`blender-plugin` フォルダを選択（zip化してもOK）
+4. アドオン一覧で「ARCANA Bridge」を有効化
+5. 3Dビューポートのサイドバー（Nキー）で「ARCANA」タブを開き「Connect」をクリック
+6. WebSocketブリッジが localhost:9879 で起動
+
+> **ヒント:** アドオン設定で「Auto Connect on Startup」を有効にすると、起動時に自動接続します。
 ### 試してみよう
 
 **シーン自動生成：**

@@ -1,4 +1,4 @@
-[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
+﻿[![ARCANA Banner](image/TOP.png)](https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA)
 
 **Advanced Runtime for Creative AI & Natural-language Automation**
 
@@ -356,6 +356,17 @@ npm run build
 2. Enable ARCANA plugin in Edit > Plugins
 3. WebSocket bridge starts on localhost:9878
 
+
+### Blender Setup
+
+1. Open Blender 3.6+
+2. Go to Edit > Preferences > Add-ons
+3. Click "Install..." and select the `blender-plugin` folder (or zip it first)
+4. Enable "ARCANA Bridge" in the add-ons list
+5. In the 3D Viewport sidebar (N key), find the "ARCANA" tab and click "Connect"
+6. WebSocket bridge starts on localhost:9879
+
+> **Tip:** Enable "Auto Connect on Startup" in the add-on preferences to skip step 5.
 ### Try It
 
 **Scene Generation:**
