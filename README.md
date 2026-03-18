@@ -355,6 +355,53 @@ Token usage reduced by approximately **98%**.
 
 ## Quick Start
 
+### Step 0: Prerequisites (All Free)
+
+Before you begin, install the following. Everything is free.
+
+```
+Setup Flow:
+
+  Step 0: Prerequisites
+  Node.js + Git + 3D Editor
+         |
+         |---> Option A: Try Completely Free (Gemini CLI)
+         |     Recommended for beginners.
+         |     All you need is a Google account.
+         |
+         +---> Option B: Use with Other AI Clients
+               For Claude Desktop / Cursor / VS Code users.
+```
+
+**1. Node.js** (Required for ARCANA server and Gemini CLI)
+
+- Download LTS version from [nodejs.org](https://nodejs.org/)
+- Run the installer (all default settings are fine)
+- Verify: open your terminal and type `node --version`
+
+**2. Git** (Required to download ARCANA)
+
+- **Windows**: Download from [git-scm.com](https://git-scm.com/download/win) and install
+- **Mac**: Open Terminal and run `xcode-select --install`
+- **Linux**: Run `sudo apt install git` (Ubuntu/Debian) or `sudo dnf install git` (Fedora)
+- Verify: `git --version`
+
+**3. A 3D Editor** (At least one of the following)
+
+| Editor | Cost | Account Needed? | Install Size | Best For |
+|--------|------|-----------------|-------------|----------|
+| **Blender 3.6+** | Free | No | ~500 MB | Beginners, character creation, VRChat |
+| **Unity 2022.3+** | Free (Personal) | Yes (Unity ID) | ~5 GB | Game development |
+| **UE 5.x** | Free | Yes (Epic Games) | ~60 GB | High-end visuals, AAA games |
+
+> **First time? Start with Blender.** Download from [blender.org/download](https://www.blender.org/download/), install, done. No account, no sign-up.
+
+---
+
+### Option A: Try Completely Free with Gemini CLI
+
+> **Cost: ## Quick Start
+
 ### Requirements
 
 - Node.js 18+
@@ -438,6 +485,197 @@ See also: claude_desktop_config.example.json, cursor_mcp_config.example.json, vs
 "Create a red cube at position (0, 5, 0)"
 "Set up Niagara particle system with fire effect"
 ```
+
+.** Gemini CLI is Google's free AI terminal tool with built-in MCP support.
+> Combined with ARCANA, you get a fully working AI-to-3D pipeline at zero cost.
+>
+> **Free tier: 1,000 requests/day and 60 requests/min** --- more than enough to build entire scenes and characters.
+
+#### Step 1: Install Gemini CLI
+
+```bash
+npm install -g @google/gemini-cli
+```
+
+Verify:
+
+```bash
+gemini --version
+```
+
+#### Step 2: Sign In with Google (Free)
+
+```bash
+gemini
+```
+
+Your browser opens automatically. Sign in with your Google account (Gmail is fine). No API key, no credit card, no subscription needed.
+
+#### Step 3: Download and Build ARCANA
+
+```bash
+git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
+cd ARCANA/server
+npm install
+npm run build
+```
+
+#### Step 4: Register ARCANA in Gemini CLI
+
+**Windows (PowerShell):**
+
+```powershell
+gemini mcp add arcana node -- C:\full\path\to\ARCANA\server\dist\index.js
+```
+
+**Mac / Linux:**
+
+```bash
+gemini mcp add arcana node -- /full/path/to/ARCANA/server/dist/index.js
+```
+
+> Replace the path with your actual ARCANA installation location.
+
+Verify:
+
+```bash
+gemini mcp list
+```
+
+You should see `arcana` with status `Connected`.
+
+#### Step 5: Set Up Your Editor Plugin
+
+**Blender (Recommended for beginners):**
+
+1. Open Blender
+2. Go to **Edit > Preferences > Add-ons**
+3. Click **Install...** and select the `blender-plugin` folder from ARCANA
+4. Enable **ARCANA Bridge** by checking the box
+5. In the 3D Viewport, press **N** to open the sidebar
+6. Click the **ARCANA** tab and press **Connect**
+
+**Unity:**
+
+1. Open your Unity project
+2. Drag the `unity-plugin` folder into your project's Assets folder
+3. Go to **Tools > ARCANA > Setup**
+
+**Unreal Engine:**
+
+1. Copy `ue-plugin/ARCANA` into your project's Plugins directory
+2. Open UE > **Edit > Plugins** > Enable ARCANA
+3. Restart the editor
+
+#### Step 6: Start Creating!
+
+```bash
+gemini
+```
+
+Just talk to it:
+
+```
+> Create a red cube at the origin
+> Build an FPS scene with snowy terrain and sunset lighting
+> Create a 160cm anime-style female character with large eyes and ash blonde hair
+> Show me this illustration as a 3D scene [paste image]
+```
+
+**Free AI + Free Editor + Free ARCANA = Unlimited creativity.**
+
+---
+
+### Option B: Use with Other AI Clients
+
+> Already using Claude Desktop, Cursor, VS Code, or another MCP-compatible client? Just add ARCANA.
+
+#### Step 1: Download and Build ARCANA
+
+```bash
+git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
+cd ARCANA/server
+npm install
+npm run build
+```
+
+#### Step 2: Configure Your AI Client
+
+Copy the config for your client. Replace `PATH_TO` with your actual ARCANA path.
+
+**Claude Desktop** (`~/.config/claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "arcana": {
+      "command": "node",
+      "args": ["PATH_TO/ARCANA/server/dist/index.js"]
+    }
+  }
+}
+```
+
+**Cursor** (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "arcana": {
+      "command": "node",
+      "args": ["./server/dist/index.js"],
+      "cwd": "PATH_TO/ARCANA"
+    }
+  }
+}
+```
+
+**VS Code** (`.vscode/settings.json`):
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "arcana": {
+        "command": "node",
+        "args": ["./server/dist/index.js"],
+        "cwd": "PATH_TO/ARCANA"
+      }
+    }
+  }
+}
+```
+
+See also: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json` in the repository root.
+
+#### Step 3: Set Up Your Editor Plugin
+
+Same as Option A Step 5 above. Install the plugin for your editor (Blender / Unity / UE).
+
+#### Step 4: Try It
+
+**Scene Generation:**
+
+```
+"Create an FPS scene with snowy terrain and dramatic lighting"
+"Build an RPG dungeon with 10 rooms, ice theme, and a boss room"
+```
+
+**Character Creation:**
+
+```
+"Create a character with height 175cm, athletic build"
+"Set hair to wavy, 30cm, ash color with lavender highlights"
+"Make eyes larger and add violet irises"
+```
+
+**2D to 3D:**
+
+```
+"[paste illustration] Build this scene in 3D"
+"[paste character art] Create this character"
+```
+
 
 ## Roadmap
 

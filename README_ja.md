@@ -355,13 +355,76 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 ## クイックスタート
 
-### 必要なもの
+### Step 0: 事前にインストールするもの（全部無料）
 
-- Node.js 18+
-- Unity 2022.3+ / Unreal Engine 5.x / Blender 3.6+（任意の組み合わせ）
-- MCP対応AIクライアント（Claude Desktop, Cursor, VS Code等）
+始める前に、以下をインストールしてください。すべて無料です。
 
-### インストール
+```
+セットアップの流れ:
+
+  Step 0: 事前準備
+  Node.js + Git + 3Dエディタをインストール
+         |
+         |---> Option A: 完全無料で試す（Gemini CLI）
+         |     初心者におすすめ。Googleアカウントだけで始められます。
+         |
+         +---> Option B: 他のAIクライアントで使う
+               Claude Desktop / Cursor / VS Code をお使いの方向け。
+```
+
+**1. Node.js**（ARCANAサーバーとGemini CLIの両方に必要）
+
+- [nodejs.org](https://nodejs.org/) からLTS版をダウンロード
+- インストーラーを実行（設定はすべてデフォルトでOK）
+- 確認: ターミナルを開いて `node --version` と入力
+
+**2. Git**（ARCANAのダウンロードに必要）
+
+- **Windows**: [git-scm.com](https://git-scm.com/download/win) からダウンロードしてインストール
+- **Mac**: ターミナルで `xcode-select --install` を実行
+- **Linux**: `sudo apt install git`（Ubuntu/Debian）または `sudo dnf install git`（Fedora）
+- 確認: `git --version`
+
+**3. 3Dエディタ**（以下から1つ以上）
+
+| エディタ | 費用 | アカウント登録 | インストール容量 | こんな人向け |
+|----------|------|---------------|-----------------|-------------|
+| **Blender 3.6+** | 無料 | 不要 | 約500 MB | 初心者、キャラ作成、VRChat |
+| **Unity 2022.3+** | 無料（Personal） | 必要（Unity ID） | 約5 GB | ゲーム開発 |
+| **UE 5.x** | 無料 | 必要（Epic Games） | 約60 GB | ハイエンド映像、AAA |
+
+> **迷ったら Blender で始めてください。** [blender.org/download](https://www.blender.org/download/) からダウンロードしてインストールするだけ。アカウント登録は不要です。
+
+---
+
+### Option A: 完全無料で試す（Gemini CLI）
+
+> **費用: 0円。** Gemini CLI は Google の無料AIターミナルツールで、MCP に対応しています。
+> ARCANA と組み合わせれば、完全無料で AI から 3D を操作できます。
+>
+> **無料枠: 1日1,000リクエスト / 1分60リクエスト** --- シーンやキャラクターを作るには十分すぎる量です。
+
+#### Step 1: Gemini CLI をインストール
+
+```bash
+npm install -g @google/gemini-cli
+```
+
+確認:
+
+```bash
+gemini --version
+```
+
+#### Step 2: Google アカウントで認証（無料）
+
+```bash
+gemini
+```
+
+ブラウザが自動で開きます。Google アカウント（Gmail でOK）でログインすれば認証完了です。APIキーもクレジットカードもサブスクリプションも不要です。
+
+#### Step 3: ARCANA をダウンロード＆ビルド
 
 ```bash
 git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
@@ -370,74 +433,162 @@ npm install
 npm run build
 ```
 
-### Unity セットアップ
+#### Step 4: Gemini CLI に ARCANA を登録
 
-1. `unity-plugin` フォルダをUnityプロジェクトにインポート
-2. Unity > Tools > ARCANA > Setup を開く
-3. WebSocketブリッジが localhost:9877 で起動
+**Windows（PowerShell）の場合:**
 
-### Unreal Engine セットアップ
+```powershell
+gemini mcp add arcana node -- C:\あなたのパス\ARCANA\server\dist\index.js
+```
 
-1. `ue-plugin` フォルダをプロジェクトのPluginsディレクトリにコピー
-2. Edit > Plugins で ARCANA プラグインを有効化
-3. WebSocketブリッジが localhost:9878 で起動
+**Mac / Linux の場合:**
 
+```bash
+gemini mcp add arcana node -- /あなたのパス/ARCANA/server/dist/index.js
+```
 
-### Blender セットアップ
+> パスは ARCANA を実際にインストールした場所に置き換えてください。
 
-1. Blender 3.6+ を開く
-2. Edit > Preferences > Add-ons を開く
-3. 「Install...」をクリックし、`blender-plugin` フォルダを選択（zip化してもOK）
-4. アドオン一覧で「ARCANA Bridge」を有効化
-5. 3Dビューポートのサイドバー（Nキー）で「ARCANA」タブを開き「Connect」をクリック
-6. WebSocketブリッジが localhost:9879 で起動
+登録確認:
 
-> **ヒント:** アドオン設定で「Auto Connect on Startup」を有効にすると、起動時に自動接続します。
+```bash
+gemini mcp list
+```
 
-### AIクライアント設定
+`arcana` が `Connected` と表示されれば成功です。
 
-ARCANAはMCP対応の全AIクライアントで動作します。お使いのクライアント用の設定をコピーしてください：
+#### Step 5: エディタにプラグインをインストール
 
-**Claude Desktop** (~/.config/claude/claude_desktop_config.json):
+**Blender（初心者おすすめ）:**
+
+1. Blender を起動
+2. **Edit > Preferences > Add-ons** を開く
+3. **Install...** をクリック → ARCANA の `blender-plugin` フォルダを選択
+4. **ARCANA Bridge** のチェックボックスをONにして有効化
+5. 3Dビューポートで **N キー** を押してサイドバーを開く
+6. **ARCANA** タブをクリック → **Connect** を押す
+
+**Unity:**
+
+1. Unity でプロジェクトを開く
+2. `unity-plugin` フォルダを Assets にドラッグ＆ドロップ
+3. メニューの **Tools > ARCANA > Setup** をクリック
+
+**Unreal Engine:**
+
+1. `ue-plugin/ARCANA` フォルダをプロジェクトの Plugins ディレクトリにコピー
+2. UE を起動 → **Edit > Plugins** → ARCANA を有効化
+3. エディタを再起動
+
+#### Step 6: 話しかけるだけ！
+
+```bash
+gemini
+```
+
+あとは自然言語で指示するだけ:
+
+```
+> 赤いキューブを原点に作って
+> 雪原と夕焼けのFPSシーンを作って
+> 160cmのアニメ風女性キャラを作って、目は大きめ、髪はアッシュブロンド
+> [イラストを貼り付けて] この場面を3Dで再現して
+```
+
+**無料AI + 無料エディタ + 無料ARCANA = 無限の創造力。**
+
+---
+
+### Option B: 他のAIクライアントで使う
+
+> Claude Desktop、Cursor、VS Code など、MCP対応のAIクライアントをすでにお使いの方はこちら。
+
+#### Step 1: ARCANA をダウンロード＆ビルド
+
+```bash
+git clone https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git
+cd ARCANA/server
+npm install
+npm run build
+```
+
+#### Step 2: AIクライアントの設定
+
+お使いのクライアントの設定ファイルに以下を追加してください。`PATH_TO` は実際のARCANAパスに置き換えてください。
+
+**Claude Desktop** (`~/.config/claude/claude_desktop_config.json`):
+
 ```json
-{  "mcpServers": { "arcana": { "command": "node", "args": ["PATH_TO/ARCANA/server/dist/index.js"] } } }
+{
+  "mcpServers": {
+    "arcana": {
+      "command": "node",
+      "args": ["PATH_TO/ARCANA/server/dist/index.js"]
+    }
+  }
+}
 ```
 
-**Cursor** (.cursor/mcp.json):
+**Cursor** (`.cursor/mcp.json`):
+
 ```json
-{  "mcpServers": { "arcana": { "command": "node", "args": ["./server/dist/index.js"], "cwd": "PATH_TO/ARCANA" } } }
+{
+  "mcpServers": {
+    "arcana": {
+      "command": "node",
+      "args": ["./server/dist/index.js"],
+      "cwd": "PATH_TO/ARCANA"
+    }
+  }
+}
 ```
 
-**VS Code** (.vscode/settings.json):
+**VS Code** (`.vscode/settings.json`):
+
 ```json
-{  "mcp": { "servers": { "arcana": { "command": "node", "args": ["./server/dist/index.js"], "cwd": "PATH_TO/ARCANA" } } } }
+{
+  "mcp": {
+    "servers": {
+      "arcana": {
+        "command": "node",
+        "args": ["./server/dist/index.js"],
+        "cwd": "PATH_TO/ARCANA"
+      }
+    }
+  }
+}
 ```
 
-PATH_TOを実際のARCANAインストールパスに置き換えてください。
+設定ファイルの例はリポジトリのルートにもあります: `claude_desktop_config.example.json`, `cursor_mcp_config.example.json`, `vscode_mcp_config.example.json`
 
-リポジトリルートの claude_desktop_config.example.json, cursor_mcp_config.example.json, vscode_mcp_config.example.json も参照してください。
+#### Step 3: エディタにプラグインをインストール
 
-### 試してみよう
+Option A の Step 5 と同じ手順です。お使いのエディタ（Blender / Unity / UE）のプラグインをインストールしてください。
 
-**シーン自動生成：**
+#### Step 4: 試してみる
+
+**シーン生成:**
+
 ```
-"雪の地形にドラマチックなライティングのFPSシーン作って"
-"10部屋、氷テーマ、ボス部屋ありのRPGダンジョン作って"
-```
-
-**キャラクリエイト：**
-```
-"身長175cm、アスレチック体型のキャラ作って"
-"髪をウェーブ、30cm、アッシュカラーにラベンダーのメッシュ入れて"
-"目をもっと大きく、バイオレットの瞳にして"
+"雪のテレインとドラマチックなライティングでFPSシーンを作って"
+"氷テーマのRPGダンジョンを10部屋、ボス部屋付きで作って"
 ```
 
-**通常の編集操作：**
+**キャラクター作成:**
+
 ```
-"現在のUnityシーンのGameObject一覧を表示して"
-"位置(0, 5, 0)に赤いキューブを作って"
-"Niagaraで炎のパーティクルシステムをセットアップして"
+"身長175cm、アスレチック体型のキャラクターを作って"
+"髪をウェーブ、30cm、アッシュカラーにラベンダーのハイライトで"
+"目を大きくして、紫色の瞳にして"
 ```
+
+**2Dから3D:**
+
+```
+"[イラストを貼り付けて] このシーンを3Dで作って"
+"[キャラクターの絵を貼り付けて] このキャラクターを作って"
+```
+
 
 ## ロードマップ
 
