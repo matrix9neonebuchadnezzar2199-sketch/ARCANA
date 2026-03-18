@@ -1,0 +1,23 @@
+﻿{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "6.0.0",
+    "FriendlyName": "ARCANA Bridge",
+    "Description": "Connect Unreal Engine to ARCANA MCP Server via WebSocket. 192 tools for AI-driven editor control.",
+    "Category": "Editor",
+    "CreatedBy": "ARCANA Project",
+    "CreatedByURL": "https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA",
+    "DocsURL": "https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA",
+    "MarketplaceURL": "",
+    "CanContainContent": false,
+    "IsBetaVersion": true,
+    "IsExperimentalVersion": false,
+    "Installed": false,
+    "Modules": [
+        {
+            "Name": "ARCANA",
+            "Type": "Editor",
+            "LoadingPhase": "PostEngineInit"
+        }
+    ]
+}
