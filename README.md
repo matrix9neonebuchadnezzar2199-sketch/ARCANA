@@ -355,7 +355,7 @@ Token usage reduced by approximately **98%**.
 
 
 
-<details>
+<details open>
 <summary><h2>🎨 Character Creation Setup Guide (MPFB2 Integration)</h2></summary>
 
 ARCANA supports advanced character creation by integrating with **MPFB2** (MakeHuman Plugin for Blender).

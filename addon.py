@@ -3551,8 +3551,9 @@ def _get_char_mesh(params):
 
 
 def bl_char_set_hair_style(params):
-    """Set hair style. Creates a basic hair mesh on the character's head."""
+    """Set hair style v6. UV Sphere with improved face cut and long drop."""
     import math
+    import mathutils
     name = params.get("name") or params.get("target")
     obj = _arcana_find_character(name)
     if obj is None:
@@ -3566,75 +3567,196 @@ def bl_char_set_hair_style(params):
         if child.get("arcana_part") == "hair":
             bpy.data.objects.remove(child, do_unlink=True)
 
-    # Get head top position from bounding box
-    bbox = [obj.matrix_world @ mathutils.Vector(c) for c in obj.bound_box]
-    top_z = max(v.z for v in bbox)
-    center_x = sum(v.x for v in bbox) / 8
-    center_y = sum(v.y for v in bbox) / 8
+    if style in ("bald", "none"):
+        return {"success": True, "name": obj.name, "style": "bald"}
 
-    # Hair length based on style
-    length_map = {
-        "buzz": 0.02, "short": 0.06, "medium": 0.15,
-        "long": 0.30, "very_long": 0.50, "ponytail": 0.35,
-        "bob": 0.12, "pixie": 0.08, "mohawk": 0.12,
-    }
-    length = length_map.get(style, 0.15)
+    # --- HEAD DETECTION (v4 neck method) ---
+    mesh = obj.data
+    world_mat = obj.matrix_world
+    world_verts = [world_mat @ v.co for v in mesh.vertices]
 
-    # Create hair cap mesh (hemisphere)
+    max_z = max(v.z for v in world_verts)
+    min_z = min(v.z for v in world_verts)
+    body_height = max_z - min_z
+    if body_height < 0.01:
+        return {"success": False, "message": "Invalid body mesh"}
+
+    num_slices = 50
+    slice_height = body_height / num_slices
+    neck_z = max_z - body_height * 0.2
+    min_width = 999
+    for s in range(int(num_slices * 0.7), int(num_slices * 0.92)):
+        z_lo = min_z + s * slice_height
+        z_hi = z_lo + slice_height
+        band = [v for v in world_verts if z_lo <= v.z < z_hi]
+        if len(band) < 4:
+            continue
+        width_x = max(v.x for v in band) - min(v.x for v in band)
+        if width_x < min_width:
+            min_width = width_x
+            neck_z = (z_lo + z_hi) / 2
+
+    head_verts = [v for v in world_verts if v.z > neck_z]
+    if len(head_verts) < 10:
+        head_verts = [v for v in world_verts if v.z > max_z - body_height * 0.15]
+
+    head_cx = sum(v.x for v in head_verts) / len(head_verts)
+    head_cy = sum(v.y for v in head_verts) / len(head_verts)
+    head_top_z = max(v.z for v in head_verts)
+    head_bot_z = min(v.z for v in head_verts)
+    head_height = head_top_z - head_bot_z
+
+    dists = [math.sqrt((v.x - head_cx)**2 + (v.y - head_cy)**2) for v in head_verts]
+    dists.sort()
+    head_radius = dists[int(len(dists) * 0.85)]
+    if head_radius > body_height * 0.12:
+        head_radius = body_height * 0.09
+
+    # Also measure front-back depth of head
+    head_front_y = min(v.y for v in head_verts)
+    head_back_y = max(v.y for v in head_verts)
+
+    # --- CREATE SPHERE ---
+    hair_r = head_radius * 1.05
+    cap_center_z = head_top_z - head_height * 0.30
+
     bpy.ops.mesh.primitive_uv_sphere_add(
-        radius=0.105,
-        segments=24, ring_count=12,
-        location=(center_x, center_y, top_z - 0.02)
+        radius=hair_r,
+        segments=48, ring_count=24,
+        location=(head_cx, head_cy, cap_center_z)
     )
     hair_obj = bpy.context.active_object
     hair_obj.name = f"{obj.name}_Hair"
     hair_obj["arcana_part"] = "hair"
     hair_obj["arcana_hair_style"] = style
 
-    # Remove bottom half
+    hair_mesh = hair_obj.data
+
+    # --- FACE CUT: elliptical opening instead of flat plane ---
+    # In local coords, sphere is centered at origin
+    # Face is in -Y direction (front), opening shaped like an oval
+    verts_to_delete = set()
+
+    forehead_z = hair_r * 0.25   # above this = keep (top of head)
+    chin_z = -hair_r * 0.65      # below this in front = remove
+
+    for v in hair_mesh.vertices:
+        lx, ly, lz = v.co.x, v.co.y, v.co.z
+
+        # Face opening: front half, below forehead
+        if ly < 0 and lz < forehead_z:
+            # Elliptical test: how much of face to expose
+            # More open at center, less at sides
+            face_width = hair_r * 0.75 * (1.0 - (lz - chin_z) / (forehead_z - chin_z))
+            face_width = max(face_width, hair_r * 0.3)
+            if abs(lx) < face_width and ly < -hair_r * 0.3:
+                verts_to_delete.add(v.index)
+
+        # Remove bottom vertices based on style
+        if style in ("buzz", "short", "pixie"):
+            if lz < -hair_r * 0.55:
+                verts_to_delete.add(v.index)
+        elif style in ("medium", "bob", "short_bob"):
+            if lz < -hair_r * 0.7 and ly < 0:
+                verts_to_delete.add(v.index)
+
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='DESELECT')
     bpy.ops.object.mode_set(mode='OBJECT')
-    mesh = hair_obj.data
-    for v in mesh.vertices:
-        if v.co.z < -0.01:
-            v.select = True
+
+    for vi in verts_to_delete:
+        if vi < len(hair_mesh.vertices):
+            hair_mesh.vertices[vi].select = True
+
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.delete(type='VERT')
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    # Scale for style
-    if style in ("long", "very_long"):
-        hair_obj.scale.z = 1.0 + length * 2
-        hair_obj.scale.x = 1.05
-        hair_obj.scale.y = 1.05
-    elif style == "mohawk":
-        hair_obj.scale.z = 2.0
-        hair_obj.scale.x = 0.3
+    hair_mesh = hair_obj.data
+
+    # --- STYLE DEFORMATION ---
+    if style in ("long", "long_straight", "very_long"):
+        drop = head_height * (2.5 if "very" in style else 1.5)
+        for v in hair_mesh.vertices:
+            lz = v.co.z
+            if lz < 0:
+                t = min(abs(lz) / hair_r, 1.0)
+                # Pull down with quadratic curve
+                v.co.z -= drop * t * t
+                # Slight narrowing as hair falls
+                v.co.x *= 1.0 - t * 0.15
+                # Back hair extends further
+                if v.co.y > 0:
+                    v.co.z -= drop * t * 0.3
+                    v.co.y += drop * t * 0.08
+
+    elif style in ("bob", "short_bob"):
+        drop = head_height * 0.35
+        for v in hair_mesh.vertices:
+            if v.co.z < 0:
+                t = min(abs(v.co.z) / hair_r, 1.0)
+                v.co.z -= drop * t
+                v.co.x *= 1.0 + t * 0.12
+                # Inward curl at tips
+                if t > 0.6:
+                    curl = (t - 0.6) / 0.4
+                    v.co.x *= 1.0 - curl * 0.2
+
     elif style == "ponytail":
-        hair_obj.scale.y = 1.5
+        for v in hair_mesh.vertices:
+            if v.co.y > hair_r * 0.15 and v.co.z < hair_r * 0.2:
+                t = min(v.co.y / hair_r, 1.0)
+                v.co.y += head_height * 1.0 * t
+                v.co.z -= head_height * 0.8 * t
+                v.co.x *= max(0.2, 1.0 - t * 0.8)
 
-    # Parent to character
+    elif style == "mohawk":
+        for v in hair_mesh.vertices:
+            dx = abs(v.co.x) / hair_r if hair_r > 0 else 0
+            if dx > 0.2:
+                v.co.z -= dx * hair_r * 0.9
+            else:
+                v.co.z += hair_r * 0.7 * (1.0 - dx / 0.2)
+            v.co.x *= max(0.12, 1.0 - (1.0 - dx) * 0.8)
+
+    elif style in ("short", "buzz", "pixie"):
+        for v in hair_mesh.vertices:
+            if v.co.z < -hair_r * 0.3:
+                v.co.z = -hair_r * 0.3
+            v.co.x *= 0.97
+            v.co.y *= 0.97
+
+    # --- PARENT ---
     hair_obj.parent = obj
+    hair_obj.matrix_parent_inverse = obj.matrix_world.inverted()
 
-    # Hair material
-    mat = bpy.data.materials.new(name=f"ARCANA_Hair_{obj.name}")
-    mat.use_nodes = True
-    bsdf = mat.node_tree.nodes.get("Principled BSDF") or mat.node_tree.nodes.get("プリンシプルBSDF")
+    # --- MATERIAL ---
+    mat_hair = bpy.data.materials.new(name=f"ARCANA_Hair_{obj.name}")
+    mat_hair.use_nodes = True
+    bsdf = None
+    for node in mat_hair.node_tree.nodes:
+        if node.type == 'BSDF_PRINCIPLED':
+            bsdf = node
+            break
     if bsdf:
-        # Parse hex color
         hex_c = color_hex.lstrip('#')
         if len(hex_c) == 6:
             r, g, b = int(hex_c[0:2],16)/255, int(hex_c[2:4],16)/255, int(hex_c[4:6],16)/255
         else:
             r, g, b = 0.17, 0.11, 0.05
         bsdf.inputs["Base Color"].default_value = (r, g, b, 1.0)
-        bsdf.inputs["Roughness"].default_value = 0.45
-    hair_obj.data.materials.append(mat)
+        bsdf.inputs["Roughness"].default_value = 0.3
+        try:
+            bsdf.inputs["Specular IOR Level"].default_value = 0.5
+        except Exception:
+            pass
+    hair_obj.data.materials.append(mat_hair)
 
     # Smooth shading
-    for poly in hair_obj.data.polygons:
-        poly.use_smooth = True
+    bpy.ops.object.select_all(action='DESELECT')
+    hair_obj.select_set(True)
+    bpy.context.view_layer.objects.active = hair_obj
+    bpy.ops.object.shade_smooth()
 
     return {
         "success": True,
@@ -3642,9 +3764,13 @@ def bl_char_set_hair_style(params):
         "hairObject": hair_obj.name,
         "style": style,
         "color": color_hex,
+        "hairRadius": round(hair_r, 4),
+        "headRadius": round(head_radius, 4),
+        "headHeight": round(head_height, 4),
+        "neckZ": round(neck_z, 4),
+        "bodyHeight": round(body_height, 4),
         "message": f"Hair style '{style}' applied to {obj.name}"
     }
-
 
 def bl_char_set_hair_length(params):
     obj = _get_char_mesh(params)
