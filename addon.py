@@ -2592,7 +2592,7 @@ def _arcana_ensure_skin_material(obj, gender="male"):
     if mat is None:
         mat = bpy.data.materials.new(name=mat_name)
         mat.use_nodes = True
-        bsdf = mat.node_tree.nodes.get("Principled BSDF") or mat.node_tree.nodes.get("驛｢譎丞ｹｲ・取㏍・ｹ譎｢・ｽ・ｳ驛｢・ｧ繝ｻ・ｷ驛｢譎丞ｹｲ・取穐SDF")
+        bsdf = mat.node_tree.nodes.get("Principled BSDF") or mat.node_tree.nodes.get("鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ陷ｿ謔ｶ貂夂ｹ晢ｽｻ繝ｻ・ｹ髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｷ鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ陷ｿ荵滂ｽｩ蠢ゥF")
         if bsdf:
             # Default skin tones
             if gender == "female":
@@ -3043,6 +3043,14 @@ def bl_char_set_height(params):
     base_height = 175.0
     scale_factor = height_cm / base_height
     obj.scale = (scale_factor, scale_factor, scale_factor)
+
+    # Propagate scale to sibling objects under same rig (hair, clothes)
+    rig = obj.parent
+    if rig:
+        for child in rig.children:
+            if child != obj and child.type == 'MESH':
+                child.scale = (scale_factor, scale_factor, scale_factor)
+                print(f"[ARCANA] Scale propagated to {child.name}")
 
     # Also set Height shape key proportionally
     if obj.data.shape_keys:
@@ -3804,6 +3812,11 @@ def bl_char_set_hair_style(params):
                         _hair_path = _all_hair[_hair_name]
                 if _hair_path:
                     bpy.ops.mpfb.load_library_clothes(filepath=_hair_path)
+                    # Sync hair scale with character body
+                    for _child in bpy.data.objects:
+                        if _child.name.startswith(_obj.name + '.') and _child.type == 'MESH' and _child != _obj:
+                            _child.scale = _obj.scale.copy()
+                            print(f"[ARCANA] Hair '{_child.name}' scale synced to {_obj.scale[:]}")
                 return {
                     "character": _obj.name,
                     "style": style,
@@ -4401,6 +4414,13 @@ def bl_char_set_clothing(params):
             except Exception as e:
                 errors.append({"slot": "custom", "asset": item, "error": str(e)})
 
+
+        # Sync scale for all newly loaded clothing/accessories
+        if obj and obj.parent:
+            for _child in obj.parent.children:
+                if _child != obj and _child.type == 'MESH' and _child.scale[:] != obj.scale[:]:
+                    _child.scale = obj.scale.copy()
+                    print(f"[ARCANA] Clothing '{_child.name}' scale synced to {obj.scale[:]}")
         # Store metadata
         if "arcana_clothing" not in obj:
             obj["arcana_clothing"] = ""
@@ -4593,50 +4613,50 @@ def register_all_handlers():
     register_routes(char_material_handler_get_routes())
     register_routes(clothing_handler_get_routes())
     register_aliases({
-            # bl_object: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ
+            # bl_object: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ
             "bl_object_visibility": "bl_object_set_visibility",
             "bl_object_get_info": "bl_object_list",
             "bl_object_join": "bl_mesh_join",
             "bl_object_separate": "bl_mesh_separate",
     
-            # bl_sculpt: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ
+            # bl_sculpt: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ
             "bl_sculpt_enter_mode": "bl_sculpt_enable",
             "bl_sculpt_mask_operations": "bl_sculpt_mask",
     
-            # bl_mesh: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ郢晢ｽｻ繝ｻ・ｽE郢晢ｽｻ繝ｻ・ｽ髫ｲ・｢闕ｳ讚・ｽ｢荵滂ｽｸ・ｺ隰疲ｻ・・鬩包ｽｲ陝ｲ・ｨ遶企・・ｹ・ｧ郢ｧ謇假ｽｽ・ｿ繝ｻ・ｽE驍ｵ・ｺ繝ｻ・ｮ驍ｵ・ｺ繝ｻ・ｿ郢晢ｽｻ繝ｻ・ｽE郢晢ｽｻ繝ｻ・ｽE            "bl_mesh_merge": "bl_mesh_merge_vertices",
+            # bl_mesh: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬯ｮ・ｫ繝ｻ・ｲ郢晢ｽｻ繝ｻ・｢鬮｣蛹・ｽｽ・ｳ髫ｶ螢ｹ繝ｻ繝ｻ・ｽ繝ｻ・｢髣包ｽｵ雋翫ｑ・ｽ・ｽ繝ｻ・ｸ郢晢ｽｻ繝ｻ・ｺ鬮ｫ・ｰ騾搾ｽｲ繝ｻ・ｻ郢晢ｽｻ郢晢ｽｻ鬯ｯ・ｩ陋ｹ繝ｻ・ｽ・ｽ繝ｻ・ｲ鬮ｯ譎｢・ｽ・ｲ郢晢ｽｻ繝ｻ・ｨ鬩包ｽｶ闔ｨ竏壹・郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ鬩幢ｽ｢繝ｻ・ｧ髫ｰ繝ｻ竏槭・・ｽ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｿ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｿ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE            "bl_mesh_merge": "bl_mesh_merge_vertices",
             "bl_mesh_recalc_normals": "bl_mesh_flip_normals",
             "bl_mesh_smooth": "bl_mesh_smooth_shade",
             "bl_mesh_loop_cut": "bl_mesh_subdivide",
             "bl_mesh_uv_unwrap": "bl_uv_unwrap",
     
-            # bl_material: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ
+            # bl_material: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ
             "bl_material_set_texture": "bl_material_add_texture",
     
-            # bl_animation: 髫ｶ蛹・ｽｻ繧托ｽｽ・ｿ繝ｻ・ｽE驍ｵ・ｺ陟片ｲmature髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｼ諛夷・
+            # bl_animation: 鬯ｮ・ｫ繝ｻ・ｶ髯具ｽｹ郢晢ｽｻ繝ｻ・ｽ繝ｻ・ｻ驛｢・ｧ隰・∞・ｽ・ｽ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｿ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬮ｯ貅ｽ謠ｴ繝ｻ・ｲmature鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｼ髫ｲ蟶幢ｽ､・ｷ郢晢ｽｻ
             "bl_anim_create_bone": "bl_armature_add_bone",
             "bl_anim_add_ik": "bl_armature_set_ik",
     
-            # bl_light: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ
+            # bl_light: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ
             "bl_light_set_power": "bl_light_set_energy",
     
-            # bl_scene: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ / 髫ｶ蛹・ｽｻ繧托ｽｽ・ｿ繝ｻ・ｽE驍ｵ・ｺ隰疲ｻ楢か驛｢譏懶ｽｸ闔橸ｽｦ驛｢譎擾ｽｳ・ｨ・主ｸｷ・ｸ・ｺ繝ｻ・ｫ髯昴・・ｼ諛夷・
+            # bl_scene: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ / 鬯ｮ・ｫ繝ｻ・ｶ髯具ｽｹ郢晢ｽｻ繝ｻ・ｽ繝ｻ・ｻ驛｢・ｧ隰・∞・ｽ・ｽ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｿ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬮ｫ・ｰ騾搾ｽｲ繝ｻ・ｻ隶鯉ｽ｢邵ｺ遏ｩ・ｩ蟷｢・ｽ・｢髫ｴ荵励・繝ｻ・ｽ繝ｻ・ｸ鬮｣逍ｲ・ｩ・ｸ繝ｻ・ｽ繝ｻ・ｦ鬯ｩ蟷｢・ｽ・｢髫ｴ蜿門ｾ励・・ｽ繝ｻ・ｳ郢晢ｽｻ繝ｻ・ｨ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｸ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｼ髫ｲ蟶幢ｽ､・ｷ郢晢ｽｻ
             "bl_scene_set_units": "bl_scene_set_unit",
             "bl_scene_set_frame_range": "bl_anim_set_frame_range",
             "bl_scene_set_world": "bl_render_set_world_color",
     
-            # bl_compositor: 驛｢譎丞ｹｲ・取ｨ抵ｽｹ譎・ｽｼ譁絶襖驛｢譏ｴ繝ｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｽ驛｢・ｧ繝ｻ・ｹ髯晢ｽｾ繝ｻ・ｮ (bl_compositor_ vs bl_comp_)
+            # bl_compositor: 鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ陷ｿ蜴・ｽｽ・ｨ隰夲ｽｵ繝ｻ・ｽ繝ｻ・ｹ髫ｴ蠑ｱ繝ｻ繝ｻ・ｽ繝ｻ・ｼ髫ｴ竏ｫ・ｵ・ｶ髫伜､懶ｽｩ蟷｢・ｽ・｢髫ｴ謫ｾ・ｽ・ｴ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｹ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ (bl_compositor_ vs bl_comp_)
             "bl_compositor_enable": "bl_comp_enable",
             "bl_compositor_add_node": "bl_comp_add_node",
             "bl_compositor_connect": "bl_comp_connect",
     
-            # bl_grease_pencil: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ
+            # bl_grease_pencil: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ
             "bl_gp_set_line_width": "bl_gp_set_thickness",
     
-            # bl_texture_paint: 驛｢譎丞ｹｲ・取ｨ抵ｽｹ譎・ｽｼ譁絶襖驛｢譏ｴ繝ｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｽ驛｢・ｧ繝ｻ・ｹ髯晢ｽｾ繝ｻ・ｮ (bl_tpaint_ vs bl_texpaint_)
+            # bl_texture_paint: 鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ陷ｿ蜴・ｽｽ・ｨ隰夲ｽｵ繝ｻ・ｽ繝ｻ・ｹ髫ｴ蠑ｱ繝ｻ繝ｻ・ｽ繝ｻ・ｼ髫ｴ竏ｫ・ｵ・ｶ髫伜､懶ｽｩ蟷｢・ｽ・｢髫ｴ謫ｾ・ｽ・ｴ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｹ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ (bl_tpaint_ vs bl_texpaint_)
             "bl_tpaint_enter_mode": "bl_texpaint_enable",
             "bl_tpaint_set_brush": "bl_texpaint_set_brush",
     
-            # bl_render: ID髯溷桁・ｽ・ｮ髯晢ｽｾ繝ｻ・ｮ
+            # bl_render: ID鬯ｮ・ｯ雋・ｽｷ隴ｯ竏壹・繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｮ鬯ｮ・ｯ隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮ
             "bl_render_execute": "bl_render_render",
             "bl_render_color_management": "bl_render_set_color_management",
             "bl_render_set_denoise": "bl_render_set_denoising",
@@ -4678,13 +4698,13 @@ def register_all_handlers():
             "bl_scene_create_collection",
             "bl_scene_move_to_collection",
     
-            # bl_compositor (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_compositor (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_compositor_add_glare",
             "bl_compositor_add_color_correction",
             "bl_compositor_add_denoise",
             "bl_compositor_add_vignette",
     
-            # bl_grease_pencil (鬯ｩ・･陝雜｣・ｽ・､郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｽ驛｢・ｧ繝ｻ・｡驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｫ髯具ｽｻ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽE驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_grease_pencil (鬯ｯ・ｯ繝ｻ・ｩ郢晢ｽｻ繝ｻ・･鬮ｯ譎｢・｣・ｰ鬮ｮ諛ｶ・ｽ・｣郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・､鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・｡鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ陷茨ｽｷ繝ｻ・ｽ繝ｻ・ｻ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｽE鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_gp_create_object",
             "bl_gp_draw_stroke",
             "bl_gp_add_effect",
@@ -4692,7 +4712,7 @@ def register_all_handlers():
             "bl_gp_animate",
             "bl_gp_export",
     
-            # bl_geometry_nodes (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_geometry_nodes (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_geonodes_set_input",
             "bl_geonodes_add_scatter_setup",
             "bl_geonodes_add_array_setup",
@@ -4700,38 +4720,38 @@ def register_all_handlers():
             "bl_geonodes_add_curve_setup",
             "bl_geonodes_list_tree",
     
-            # bl_texture_paint (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_texture_paint (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_tpaint_apply_stroke",
             "bl_tpaint_fill_layer",
             "bl_tpaint_save_image",
     
-            # bl_render (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_render (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_render_add_aov",
             "bl_render_toggle_compositor",
             "bl_render_add_view_layer",
     
-            # bl_uv (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_uv (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_uv_rotate",
             "bl_uv_scale",
     
-            # bl_vse (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_vse (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_vse_add_transition",
             "bl_vse_cut_strip",
             "bl_vse_set_strip_properties",
             "bl_vse_render_animation",
     
-            # bl_particle (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_particle (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_particle_set_gravity",
             "bl_particle_set_render",
     
-            # bl_node (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｫ髯昴・・ｽ・ｾ髯滂ｽ｢隲帛ｲｩ繝ｻ驍ｵ・ｺ郢晢ｽｻ
+            # bl_node (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｫ鬯ｮ・ｯ隴擾ｽｴ郢晢ｽｻ郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｾ鬯ｮ・ｯ雋翫ｑ・ｽ・ｽ繝ｻ・｢鬮ｫ・ｲ陝ｶ蟷｢・ｽ・ｲ繝ｻ・ｩ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
             "bl_node_delete",
             "bl_node_arrange",
             "bl_node_add_mix",
             "bl_node_add_tex_coord",
             "bl_node_set_output",
     
-            # bl_armature (驛｢譎丞ｹｲ・主ｸｷ・ｹ・ｧ繝ｻ・ｰ驛｢・ｧ繝ｻ・､驛｢譎｢・ｽ・ｳ髯句ｹ｢・ｽ・ｴ驍ｵ・ｺ繝ｻ・ｮID驍ｵ・ｺ繝ｻ・ｨ髣包ｽｳ陜｣・ｺ繝ｻ・ｸ・つ鬮｢・ｾ繝ｻ・ｴ)
+            # bl_armature (鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ郢晢ｽｻ闕ｳ・ｻ繝ｻ・ｸ繝ｻ・ｷ郢晢ｽｻ繝ｻ・ｹ郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｰ鬯ｩ蟷｢・ｽ・｢郢晢ｽｻ繝ｻ・ｧ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・､鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｳ鬯ｮ・ｯ陷ｿ・･繝ｻ・ｹ繝ｻ・｢郢晢ｽｻ繝ｻ・ｽ郢晢ｽｻ繝ｻ・ｴ鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｮID鬯ｩ謳ｾ・ｽ・ｵ郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｨ鬯ｮ・｣陋ｹ繝ｻ・ｽ・ｽ繝ｻ・ｳ鬮ｯ諛ｶ・ｽ・｣郢晢ｽｻ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｸ郢晢ｽｻ邵ｺ・､・つ鬯ｯ・ｮ繝ｻ・｢郢晢ｽｻ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ郢晢ｽｻ繝ｻ・ｴ)
             "bl_armature_delete_bone",
             "bl_armature_set_parent_bone",
             "bl_armature_weight_paint",
