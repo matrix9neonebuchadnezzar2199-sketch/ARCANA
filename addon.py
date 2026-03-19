@@ -2613,6 +2613,97 @@ def _arcana_ensure_skin_material(obj, gender="male"):
     else:
         obj.data.materials.append(mat)
 
+
+def bl_char_set_body_proportion(params):
+    """Alias: routes to bl_char_set_proportions."""
+    return bl_char_set_proportions(params)
+
+
+def bl_char_set_arm_length(params):
+    """Set arm length via ArmLength shape key."""
+    name = params.get("name") or params.get("target")
+    obj = _arcana_find_character(name)
+    if obj is None:
+        return {"success": False, "message": "Character not found"}
+    value = max(0.0, min(1.0, float(params.get("length", params.get("value", 0.5)))))
+    if obj.data.shape_keys:
+        sk = obj.data.shape_keys.key_blocks.get("ArmLength")
+        if sk:
+            sk.value = value
+    return {"success": True, "name": obj.name, "armLength": value}
+
+
+def bl_char_set_leg_length(params):
+    """Set leg length via LegLength shape key."""
+    name = params.get("name") or params.get("target")
+    obj = _arcana_find_character(name)
+    if obj is None:
+        return {"success": False, "message": "Character not found"}
+    value = max(0.0, min(1.0, float(params.get("length", params.get("value", 0.5)))))
+    if obj.data.shape_keys:
+        sk = obj.data.shape_keys.key_blocks.get("LegLength")
+        if sk:
+            sk.value = value
+    return {"success": True, "name": obj.name, "legLength": value}
+
+
+def bl_char_set_hand_size(params):
+    """Set hand size (placeholder - adjusts scale of hand region)."""
+    name = params.get("name") or params.get("target")
+    obj = _arcana_find_character(name)
+    if obj is None:
+        return {"success": False, "message": "Character not found"}
+    value = float(params.get("size", params.get("value", 0.5)))
+    obj["arcana_hand_size"] = value
+    return {"success": True, "name": obj.name, "handSize": value, "message": "Hand size stored (visual adjustment requires rigging)"}
+
+
+def bl_char_set_foot_size(params):
+    """Set foot size (placeholder - stores value for rigging)."""
+    name = params.get("name") or params.get("target")
+    obj = _arcana_find_character(name)
+    if obj is None:
+        return {"success": False, "message": "Character not found"}
+    value = float(params.get("size", params.get("value", 0.5)))
+    obj["arcana_foot_size"] = value
+    return {"success": True, "name": obj.name, "footSize": value, "message": "Foot size stored (visual adjustment requires rigging)"}
+
+
+def bl_char_set_neck(params):
+    """Set neck properties (length, width) - placeholder."""
+    name = params.get("name") or params.get("target")
+    obj = _arcana_find_character(name)
+    if obj is None:
+        return {"success": False, "message": "Character not found"}
+    length = float(params.get("length", 0.5))
+    width = float(params.get("width", 0.5))
+    obj["arcana_neck_length"] = length
+    obj["arcana_neck_width"] = width
+    return {"success": True, "name": obj.name, "neckLength": length, "neckWidth": width}
+
+
+def bl_char_set_torso(params):
+    """Set torso proportions via ChestSize and WaistSize shape keys."""
+    name = params.get("name") or params.get("target")
+    obj = _arcana_find_character(name)
+    if obj is None:
+        return {"success": False, "message": "Character not found"}
+    result = {}
+    if obj.data.shape_keys:
+        chest = params.get("chestSize", params.get("chest"))
+        if chest is not None:
+            sk = obj.data.shape_keys.key_blocks.get("ChestSize")
+            if sk:
+                sk.value = max(0.0, min(1.0, float(chest)))
+                result["chestSize"] = sk.value
+        waist = params.get("waistSize", params.get("waist"))
+        if waist is not None:
+            sk = obj.data.shape_keys.key_blocks.get("WaistSize")
+            if sk:
+                sk.value = max(0.0, min(1.0, float(waist)))
+                result["waistSize"] = sk.value
+    return {"success": True, "name": obj.name, "torso": result}
+
 def bl_char_create_base(params):
     """Create character base body from Blender Studio Human Base Meshes (CC0)."""
     import mathutils
@@ -2900,6 +2991,11 @@ def body_handler_get_routes():
         "bl_char_set_style": bl_char_set_style,
         "bl_char_set_proportions": bl_char_set_proportions,
         "bl_char_set_muscle": bl_char_set_muscle,
+        "bl_char_set_torso": bl_char_set_torso,
+        "bl_char_set_foot_size": bl_char_set_foot_size,
+        "bl_char_set_leg_length": bl_char_set_leg_length,
+        "bl_char_set_arm_length": bl_char_set_arm_length,
+        "bl_char_set_body_proportion": bl_char_set_body_proportion,
         "bl_char_set_body_fat": bl_char_set_body_fat,
         "bl_char_set_limb_length": bl_char_set_limb_length,
         "bl_char_set_hand_size": bl_char_set_hand_size,
