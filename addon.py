@@ -7,7 +7,7 @@ Connects Blender to ARCANA MCP Server via WebSocket.
 bl_info = {
     "name": "ARCANA Bridge",
     "author": "ARCANA Project",
-    "version": (6, 1, 0),
+    "version": (6, 2, 0),
     "blender": (3, 6, 0),
     "location": "View3D > Sidebar > ARCANA",
     "description": "Connect Blender to ARCANA MCP Server via WebSocket",
@@ -2362,6 +2362,7 @@ def _set_shape_key(obj, key_name, value):
 
 
 def _arcana_find_character(name=None):
+    """Find character object. Checks arcana_type metadata. Supports both MPFB2 and fallback backends."""
     """Find a character object by name or by arcana_type metadata."""
     if name:
         obj = bpy.data.objects.get(name)
@@ -2704,11 +2705,85 @@ def bl_char_set_torso(params):
                 result["waistSize"] = sk.value
     return {"success": True, "name": obj.name, "torso": result}
 
+
+# ============================================================
+# MPFB2 Hybrid Integration
+# ============================================================
+
+def _has_mpfb():
+    """Check if MPFB2 addon is available."""
+    try:
+        return hasattr(bpy.ops, 'mpfb') and hasattr(bpy.ops.mpfb, 'create_human')
+    except Exception:
+        return False
+
+
+def _create_base_mpfb(params):
+    """Create character using MPFB2 (high quality path)."""
+    gender = params.get("gender", "male")
+    style = params.get("style", "realistic")
+    char_name = params.get("name", f"Character_{gender}_{style}")
+
+    # MPFB2 only supports realistic; if stylized requested, log it
+    if style in ("stylized", "anime"):
+        print(f"[ARCANA] MPFB2 does not support '{style}' style, using realistic base")
+
+    # Create human via MPFB2
+    bpy.ops.mpfb.create_human()
+    obj = bpy.context.active_object
+    if obj is None:
+        return {"success": False, "message": "MPFB2 create_human failed"}
+
+    obj.name = char_name
+
+    # Set gender via MPFB2 properties if available
+    try:
+        if hasattr(obj, 'MPFB_GenderProperty'):
+            if gender == "female":
+                obj.MPFB_GenderProperty = 1.0
+            else:
+                obj.MPFB_GenderProperty = 0.0
+        # Apply macro targets
+        if hasattr(bpy.ops.mpfb, 'set_macro_detail'):
+            if gender == "female":
+                bpy.ops.mpfb.set_macro_detail(target="Gender", value=1.0)
+            else:
+                bpy.ops.mpfb.set_macro_detail(target="Gender", value=0.0)
+    except Exception as e:
+        print(f"[ARCANA] MPFB2 gender set warning: {e}")
+
+    # Store metadata
+    obj["arcana_gender"] = gender
+    obj["arcana_style"] = style
+    obj["arcana_type"] = "character"
+    obj["arcana_backend"] = "mpfb2"
+
+    vert_count = len(obj.data.vertices) if obj.data else 0
+    sk_count = len(obj.data.shape_keys.key_blocks) - 1 if obj.data and obj.data.shape_keys else 0
+
+    return {
+        "success": True,
+        "name": obj.name,
+        "gender": gender,
+        "style": style,
+        "backend": "mpfb2",
+        "vertices": vert_count,
+        "shapeKeys": sk_count,
+        "message": f"Character '{obj.name}' created via MPFB2 ({vert_count} verts, {sk_count} shape keys)"
+    }
+
+
 def bl_char_create_base(params):
-    """Create character base body from Blender Studio Human Base Meshes (CC0)."""
+    """Create character base body. Uses MPFB2 if available, otherwise Blender Studio meshes."""
     import mathutils
     gender = params.get("gender", "male")
     style = params.get("style", "realistic")
+
+    # --- MPFB2 hybrid: prefer MPFB2 if installed ---
+    if _has_mpfb():
+        print(f"[ARCANA] MPFB2 detected, using high-quality path for {gender}/{style}")
+        return _create_base_mpfb(params)
+    print(f"[ARCANA] MPFB2 not found, using Blender Studio fallback for {gender}/{style}")
 
     # Resolve .blend asset path relative to addon file
     # Try multiple paths to find base mesh assets
@@ -2910,6 +2985,12 @@ def bl_char_set_muscle(params):
 
 
 def bl_char_set_body_fat(params):
+    # Enforce minimum body_fat of 0.3 for realistic proportions
+    _raw_fat = params.get("value", 0.5)
+    if isinstance(_raw_fat, (int, float)) and _raw_fat < 0.3:
+        params["value"] = 0.3
+        print(f"[ARCANA] body_fat clamped: {_raw_fat} -> 0.3 (minimum)")
+    # --- original logic below ---
     """Set body fat via BodyFat shape key (0-1)."""
     name = params.get("name") or params.get("target")
     obj = _arcana_find_character(name)
@@ -3012,14 +3093,7 @@ def body_handler_get_routes():
 import os
 
 
-def _get_char_mesh(params):
-    name = params.get("character", params.get("name", ""))
-    if name:
-        return get_object(name)
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH' and obj.data.shape_keys:
-            return obj
-    raise ValueError("No character mesh found")
+# _get_char_mesh: see body_handler section (deduplicated)
 
 
 def bl_char_export_vrm(params):
@@ -3160,14 +3234,7 @@ def export_handler_get_routes():
 import json as json_mod
 
 
-def _get_char_mesh(params):
-    name = params.get("character", params.get("name", ""))
-    if name:
-        return get_object(name)
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH' and obj.data.shape_keys:
-            return obj
-    raise ValueError("No character mesh found")
+# _get_char_mesh: see body_handler section (deduplicated)
 
 
 UNIFIED_EXPRESSIONS = [
@@ -3337,14 +3404,7 @@ def expression_handler_get_routes():
 
 
 
-def _get_char_mesh(params):
-    name = params.get("character", params.get("name", ""))
-    if name:
-        return get_object(name)
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH' and obj.data.shape_keys:
-            return obj
-    raise ValueError("No character mesh found")
+# _get_char_mesh: see body_handler section (deduplicated)
 
 
 def _set_sk(obj, key_name, value):
@@ -3540,20 +3600,50 @@ def face_handler_get_routes():
 
 
 
-def _get_char_mesh(params):
-    name = params.get("character", params.get("name", ""))
-    if name:
-        return get_object(name)
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH' and obj.data.shape_keys:
-            return obj
-    raise ValueError("No character mesh found")
+# _get_char_mesh: see body_handler section (deduplicated)
 
 
 def bl_char_set_hair_style(params):
-    """Set hair style v6. UV Sphere with improved face cut and long drop."""
+    """Set hair style v7. MPFB2 hair assets if available, otherwise UV Sphere fallback."""
     import math
     import mathutils
+
+    # --- MPFB2 hair path ---
+    if _has_mpfb():
+        _name = params.get("name") or params.get("target")
+        _obj = _arcana_find_character(_name)
+        if _obj is not None and _obj.get("arcana_backend") == "mpfb2":
+            try:
+                style = params.get("style", "medium")
+                # Map ARCANA style names to MPFB2 hair asset names
+                _mpfb_hair_map = {
+                    "straight": "hair01_straight",
+                    "wavy": "hair01_wavy",
+                    "curly": "hair01_curly",
+                    "ponytail": "hair01_ponytail",
+                    "twintail": "hair01_twintails",
+                    "bun": "hair01_bun",
+                    "braids": "hair01_braids",
+                    "mohawk": "hair01_mohawk",
+                    "bob": "hair01_bob",
+                    "pixie": "hair01_pixie",
+                    "long": "hair01_long",
+                    "short": "hair01_short",
+                    "medium": "hair01_medium",
+                    "hime_cut": "hair01_himecut",
+                    "afro": "hair01_afro",
+                }
+                mpfb_name = _mpfb_hair_map.get(style, f"hair01_{style}")
+                bpy.ops.mpfb.load_library_clothes(filepath=mpfb_name)
+                return {
+                    "character": _obj.name,
+                    "style": style,
+                    "backend": "mpfb2",
+                    "message": f"MPFB2 hair '{mpfb_name}' applied"
+                }
+            except Exception as e:
+                print(f"[ARCANA] MPFB2 hair failed ({e}), falling back to UV Sphere")
+    # --- Fallback: UV Sphere hair ---
     name = params.get("name") or params.get("target")
     obj = _arcana_find_character(name)
     if obj is None:
@@ -3907,14 +3997,7 @@ def hair_handler_get_routes():
 
 
 
-def _get_char_mesh(params):
-    name = params.get("character", params.get("name", ""))
-    if name:
-        return get_object(name)
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH' and obj.data.shape_keys:
-            return obj
-    raise ValueError("No character mesh found")
+# _get_char_mesh: see body_handler section (deduplicated)
 
 
 def _get_or_create_skin_mat(obj):
@@ -4105,8 +4188,7 @@ def register_all_handlers():
             "bl_sculpt_enter_mode": "bl_sculpt_enable",
             "bl_sculpt_mask_operations": "bl_sculpt_mask",
     
-            # bl_mesh: ID微差（意味が同等なもののみ）
-            "bl_mesh_merge": "bl_mesh_merge_vertices",
+            # bl_mesh: ID微差�E�意味が同等なも�Eのみ�E�E            "bl_mesh_merge": "bl_mesh_merge_vertices",
             "bl_mesh_recalc_normals": "bl_mesh_flip_normals",
             "bl_mesh_smooth": "bl_mesh_smooth_shade",
             "bl_mesh_loop_cut": "bl_mesh_subdivide",
@@ -4115,19 +4197,19 @@ def register_all_handlers():
             # bl_material: ID微差
             "bl_material_set_texture": "bl_material_add_texture",
     
-            # bl_animation: 機能がarmature側に存在
+            # bl_animation: 機�Eがarmature側に存在
             "bl_anim_create_bone": "bl_armature_add_bone",
             "bl_anim_add_ik": "bl_armature_set_ik",
     
             # bl_light: ID微差
             "bl_light_set_power": "bl_light_set_energy",
     
-            # bl_scene: ID微差 / 機能が別ハンドラに存在
+            # bl_scene: ID微差 / 機�Eが別ハンドラに存在
             "bl_scene_set_units": "bl_scene_set_unit",
             "bl_scene_set_frame_range": "bl_anim_set_frame_range",
             "bl_scene_set_world": "bl_render_set_world_color",
     
-            # bl_compositor: プレフィックス差 (bl_compositor_ vs bl_comp_)
+            # bl_compositor: プレフィチE��ス差 (bl_compositor_ vs bl_comp_)
             "bl_compositor_enable": "bl_comp_enable",
             "bl_compositor_add_node": "bl_comp_add_node",
             "bl_compositor_connect": "bl_comp_connect",
@@ -4135,7 +4217,7 @@ def register_all_handlers():
             # bl_grease_pencil: ID微差
             "bl_gp_set_line_width": "bl_gp_set_thickness",
     
-            # bl_texture_paint: プレフィックス差 (bl_tpaint_ vs bl_texpaint_)
+            # bl_texture_paint: プレフィチE��ス差 (bl_tpaint_ vs bl_texpaint_)
             "bl_tpaint_enter_mode": "bl_texpaint_enable",
             "bl_tpaint_set_brush": "bl_texpaint_set_brush",
     
@@ -4181,13 +4263,13 @@ def register_all_handlers():
             "bl_scene_create_collection",
             "bl_scene_move_to_collection",
     
-            # bl_compositor (プラグイン側に対応なし)
+            # bl_compositor (プラグイン側に対応なぁE
             "bl_compositor_add_glare",
             "bl_compositor_add_color_correction",
             "bl_compositor_add_denoise",
             "bl_compositor_add_vignette",
     
-            # bl_grease_pencil (重複ファイル分・プラグイン側に対応なし)
+            # bl_grease_pencil (重褁E��ァイル刁E�Eプラグイン側に対応なぁE
             "bl_gp_create_object",
             "bl_gp_draw_stroke",
             "bl_gp_add_effect",
@@ -4195,7 +4277,7 @@ def register_all_handlers():
             "bl_gp_animate",
             "bl_gp_export",
     
-            # bl_geometry_nodes (プラグイン側に対応なし)
+            # bl_geometry_nodes (プラグイン側に対応なぁE
             "bl_geonodes_set_input",
             "bl_geonodes_add_scatter_setup",
             "bl_geonodes_add_array_setup",
@@ -4203,31 +4285,31 @@ def register_all_handlers():
             "bl_geonodes_add_curve_setup",
             "bl_geonodes_list_tree",
     
-            # bl_texture_paint (プラグイン側に対応なし)
+            # bl_texture_paint (プラグイン側に対応なぁE
             "bl_tpaint_apply_stroke",
             "bl_tpaint_fill_layer",
             "bl_tpaint_save_image",
     
-            # bl_render (プラグイン側に対応なし)
+            # bl_render (プラグイン側に対応なぁE
             "bl_render_add_aov",
             "bl_render_toggle_compositor",
             "bl_render_add_view_layer",
     
-            # bl_uv (プラグイン側に対応なし)
+            # bl_uv (プラグイン側に対応なぁE
             "bl_uv_rotate",
             "bl_uv_scale",
     
-            # bl_vse (プラグイン側に対応なし)
+            # bl_vse (プラグイン側に対応なぁE
             "bl_vse_add_transition",
             "bl_vse_cut_strip",
             "bl_vse_set_strip_properties",
             "bl_vse_render_animation",
     
-            # bl_particle (プラグイン側に対応なし)
+            # bl_particle (プラグイン側に対応なぁE
             "bl_particle_set_gravity",
             "bl_particle_set_render",
     
-            # bl_node (プラグイン側に対応なし)
+            # bl_node (プラグイン側に対応なぁE
             "bl_node_delete",
             "bl_node_arrange",
             "bl_node_add_mix",
