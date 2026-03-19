@@ -2729,17 +2729,17 @@ def _discover_mpfb_assets(force_refresh=False):
         _mpfb_asset_cache["hair"] = {}
         for p in AssetService.list_mhclo_assets("hair"):
             name = os.path.basename(os.path.dirname(p))
-            _mpfb_asset_cache["hair"][name] = p
+            _mpfb_asset_cache["hair"][name] = str(p)
 
         _mpfb_asset_cache["skins"] = {}
         for p in AssetService.list_mhmat_assets("skins"):
             name = os.path.basename(os.path.dirname(p))
-            _mpfb_asset_cache["skins"][name] = p
+            _mpfb_asset_cache["skins"][name] = str(p)
 
         _mpfb_asset_cache["clothes"] = {}
         for p in AssetService.list_mhclo_assets("clothes"):
             name = os.path.basename(os.path.dirname(p))
-            _mpfb_asset_cache["clothes"][name] = p
+            _mpfb_asset_cache["clothes"][name] = str(p)
 
         _mpfb_asset_cache["_initialized"] = True
         print(f"[ARCANA] MPFB2 assets discovered: "
@@ -2762,7 +2762,7 @@ def _mpfb_find_asset(category, query):
     # Partial match
     for name, fpath in assets.items():
         if q in name.lower():
-            return name, fpath
+            return name, str(fpath)
     return None, None
 
 def _mpfb_find_skin_for_preset(preset, gender="female"):
@@ -2797,11 +2797,11 @@ def _mpfb_find_skin_for_preset(preset, gender="female"):
         kw = kw_template.replace("{g}", g).replace("{g2}", g2)
         for name, fpath in assets.items():
             if kw in name.lower():
-                return name, fpath
+                return name, str(fpath)
     # Last resort: any skin with gender match
     for name, fpath in assets.items():
         if g2 in name.lower():
-            return name, fpath
+            return name, str(fpath)
     # Absolute fallback: first available
     first_name = next(iter(assets))
     return first_name, assets[first_name]
@@ -3774,7 +3774,7 @@ def bl_char_set_hair_style(params):
                     "character": _obj.name,
                     "style": style,
                     "backend": "mpfb2",
-                    "message": f"MPFB2 hair '{_hair_rel}' applied"
+                    "message": f"MPFB2 hair '{_hair_name}' applied"
                 }
             except Exception as e:
                 print(f"[ARCANA] MPFB2 hair failed ({e}), falling back to UV Sphere")
