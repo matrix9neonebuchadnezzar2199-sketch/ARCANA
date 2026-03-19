@@ -1,12 +1,12 @@
-﻿import { ToolDefinition } from "../core/registry";
+import { ToolDefinition } from "../core/registry";
 import { bridge } from "../bridge";
 import { z } from "zod";
 export const blCharacterBodyTools: ToolDefinition[] = [
   {
     id: "bl_char_create_base",
     name: "Character: Create Base Body",
-    description: "Create a base character body with gender, height, and body type preset. Generates armature and base mesh with shape keys.",
-    descriptionJa: "ベースボディ生成（性別・身長・体型プリセット指定、アーマチュア＋Shape Key付きメッシュ生成）",
+    description: "Create a base character body. ALWAYS use this tool for character creation - do NOT use bl_execute_code. Automatically uses MPFB2 (high-quality MakeHuman mesh with rig) if installed, otherwise falls back to Blender Studio base mesh. Supports gender, height, body type, and art style.",
+    descriptionJa: "ベースボディ生成（キャラ作成時は必ずこのツールを使用。MPFB2があれば自動で高品質メッシュ＋リグを使用、なければBlender Studio素体にフォールバック）",
     category: "BL_CharacterBody",
     inputSchema: z.object({
       gender: z.enum(["male", "female", "androgynous"]).describe("Body gender base"),

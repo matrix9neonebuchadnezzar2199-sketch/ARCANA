@@ -1,4 +1,4 @@
-﻿import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { globalRegistry } from "./core/registry";
@@ -120,6 +120,7 @@ import { blCharacterHairTools } from "./tools/bl_character_hair";
 import { blCharacterMaterialTools } from "./tools/bl_character_material";
 import { blCharacterExpressionTools } from "./tools/bl_character_expression";
 import { blCharacterExportTools } from "./tools/bl_character_export";
+import { blCharacterClothingTools } from "./tools/bl_character_clothing";
 import { unityVrchatTools } from "./tools/unity_vrchat";
 import { imageTo3dTools } from './tools/image_to_3d';
 import { bridge } from './bridge';
@@ -214,6 +215,7 @@ const allTools = [
   ...blCharacterMaterialTools,
   ...blCharacterExpressionTools,
   ...blCharacterExportTools,
+  ...blCharacterClothingTools,
   ...unityVrchatTools,
   ...imageTo3dTools,
 ];
