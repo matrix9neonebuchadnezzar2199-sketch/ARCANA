@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "arcana": {
+      "command": "node",
+      "args": [
+        "H:\\TOOL\\geminicli\\ARCANA\\server\\dist\\index.js"
+      ]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-﻿import { z } from "zod";
+import { z } from "zod";
 
 export interface ToolDefinition {
   id: string;
@@ -24,7 +24,7 @@ export class ToolRegistry {
       console.warn(`[ARCANA] Duplicate tool skipped: ${tool.id}`); return;
     }
     this.tools.set(tool.id, tool);
-    console.log(`[ARCANA] Registered tool: ${tool.id}`);
+    // Registration log disabled for MCP compatibility
   }
 
   get(id: string): ToolDefinition | undefined {

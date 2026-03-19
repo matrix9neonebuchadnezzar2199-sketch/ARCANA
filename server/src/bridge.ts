@@ -40,11 +40,11 @@ class ArcanaBridge {
       this.servers.set(editor, wss);
 
       wss.on("listening", () => {
-        console.log(`[ARCANA Bridge] ${editor} listening on ws://localhost:${port}`);
+        console.error(`[ARCANA Bridge] ${editor} listening on ws://localhost:${port}`);
       });
 
       wss.on("connection", (ws: WebSocket) => {
-        console.log(`[ARCANA Bridge] ${editor} client connected`);
+        console.error(`[ARCANA Bridge] ${editor} client connected`);
 
         const conn: EditorConnection = {
           ws,
@@ -63,7 +63,7 @@ class ArcanaBridge {
         });
 
         ws.on("close", () => {
-          console.log(`[ARCANA Bridge] ${editor} disconnected`);
+          console.error(`[ARCANA Bridge] ${editor} disconnected`);
           this.connections.delete(editor);
         });
 
@@ -92,7 +92,7 @@ class ArcanaBridge {
     if (msg.type === "register") {
       conn.version = msg.version || "unknown";
       conn.ready = true;
-      console.log(`[ARCANA Bridge] ${editor} registered (v${conn.version}, ${msg.tools || 0} tools)`);
+      console.error(`[ARCANA Bridge] ${editor} registered (v${conn.version}, ${msg.tools || 0} tools)`);
       // Send acknowledgment
       conn.ws.send(JSON.stringify({
         type: "registered",
@@ -185,7 +185,7 @@ class ArcanaBridge {
   stop() {
     for (const [editor, wss] of this.servers) {
       wss.close();
-      console.log(`[ARCANA Bridge] ${editor} server stopped`);
+      console.error(`[ARCANA Bridge] ${editor} server stopped`);
     }
     this.servers.clear();
     this.connections.clear();
@@ -199,3 +199,4 @@ class ArcanaBridge {
 
 // Singleton
 export const bridge = new ArcanaBridge();
+
