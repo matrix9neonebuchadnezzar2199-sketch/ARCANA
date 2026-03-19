@@ -353,6 +353,92 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 トークン使用量を約**98%削減**。
 
+
+## キャラクタークリエイト セットアップガイド
+
+ARCANAのキャラクリエイトは **MPFB2**（MakeHuman for Blender）を使用します。無料・オープンソースの人体生成エンジンで、髪型・肌・目・服のプリセットがすぐに使えます。
+
+### 全体の流れ
+
+```
+① Blender をインストール（4.2以上なら不要）
+② MPFB2 をインストール（Blender内で完結）
+③ 素材パックをダウンロード＆インストール（髪・肌・目・服）
+④ ARCANA をインストール（AIとBlenderをつなぐ橋）
+⑤ Claude Desktop をインストール（AI本体）
+⑥ つないで話しかける
+```
+
+### Step 1: Blender をインストール
+
+> 既に Blender 4.2 以上が入っていればスキップ。
+
+1. https://www.blender.org/download/ を開く
+2. 自分の OS 用をダウンロード
+3. インストーラーを実行 → 全部「次へ」でOK
+
+### Step 2: MPFB2 をインストール（Blender 内で完結）
+
+MPFB2 は「人体キャラクターをパラメーターで作れるBlenderアドオン」です。体型・顔・髪・肌・服がプリセットで揃っています。
+
+1. Blender を起動
+2. メニューバー → **Edit → Preferences**
+3. 左側の **Get Extensions** をクリック
+4. 検索バーに **「MPFB」** と入力
+5. 「MPFB」が出てくるので **Install** をクリック
+6. 数秒待つとインストール完了
+
+**確認方法：** 3Dビューポートで **Nキー** を押してサイドバーを開く。**「MPFB」タブ** が表示されていれば成功です。
+
+### Step 3: 素材パック（アセットパック）をダウンロード＆インストール
+
+MPFB2 は本体だけだと素体しか作れません。肌・目・髪・服の素材パックを入れます。以下の zip をダウンロードしてください（**解凍不要、そのまま使います**）：
+
+| パック名 | 内容 | ライセンス | リンク |
+|---|---|---|---|
+| **MakeHuman System Assets** | 肌・目・歯・眉毛（必須） | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) |
+| **Hair 01** | 髪型22種（ボブ・ロング・ブレイド等） | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) |
+| **Skins 01** | 女性用リアルスキン | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) |
+| **Skins 02** | 男性用リアルスキン | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) |
+
+合計サイズ: 約350MB。全アセットは **CC0**（制限なし、商用利用OK）です。
+
+**Blender でインストール：**
+
+1. MPFB タブ → **Apply Assets** → **Library Settings**
+2. **「Load pack from zip file」** ボタンをクリック
+3. ダウンロードした zip ファイルを選択（4パック分繰り返す）
+4. **Blender を再起動**
+
+### Step 4: 話しかけてキャラクターを作る
+
+ARCANAの接続が完了したら（下の[クイックスタート](#クイックスタート)を参照）、AIにこう話しかけるだけ：
+
+```
+「20代の女性キャラクターを作って。身長160cm、ロングヘア、カジュアルな服装で」
+```
+
+```
+「筋肉質な男性戦士を作って。190cm、短髪、ダークスキン、バトルアーマー」
+```
+
+```
+「ピンクのツインテールで制服のアニメ系女の子を作って」
+```
+
+AIがARCANA経由でMPFB2を操作し、Blenderにキャラクターを自動生成します。
+
+### オプション：追加アセットパック
+
+バリエーションを増やしたい場合は [MakeHuman Asset Packs ページ](https://static.makehumancommunity.org/assets/assetpacks.html) から追加ダウンロード：
+
+- **Hair 02**（ハイポリ髪型20種、CC-BY）— ブレイド、アップド、アフロ
+- **Hair 03**（髪型12種、CC-BY）— カーリー、ロングバリエーション
+- **Dress 01-03** — ガウン、ドレス
+- **Shirts, Pants, Shoes, Hats** — フルワードローブ
+- **Eyebrows 01, Eyelashes 01** — 高解像度フェイシャルディテール
+
+
 ## クイックスタート
 
 ### Step 0: 事前にインストールするもの（全部無料）

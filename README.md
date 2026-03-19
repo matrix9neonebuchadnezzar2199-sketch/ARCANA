@@ -353,6 +353,92 @@ Instead of registering all 832 tools, SuperSave exposes only **4 meta-tools**:
 
 Token usage reduced by approximately **98%**.
 
+
+## Character Creation Setup Guide
+
+ARCANA's character creation uses **MPFB2** (MakeHuman for Blender) — a free, open-source human generator. Professional-quality hair, skin, eyes, and clothing presets are available out of the box.
+
+### Overview
+
+```
+① Install Blender (skip if you already have 4.2+)
+② Install MPFB2 inside Blender (character generation engine)
+③ Download asset packs (hair, skin, eyes, clothes)
+④ Install ARCANA (bridge between AI and Blender)
+⑤ Install Claude Desktop (the AI)
+⑥ Connect and start talking
+```
+
+### Step 1: Install Blender
+
+> Skip this if you already have Blender 4.2 or newer.
+
+1. Go to https://www.blender.org/download/
+2. Download for your OS
+3. Run the installer — click Next through everything
+
+### Step 2: Install MPFB2 (inside Blender)
+
+MPFB2 is a Blender addon that generates human characters with parametric controls for body shape, face, hair, skin, and clothing.
+
+1. Open Blender
+2. Go to **Edit → Preferences**
+3. Click **Get Extensions** on the left
+4. Type **\"MPFB\"** in the search bar
+5. Click **Install**
+6. Wait a few seconds for installation to complete
+
+**Verify:** Press **N** in the 3D viewport to open the sidebar. You should see an **"MPFB" tab**.
+
+### Step 3: Download & Install Asset Packs
+
+MPFB2 needs asset packs for skin, eyes, hair, and clothes. Download these zip files (do NOT unzip them):
+
+| Pack | Contents | License | Link |
+|---|---|---|---|
+| **MakeHuman System Assets** | Skin, eyes, teeth, eyebrows (required) | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) |
+| **Hair 01** | 22 hairstyles (bob, long, braid, bun, etc.) | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) |
+| **Skins 01** | Realistic female skins | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) |
+| **Skins 02** | Realistic male skins | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) |
+
+Total size: ~350 MB. All assets are **CC0** (no restrictions, use for anything).
+
+**Install in Blender:**
+
+1. In the MPFB tab → **Apply Assets** → **Library Settings**
+2. Click **"Load pack from zip file"**
+3. Select each downloaded zip file (repeat for all 4 packs)
+4. **Restart Blender**
+
+### Step 4: Talk to Create Characters
+
+Once ARCANA is connected (see [Quick Start](#quick-start) below), just tell the AI what you want:
+
+```
+"Create a 20-year-old female character, 160cm, long hair, casual clothes"
+```
+
+```
+"Make a muscular male warrior, 190cm, short hair, dark skin, battle armor"
+```
+
+```
+"Create an anime-style girl with pink twin-tails and school uniform"
+```
+
+The AI will use MPFB2 through ARCANA to generate the character in Blender automatically.
+
+### Optional: More Asset Packs
+
+Want more variety? Download additional packs from the [MakeHuman Asset Packs page](https://static.makehumancommunity.org/assets/assetpacks.html):
+
+- **Hair 02** (20 high-poly hairstyles, CC-BY) — braids, updos, afros
+- **Hair 03** (12 hairstyles, CC-BY) — curly, long variants
+- **Dress 01-03** — gowns, dresses
+- **Shirts, Pants, Shoes, Hats** — full wardrobe
+- **Eyebrows 01, Eyelashes 01** — high-res facial details
+
+
 ## Quick Start
 
 ### Step 0: Prerequisites (All Free)
