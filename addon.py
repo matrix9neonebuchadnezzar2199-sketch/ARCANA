@@ -1,4 +1,4 @@
-﻿"""
+"""
 ARCANA Bridge - Single-file Blender Add-on
 Auto-generated from blender-plugin/ sources.
 Connects Blender to ARCANA MCP Server via WebSocket.
@@ -2592,7 +2592,7 @@ def _arcana_ensure_skin_material(obj, gender="male"):
     if mat is None:
         mat = bpy.data.materials.new(name=mat_name)
         mat.use_nodes = True
-        bsdf = mat.node_tree.nodes.get("Principled BSDF") or mat.node_tree.nodes.get("繝励Μ繝ｳ繧ｷ繝励ΝBSDF")
+        bsdf = mat.node_tree.nodes.get("Principled BSDF") or mat.node_tree.nodes.get("郢晏干ﾎ懃ｹ晢ｽｳ郢ｧ・ｷ郢晏干ﾎ截SDF")
         if bsdf:
             # Default skin tones
             if gender == "female":
@@ -2751,18 +2751,41 @@ def _discover_mpfb_assets(force_refresh=False):
     return _mpfb_asset_cache
 
 def _mpfb_find_asset(category, query):
-    """Find best matching asset by name fragment. Case-insensitive partial match.
-    category: 'hair', 'skins', or 'clothes'
-    Returns (asset_name, full_path) or (None, None)."""
+    """Find best matching asset by scored matching. Returns (name, path) or (None, None)."""
     assets = _discover_mpfb_assets().get(category, {})
+    if not assets:
+        return None, None
     q = query.lower().replace(" ", "_").replace("-", "_")
-    # Exact match first
+    # Exact match
     if q in assets:
         return q, assets[q]
-    # Partial match
+    # Scored matching
+    best_name, best_path, best_score = None, None, 0
     for name, fpath in assets.items():
-        if q in name.lower():
-            return name, str(fpath)
+        nl = name.lower()
+        score = 0
+        if nl == q:
+            score = 100
+        elif nl.startswith(q):
+            score = 80
+        elif q.startswith(nl):
+            score = 75
+        elif q in nl:
+            score = 60
+        elif nl in q:
+            score = 55
+        else:
+            # Check each word in query
+            words = q.split("_")
+            matched = sum(1 for w in words if w and w in nl)
+            if matched > 0:
+                score = 20 + (matched * 10)
+        if score > best_score:
+            best_score = score
+            best_name = name
+            best_path = str(fpath)
+    if best_score >= 40:
+        return best_name, best_path
     return None, None
 
 def _mpfb_find_skin_for_preset(preset, gender="female"):
@@ -3738,23 +3761,34 @@ def bl_char_set_hair_style(params):
                 style = params.get("style", "medium")
                 # Map ARCANA style names to MPFB2 hair asset names
                 # Dynamic asset discovery (no hardcoded paths)
+                print(f"[ARCANA] Hair style requested: '{style}'")
                 _hair_style_hints = {
-                    "long": ["long", "culturalibre_hair_01"],
-                    "straight": ["straight", "culturalibre_hair_02"],
-                    "wavy": ["wavy", "culturalibre_hair_05"],
-                    "curly": ["curly", "culturalibre_hair_06"],
-                    "bob": ["bob", "bobcut"],
-                    "short": ["short", "short_messy"],
-                    "bun": ["bun"],
-                    "braids": ["braid"],
-                    "ponytail": ["ponytail", "pony"],
-                    "afro": ["afro"],
-                    "messy": ["messy", "shaggy"],
-                    "anime": ["anime"],
-                    "medium": ["faydaen", "medium"],
-                    "pixie": ["pixie", "short"],
-                    "twintail": ["twintail", "twin"],
-                    "hime_cut": ["hime"],
+                    "long": ["long01", "o4saken_long01"],
+                    "long_straight": ["long01", "o4saken_long01"],
+                    "long_wavy": ["o4saken_long01", "long01"],
+                    "long_curly": ["o4saken_long01", "long01"],
+                    "straight": ["cortu_straight_bangs", "culturalibre_hair_01", "long01"],
+                    "wavy": ["culturalibre_hair_05", "culturalibre_hair_06"],
+                    "curly": ["culturalibre_hair_06", "culturalibre_hair_05"],
+                    "bob": ["bob01", "bob02", "toigo_blunt_bob", "littleright_bobcut_hair"],
+                    "bob_bangs": ["toigo_blunt_bob_with_bangs", "toigo_curled_under_bob_with_bangs"],
+                    "short": ["short01", "short02", "short03", "short04"],
+                    "bun": ["rehmanpolanski_hair_bun_brown", "elvs_reverse_french_braid_bun"],
+                    "braids": ["braid01", "elvs_double_mh_braid", "elvs_french_braid_variation"],
+                    "braid": ["braid01", "elvs_double_mh_braid"],
+                    "ponytail": ["ponytail01"],
+                    "afro": ["afro01"],
+                    "messy": ["cortu_shaggy_green_hair", "cortu_short_messy_hair"],
+                    "anime": ["learning_anime_hair"],
+                    "medium": ["culturalibre_hair_01", "culturalibre_hair_02", "faydaen_hair_1"],
+                    "pixie": ["short01", "short02"],
+                    "twintail": ["culturalibre_hair_05", "culturalibre_hair_06"],
+                    "twin_tails": ["culturalibre_hair_05", "culturalibre_hair_06"],
+                    "hime_cut": ["long01", "o4saken_long01"],
+                    "headband": ["sonntag78_blond_with_headband"],
+                    "french_braid": ["elvs_french_braid_variation", "elvs_unkempt_french_braid"],
+                    "cloud": ["cortu_strawberry_cloud_hair"],
+                    "jungle": ["sonntag78_junglebook_hair"],
                 }
                 _hair_name, _hair_path = None, None
                 _hints = _hair_style_hints.get(style, [style])
@@ -4327,6 +4361,26 @@ def bl_char_set_clothing(params):
         applied = []
         errors = []
 
+            # Map natural language to MPFB2 asset names
+            _clothing_hints = {
+                "tshirt": "female_casualsuit01", "t_shirt": "female_casualsuit01",
+                "casual": "female_casualsuit01", "casual_suit": "female_casualsuit01",
+                "elegant": "female_elegantsuit01", "elegant_suit": "female_elegantsuit01",
+                "sport": "female_sportsuit01", "sportswear": "female_sportsuit01",
+                "formal": "female_elegantsuit01", "dress": "female_elegantsuit01",
+                "work": "male_worksuit01", "worksuit": "male_worksuit01",
+                "suit": "male_casualsuit01",
+                "hat": "fedora01", "fedora": "fedora01", "cap": "fedora_cocked",
+                "shoes": "shoes01", "boots": "shoes03", "heels": "shoes02",
+                "sneakers": "shoes04", "sandals": "shoes05", "flats": "shoes06",
+            }
+            # Resolve natural names to actual asset names
+            _resolved_slots = {}
+            for slot, asset_name in slots.items():
+                _resolved = _clothing_hints.get(asset_name.lower(), asset_name)
+                _resolved_slots[slot] = _resolved
+            slots = _resolved_slots
+
         # Apply individual slot items via MPFB2
         for slot, asset_name in slots.items():
             try:
@@ -4539,50 +4593,50 @@ def register_all_handlers():
     register_routes(char_material_handler_get_routes())
     register_routes(clothing_handler_get_routes())
     register_aliases({
-            # bl_object: ID蠕ｮ蟾ｮ
+            # bl_object: ID陟包ｽｮ陝ｾ・ｮ
             "bl_object_visibility": "bl_object_set_visibility",
             "bl_object_get_info": "bl_object_list",
             "bl_object_join": "bl_mesh_join",
             "bl_object_separate": "bl_mesh_separate",
     
-            # bl_sculpt: ID蠕ｮ蟾ｮ
+            # bl_sculpt: ID陟包ｽｮ陝ｾ・ｮ
             "bl_sculpt_enter_mode": "bl_sculpt_enable",
             "bl_sculpt_mask_operations": "bl_sculpt_mask",
     
-            # bl_mesh: ID蠕ｮ蟾ｮ・ｽE・ｽ諢丞袖縺悟酔遲峨↑繧ゑｿｽE縺ｮ縺ｿ・ｽE・ｽE            "bl_mesh_merge": "bl_mesh_merge_vertices",
+            # bl_mesh: ID陟包ｽｮ陝ｾ・ｮ繝ｻ・ｽE繝ｻ・ｽ隲｢荳櫁｢也ｸｺ謔滄・驕ｲ蟲ｨ竊醍ｹｧ繧托ｽｿ・ｽE邵ｺ・ｮ邵ｺ・ｿ繝ｻ・ｽE繝ｻ・ｽE            "bl_mesh_merge": "bl_mesh_merge_vertices",
             "bl_mesh_recalc_normals": "bl_mesh_flip_normals",
             "bl_mesh_smooth": "bl_mesh_smooth_shade",
             "bl_mesh_loop_cut": "bl_mesh_subdivide",
             "bl_mesh_uv_unwrap": "bl_uv_unwrap",
     
-            # bl_material: ID蠕ｮ蟾ｮ
+            # bl_material: ID陟包ｽｮ陝ｾ・ｮ
             "bl_material_set_texture": "bl_material_add_texture",
     
-            # bl_animation: 讖滂ｿｽE縺径rmature蛛ｴ縺ｫ蟄伜惠
+            # bl_animation: 隶匁ｻゑｽｿ・ｽE邵ｺ蠕вmature陋幢ｽｴ邵ｺ・ｫ陝・ｼ懈Β
             "bl_anim_create_bone": "bl_armature_add_bone",
             "bl_anim_add_ik": "bl_armature_set_ik",
     
-            # bl_light: ID蠕ｮ蟾ｮ
+            # bl_light: ID陟包ｽｮ陝ｾ・ｮ
             "bl_light_set_power": "bl_light_set_energy",
     
-            # bl_scene: ID蠕ｮ蟾ｮ / 讖滂ｿｽE縺悟挨繝上Φ繝峨Λ縺ｫ蟄伜惠
+            # bl_scene: ID陟包ｽｮ陝ｾ・ｮ / 隶匁ｻゑｽｿ・ｽE邵ｺ謔滓肩郢昜ｸ莞ｦ郢晏ｳｨﾎ帷ｸｺ・ｫ陝・ｼ懈Β
             "bl_scene_set_units": "bl_scene_set_unit",
             "bl_scene_set_frame_range": "bl_anim_set_frame_range",
             "bl_scene_set_world": "bl_render_set_world_color",
     
-            # bl_compositor: 繝励Ξ繝輔ぅ繝・・ｽ・ｽ繧ｹ蟾ｮ (bl_compositor_ vs bl_comp_)
+            # bl_compositor: 郢晏干ﾎ樒ｹ晁ｼ斐≦郢昴・繝ｻ・ｽ繝ｻ・ｽ郢ｧ・ｹ陝ｾ・ｮ (bl_compositor_ vs bl_comp_)
             "bl_compositor_enable": "bl_comp_enable",
             "bl_compositor_add_node": "bl_comp_add_node",
             "bl_compositor_connect": "bl_comp_connect",
     
-            # bl_grease_pencil: ID蠕ｮ蟾ｮ
+            # bl_grease_pencil: ID陟包ｽｮ陝ｾ・ｮ
             "bl_gp_set_line_width": "bl_gp_set_thickness",
     
-            # bl_texture_paint: 繝励Ξ繝輔ぅ繝・・ｽ・ｽ繧ｹ蟾ｮ (bl_tpaint_ vs bl_texpaint_)
+            # bl_texture_paint: 郢晏干ﾎ樒ｹ晁ｼ斐≦郢昴・繝ｻ・ｽ繝ｻ・ｽ郢ｧ・ｹ陝ｾ・ｮ (bl_tpaint_ vs bl_texpaint_)
             "bl_tpaint_enter_mode": "bl_texpaint_enable",
             "bl_tpaint_set_brush": "bl_texpaint_set_brush",
     
-            # bl_render: ID蠕ｮ蟾ｮ
+            # bl_render: ID陟包ｽｮ陝ｾ・ｮ
             "bl_render_execute": "bl_render_render",
             "bl_render_color_management": "bl_render_set_color_management",
             "bl_render_set_denoise": "bl_render_set_denoising",
@@ -4624,13 +4678,13 @@ def register_all_handlers():
             "bl_scene_create_collection",
             "bl_scene_move_to_collection",
     
-            # bl_compositor (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_compositor (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_compositor_add_glare",
             "bl_compositor_add_color_correction",
             "bl_compositor_add_denoise",
             "bl_compositor_add_vignette",
     
-            # bl_grease_pencil (驥崎､・・ｽ・ｽ繧｡繧､繝ｫ蛻・・ｽE繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_grease_pencil (鬩･蟠趣ｽ､繝ｻ繝ｻ・ｽ繝ｻ・ｽ郢ｧ・｡郢ｧ・､郢晢ｽｫ陋ｻ繝ｻ繝ｻ・ｽE郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_gp_create_object",
             "bl_gp_draw_stroke",
             "bl_gp_add_effect",
@@ -4638,7 +4692,7 @@ def register_all_handlers():
             "bl_gp_animate",
             "bl_gp_export",
     
-            # bl_geometry_nodes (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_geometry_nodes (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_geonodes_set_input",
             "bl_geonodes_add_scatter_setup",
             "bl_geonodes_add_array_setup",
@@ -4646,38 +4700,38 @@ def register_all_handlers():
             "bl_geonodes_add_curve_setup",
             "bl_geonodes_list_tree",
     
-            # bl_texture_paint (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_texture_paint (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_tpaint_apply_stroke",
             "bl_tpaint_fill_layer",
             "bl_tpaint_save_image",
     
-            # bl_render (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_render (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_render_add_aov",
             "bl_render_toggle_compositor",
             "bl_render_add_view_layer",
     
-            # bl_uv (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_uv (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_uv_rotate",
             "bl_uv_scale",
     
-            # bl_vse (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_vse (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_vse_add_transition",
             "bl_vse_cut_strip",
             "bl_vse_set_strip_properties",
             "bl_vse_render_animation",
     
-            # bl_particle (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_particle (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_particle_set_gravity",
             "bl_particle_set_render",
     
-            # bl_node (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｫ蟇ｾ蠢懊↑縺・
+            # bl_node (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｫ陝・ｽｾ陟｢諛岩・邵ｺ繝ｻ
             "bl_node_delete",
             "bl_node_arrange",
             "bl_node_add_mix",
             "bl_node_add_tex_coord",
             "bl_node_set_output",
     
-            # bl_armature (繝励Λ繧ｰ繧､繝ｳ蛛ｴ縺ｮID縺ｨ荳堺ｸ閾ｴ)
+            # bl_armature (郢晏干ﾎ帷ｹｧ・ｰ郢ｧ・､郢晢ｽｳ陋幢ｽｴ邵ｺ・ｮID邵ｺ・ｨ闕ｳ蝣ｺ・ｸﾂ髢ｾ・ｴ)
             "bl_armature_delete_bone",
             "bl_armature_set_parent_bone",
             "bl_armature_weight_paint",
