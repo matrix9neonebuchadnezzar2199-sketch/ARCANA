@@ -354,90 +354,192 @@ Instead of registering all 832 tools, SuperSave exposes only **4 meta-tools**:
 Token usage reduced by approximately **98%**.
 
 
-## Character Creation Setup Guide
 
-ARCANA's character creation uses **MPFB2** (MakeHuman for Blender) — a free, open-source human generator. Professional-quality hair, skin, eyes, and clothing presets are available out of the box.
+<details>
+<summary><h2>🎨 Character Creation Setup Guide (MPFB2 Integration)</h2></summary>
+
+ARCANA supports advanced character creation by integrating with **MPFB2** (MakeHuman Plugin for Blender).
+This guide walks you through the complete setup — no prior experience needed.
 
 ### Overview
 
-```
-① Install Blender (skip if you already have 4.2+)
-② Install MPFB2 inside Blender (character generation engine)
-③ Download asset packs (hair, skin, eyes, clothes)
-④ Install ARCANA (bridge between AI and Blender)
-⑤ Install Claude Desktop (the AI)
-⑥ Connect and start talking
-```
+| Step | What you'll do | Time |
+|------|---------------|------|
+| 1 | Install Blender | 5 min |
+| 2 | Install MPFB2 add-on | 2 min |
+| 3 | Download asset packs (ZIP files) | 5–10 min |
+| 4 | Load asset packs into Blender | 3 min |
+| 5 | Connect ARCANA and create characters | 2 min |
 
-### Step 1: Install Blender
+---
 
-> Skip this if you already have Blender 4.2 or newer.
+### Step 1: Install Blender (4.2 or later)
 
 1. Go to https://www.blender.org/download/
-2. Download for your OS
-3. Run the installer — click Next through everything
+2. Download and install the version for your OS.
+3. Launch Blender once to complete initial setup.
 
-### Step 2: Install MPFB2 (inside Blender)
+---
 
-MPFB2 is a Blender addon that generates human characters with parametric controls for body shape, face, hair, skin, and clothing.
+### Step 2: Install the MPFB2 Add-on
 
-1. Open Blender
-2. Go to **Edit → Preferences**
-3. Click **Get Extensions** on the left
-4. Type **\"MPFB\"** in the search bar
-5. Click **Install**
-6. Wait a few seconds for installation to complete
+1. Open Blender.
+2. Go to **Edit → Preferences → Get Extensions**.
+3. Search for **"MPFB"**.
+4. Click **Install**.
+5. Close Preferences.
+6. Press **N** in the 3D Viewport to open the sidebar — you should see an **"MPFB"** tab.
 
-**Verify:** Press **N** in the 3D viewport to open the sidebar. You should see an **"MPFB" tab**.
+> If the MPFB tab does not appear, restart Blender.
 
-### Step 3: Download & Install Asset Packs
+---
 
-MPFB2 needs asset packs for skin, eyes, hair, and clothes. Download these zip files (do NOT unzip them):
+### Step 3: Download Asset Packs
 
-| Pack | Contents | License | Link |
-|---|---|---|---|
-| **MakeHuman System Assets** | Skin, eyes, teeth, eyebrows (required) | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) |
-| **Hair 01** | 22 hairstyles (bob, long, braid, bun, etc.) | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) |
-| **Skins 01** | Realistic female skins | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) |
-| **Skins 02** | Realistic male skins | CC0 | [Download](https://files.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) |
+Download the ZIP files you need from the links below. **Do NOT unzip them** — MPFB2 reads them directly.
 
-Total size: ~350 MB. All assets are **CC0** (no restrictions, use for anything).
+#### Required (must install)
 
-**Install in Blender:**
+| Pack | Description | Size | Download |
+|------|-------------|------|----------|
+| MakeHuman System Assets | Base body, eyes, teeth, basic skins & clothes | 267 MB | [Download (mirror1)](https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) / [mirror2](https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) |
 
-1. In the MPFB tab → **Apply Assets** → **Library Settings**
-2. Click **"Load pack from zip file"**
-3. Select each downloaded zip file (repeat for all 4 packs)
-4. **Restart Blender**
+#### Recommended
 
-### Step 4: Talk to Create Characters
+| Pack | Description | Size | Download |
+|------|-------------|------|----------|
+| Hair 01 | 22 low-poly & stylized hairstyles | 217 MB | [Download](https://files2.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) |
+| Skins 01 | Natural female skins | 99 MB | [Download](https://files2.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) |
+| Skins 02 | Natural male skins | 72 MB | [Download](https://files2.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) |
 
-Once ARCANA is connected (see [Quick Start](#quick-start) below), just tell the AI what you want:
+#### Optional — Clothing & Accessories
+
+| Pack | Description | Size | Download |
+|------|-------------|------|----------|
+| Shirts 01 | T-shirts, sweaters, tops | 23 MB | [Download](https://files2.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip) |
+| Pants 01 | Pants | 20 MB | [Download](https://files2.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip) |
+| Shoes 01 | Shoes & boots | 79 MB | [Download](https://files2.makehumancommunity.org/asset_packs/shoes01/shoes01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/shoes01/shoes01_cc0.zip) |
+| Dress 01 | Female gowns & dresses | 44 MB | [Download](https://files2.makehumancommunity.org/asset_packs/dress01/dress01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/dress01/dress01_cc0.zip) |
+| Skirts 01 | Skirts | — | [Download](https://files2.makehumancommunity.org/asset_packs/skirts01/skirts01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/skirts01/skirts01_cc0.zip) |
+| Suits 01 | Formal suits | 40 MB | [Download](https://files2.makehumancommunity.org/asset_packs/suits01/suits01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/suits01/suits01_cc0.zip) |
+| Suits 02 | Sci-fi & fantasy suits | 183 MB | [Download](https://files2.makehumancommunity.org/asset_packs/suits02/suits02_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/suits02/suits02_cc0.zip) |
+| Hats 01 | Hats & caps | — | [Download](https://files2.makehumancommunity.org/asset_packs/hats01/hats01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/hats01/hats01_cc0.zip) |
+| Hats 02 | Helmets | — | [Download](https://files2.makehumancommunity.org/asset_packs/hats02/hats02_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/hats02/hats02_cc0.zip) |
+| Glasses 01 | Glasses | — | [Download](https://files2.makehumancommunity.org/asset_packs/glasses01/glasses01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/glasses01/glasses01_cc0.zip) |
+| Gloves 01 | Gloves | — | [Download](https://files2.makehumancommunity.org/asset_packs/gloves01/gloves01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/gloves01/gloves01_cc0.zip) |
+| Masks 01 | Masks | — | [Download](https://files2.makehumancommunity.org/asset_packs/masks01/masks01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/masks01/masks01_cc0.zip) |
+| Underwear 01 | Female underwear | — | [Download](https://files2.makehumancommunity.org/asset_packs/underwear01/underwear01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/underwear01/underwear01_cc0.zip) |
+| Underwear 04 | Socks | — | [Download](https://files2.makehumancommunity.org/asset_packs/underwear04/underwear04_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/underwear04/underwear04_cc0.zip) |
+
+#### Optional — Body & Face Details
+
+| Pack | Description | Size | Download |
+|------|-------------|------|----------|
+| Skins 03 | Non-natural skins (fantasy, zombie, alien) | 130 MB | [Download](https://files2.makehumancommunity.org/asset_packs/skins03/skins03_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/skins03/skins03_cc0.zip) |
+| Eyebrows 01 | High-res eyebrows | — | [Download](https://files2.makehumancommunity.org/asset_packs/eyebrows01/eyebrows01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/eyebrows01/eyebrows01_cc0.zip) |
+| Eyelashes 01 | High-res eyelashes | — | [Download](https://files2.makehumancommunity.org/asset_packs/eyelashes01/eyelashes01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/eyelashes01/eyelashes01_cc0.zip) |
+| Bodyparts 01 | Horns | 0.7 MB | [Download](https://files2.makehumancommunity.org/asset_packs/bodyparts01/bodyparts01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/bodyparts01/bodyparts01_cc0.zip) |
+| Bodyparts 04 | Nails | 4 MB | [Download](https://files2.makehumancommunity.org/asset_packs/bodyparts04/bodyparts04_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/bodyparts04/bodyparts04_cc0.zip) |
+| Bodyparts 05 | Beards & moustaches | 6 MB | [Download](https://files2.makehumancommunity.org/asset_packs/bodyparts05/bodyparts05_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/bodyparts05/bodyparts05_cc0.zip) |
+
+#### Optional — Deformation Targets & Poses
+
+| Pack | Description | Download |
+|------|-------------|----------|
+| Arms 01 | Realistic arm deformations | [Download](https://files2.makehumancommunity.org/asset_packs/arms01/arms01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/arms01/arms01_cc0.zip) |
+| Cheek 01 | Realistic cheek deformations | [Download](https://files2.makehumancommunity.org/asset_packs/cheek01/cheek01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/cheek01/cheek01_cc0.zip) |
+| Ears 01 | Realistic ears deformations | [Download](https://files2.makehumancommunity.org/asset_packs/ears01/ears01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/ears01/ears01_cc0.zip) |
+| Hands 01 | Realistic hand deformations | [Download](https://files2.makehumancommunity.org/asset_packs/hands01/hands01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/hands01/hands01_cc0.zip) |
+| Nose 01 | Realistic nose deformations | [Download](https://files2.makehumancommunity.org/asset_packs/nose01/nose01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/nose01/nose01_cc0.zip) |
+| Animal 01 | Animal & furry transforms | [Download](https://files2.makehumancommunity.org/asset_packs/animal01/animal01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/animal01/animal01_cc0.zip) |
+| Poses 01 | Sitting poses | [Download](https://files2.makehumancommunity.org/asset_packs/poses01/poses01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/poses01/poses01_cc0.zip) |
+| Poses 02 | Sports poses | [Download](https://files2.makehumancommunity.org/asset_packs/poses02/poses02_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/poses02/poses02_cc0.zip) |
+
+#### Optional — Advanced / Functional
+
+| Pack | Description | Download |
+|------|-------------|----------|
+| Hair Editor | Fur/hair styles for the hair editor | [Download](https://static.makehumancommunity.org/assets/assetpacks/haireditor.html) |
+| Visemes 01 | Microsoft-style visemes (lip sync) | [Download](https://static.makehumancommunity.org/assets/assetpacks/visemes01.html) |
+| Visemes 02 | Meta/Oculus-style visemes | [Download](https://static.makehumancommunity.org/assets/assetpacks/visemes02.html) |
+| Faceunits 01 | ARKit-style face units | [Download](https://static.makehumancommunity.org/assets/assetpacks/faceunits01.html) |
+| System Clothes Materials 01 | Extra materials for system clothes | [Download](https://files2.makehumancommunity.org/asset_packs/system_clothes_materials01/system_clothes_materials01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/system_clothes_materials01/system_clothes_materials01_cc0.zip) |
+| System Hair Materials 01 | Extra materials for system hair | [Download](https://files2.makehumancommunity.org/asset_packs/system_hair_materials01/system_hair_materials01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/system_hair_materials01/system_hair_materials01_cc0.zip) |
+| Equipment 01 | Weapons | [Download](https://files2.makehumancommunity.org/asset_packs/equipment01/equipment01_cc0.zip) / [mirror](https://files.makehumancommunity.org/asset_packs/equipment01/equipment01_cc0.zip) |
+
+> **All packs listed above are CC0 (public domain)** — free for any use, no credit required.
+> For the full catalog including CC-BY packs, visit: https://static.makehumancommunity.org/assets/assetpacks.html
+
+---
+
+### Step 4: Load Asset Packs into Blender
+
+This is where you tell MPFB2 about the ZIP files you downloaded.
+
+1. Open Blender.
+2. Press **N** in the 3D Viewport to open the sidebar.
+3. Click the **MPFB** tab.
+4. Expand **Apply Assets → Library Settings**.
+5. Click **"Load pack from zip file"**.
+6. Navigate to the folder where you saved the ZIP files.
+7. Select one ZIP file (e.g. `makehuman_system_assets_cc0.zip`) and click **OK**.
+8. **Repeat steps 5–7** for each ZIP file you downloaded.
+9. **Restart Blender** after loading all packs.
+
+> **Important:** You do NOT need to unzip the files. MPFB2 reads ZIP files directly.
+>
+> **Tip:** Create a folder like `C:\MPFB_Assets\` or `~/mpfb_assets/` and keep all your downloaded ZIPs there for easy access.
+
+After restarting, verify the packs loaded:
+- MPFB tab → **Apply Assets → Library Settings** — you should see the loaded packs listed.
+
+---
+
+### Step 5: Create Characters with ARCANA
+
+1. In Blender, open the **ARCANA** tab in the sidebar and click **Connect**.
+2. In Claude Desktop, try these example prompts:
 
 ```
-"Create a 20-year-old female character, 160cm, long hair, casual clothes"
+Create a 25-year-old female character, 165cm tall, with long brown hair and casual clothes
 ```
 
 ```
-"Make a muscular male warrior, 190cm, short hair, dark skin, battle armor"
+Create a muscular male warrior, 190cm, short black hair, wearing sci-fi armor
 ```
 
 ```
-"Create an anime-style girl with pink twin-tails and school uniform"
+20代の女性キャラクターを作って。身長160cm、ロングヘア、カジュアルな服装で
 ```
 
-The AI will use MPFB2 through ARCANA to generate the character in Blender automatically.
+ARCANA will automatically use MPFB2 assets if available, or fall back to basic generation if MPFB2 is not installed.
 
-### Optional: More Asset Packs
+---
 
-Want more variety? Download additional packs from the [MakeHuman Asset Packs page](https://static.makehumancommunity.org/assets/assetpacks.html):
+### Troubleshooting
 
-- **Hair 02** (20 high-poly hairstyles, CC-BY) — braids, updos, afros
-- **Hair 03** (12 hairstyles, CC-BY) — curly, long variants
-- **Dress 01-03** — gowns, dresses
-- **Shirts, Pants, Shoes, Hats** — full wardrobe
-- **Eyebrows 01, Eyelashes 01** — high-res facial details
+| Problem | Solution |
+|---------|----------|
+| MPFB tab doesn't appear | Confirm Blender ≥ 4.2. Press **N** to open sidebar. Restart Blender. |
+| No hair/clothing options | Verify asset packs were loaded in Library Settings. Restart Blender. |
+| "Load pack from zip file" button not found | Make sure MPFB2 is enabled in Edit → Preferences → Add-ons. |
+| Download link doesn't work | Try the mirror link. Both servers are in Sweden — if both fail, try again later. |
+| Claude can't connect | Check that ARCANA tab shows "Connected" (green) in Blender. |
 
+---
+
+### Quick Reference: Minimum Setup
+
+For the fastest setup, install only these 4 packs (~655 MB total):
+
+1. **MakeHuman System Assets** (267 MB) — required
+2. **Hair 01** (217 MB) — hairstyles
+3. **Skins 01** (99 MB) — female skins
+4. **Skins 02** (72 MB) — male skins
+
+This gives you a fully functional character creation pipeline.
+
+</details>
 
 ## Quick Start
 

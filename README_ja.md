@@ -354,90 +354,193 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 トークン使用量を約**98%削減**。
 
 
-## キャラクタークリエイト セットアップガイド
 
-ARCANAのキャラクリエイトは **MPFB2**（MakeHuman for Blender）を使用します。無料・オープンソースの人体生成エンジンで、髪型・肌・目・服のプリセットがすぐに使えます。
+<details>
+<summary><h2>🎨 キャラクタークリエイト特化 セットアップガイド（MPFB2 連携）</h2></summary>
+
+ARCANA は **MPFB2**（MakeHuman Plugin for Blender）と連携して、高品質なキャラクターを自動生成できます。
+このガイドでは、初めての方でも迷わないよう、すべての手順を丁寧に説明します。
 
 ### 全体の流れ
 
+| ステップ | やること | 所要時間 |
+|----------|---------|---------|
+| 1 | Blender をインストール | 5 分 |
+| 2 | MPFB2 アドオンを導入 | 2 分 |
+| 3 | アセットパック（ZIP）をダウンロード | 5〜10 分 |
+| 4 | アセットパックを Blender に読み込み | 3 分 |
+| 5 | ARCANA を接続してキャラクター作成 | 2 分 |
+
+---
+
+### ステップ 1：Blender のインストール（4.2 以上）
+
+1. https://www.blender.org/download/ にアクセス
+2. お使いの OS 用のインストーラをダウンロード
+3. インストールして、一度起動しておく
+
+---
+
+### ステップ 2：MPFB2 アドオンの導入
+
+1. Blender を開く
+2. **Edit → Preferences → Get Extensions** を開く
+3. 検索欄に **「MPFB」** と入力
+4. **Install** をクリック
+5. Preferences を閉じる
+6. 3D ビューポートで **N キー** を押してサイドバーを開く → **「MPFB」タブ** が表示されれば成功
+
+> MPFB タブが見えない場合は Blender を再起動してください。
+
+---
+
+### ステップ 3：アセットパックのダウンロード
+
+以下のリンクから ZIP ファイルをダウンロードします。
+
+> ⚠️ **ZIP ファイルは解凍しないでください！** MPFB2 は ZIP のまま読み込みます。
+>
+> 💡 **おすすめ：** `C:\MPFB_Assets\` や `~/mpfb_assets/` のようなフォルダを作り、ダウンロードした ZIP をまとめて保管しましょう。
+
+#### 🔴 必須パック
+
+| パック名 | 内容 | サイズ | ダウンロード |
+|---------|------|--------|------------|
+| MakeHuman System Assets | 素体・目・歯・基本スキン＆服 | 267 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) |
+
+#### 🟡 推奨パック
+
+| パック名 | 内容 | サイズ | ダウンロード |
+|---------|------|--------|------------|
+| Hair 01 | ローポリ・スタイライズド髪 22 種 | 217 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) |
+| Skins 01 | 自然な女性スキン | 99 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) |
+| Skins 02 | 自然な男性スキン | 72 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) |
+
+#### 🟢 オプション — 服・アクセサリ
+
+| パック名 | 内容 | サイズ | ダウンロード |
+|---------|------|--------|------------|
+| Shirts 01 | T シャツ・セーター・トップス | 23 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/shirts01/shirts01_cc0.zip) |
+| Pants 01 | パンツ | 20 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/pants01/pants01_cc0.zip) |
+| Shoes 01 | 靴・ブーツ | 79 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/shoes01/shoes01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/shoes01/shoes01_cc0.zip) |
+| Dress 01 | 女性用ガウン・ドレス | 44 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/dress01/dress01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/dress01/dress01_cc0.zip) |
+| Skirts 01 | スカート | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/skirts01/skirts01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/skirts01/skirts01_cc0.zip) |
+| Suits 01 | フォーマルスーツ | 40 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/suits01/suits01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/suits01/suits01_cc0.zip) |
+| Suits 02 | SF・ファンタジースーツ | 183 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/suits02/suits02_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/suits02/suits02_cc0.zip) |
+| Hats 01 | 帽子・キャップ | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/hats01/hats01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/hats01/hats01_cc0.zip) |
+| Hats 02 | ヘルメット | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/hats02/hats02_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/hats02/hats02_cc0.zip) |
+| Glasses 01 | メガネ | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/glasses01/glasses01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/glasses01/glasses01_cc0.zip) |
+| Gloves 01 | 手袋 | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/gloves01/gloves01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/gloves01/gloves01_cc0.zip) |
+| Masks 01 | マスク | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/masks01/masks01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/masks01/masks01_cc0.zip) |
+| Underwear 01 | 女性下着 | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/underwear01/underwear01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/underwear01/underwear01_cc0.zip) |
+| Underwear 04 | 靴下 | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/underwear04/underwear04_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/underwear04/underwear04_cc0.zip) |
+
+#### 🟢 オプション — 体・顔のディテール
+
+| パック名 | 内容 | サイズ | ダウンロード |
+|---------|------|--------|------------|
+| Skins 03 | 非自然スキン（ファンタジー・ゾンビ・エイリアン） | 130 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/skins03/skins03_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/skins03/skins03_cc0.zip) |
+| Eyebrows 01 | 高解像度眉毛 | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/eyebrows01/eyebrows01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/eyebrows01/eyebrows01_cc0.zip) |
+| Eyelashes 01 | 高解像度まつ毛 | — | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/eyelashes01/eyelashes01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/eyelashes01/eyelashes01_cc0.zip) |
+| Bodyparts 01 | 角 | 0.7 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/bodyparts01/bodyparts01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/bodyparts01/bodyparts01_cc0.zip) |
+| Bodyparts 04 | 爪 | 4 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/bodyparts04/bodyparts04_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/bodyparts04/bodyparts04_cc0.zip) |
+| Bodyparts 05 | ヒゲ・口ひげ | 6 MB | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/bodyparts05/bodyparts05_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/bodyparts05/bodyparts05_cc0.zip) |
+
+#### 🟢 オプション — 変形ターゲット・ポーズ
+
+| パック名 | 内容 | ダウンロード |
+|---------|------|------------|
+| Arms 01 | リアルな腕の変形 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/arms01/arms01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/arms01/arms01_cc0.zip) |
+| Cheek 01 | リアルな頬の変形 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/cheek01/cheek01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/cheek01/cheek01_cc0.zip) |
+| Ears 01 | リアルな耳の変形 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/ears01/ears01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/ears01/ears01_cc0.zip) |
+| Hands 01 | リアルな手の変形 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/hands01/hands01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/hands01/hands01_cc0.zip) |
+| Nose 01 | リアルな鼻の変形 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/nose01/nose01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/nose01/nose01_cc0.zip) |
+| Animal 01 | 動物・ファーリー変形 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/animal01/animal01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/animal01/animal01_cc0.zip) |
+| Poses 01 | 座りポーズ | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/poses01/poses01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/poses01/poses01_cc0.zip) |
+| Poses 02 | スポーツポーズ | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/poses02/poses02_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/poses02/poses02_cc0.zip) |
+
+#### 🟢 オプション — 上級・機能系
+
+| パック名 | 内容 | ダウンロード |
+|---------|------|------------|
+| Hair Editor | ヘアエディター用スタイル | [詳細ページ](https://static.makehumancommunity.org/assets/assetpacks/haireditor.html) |
+| Visemes 01 | Microsoft 式口パク（リップシンク） | [詳細ページ](https://static.makehumancommunity.org/assets/assetpacks/visemes01.html) |
+| Visemes 02 | Meta/Oculus 式口パク | [詳細ページ](https://static.makehumancommunity.org/assets/assetpacks/visemes02.html) |
+| Faceunits 01 | ARKit 式フェイシャルユニット | [詳細ページ](https://static.makehumancommunity.org/assets/assetpacks/faceunits01.html) |
+| System Clothes Materials 01 | 服の追加マテリアル | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/system_clothes_materials01/system_clothes_materials01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/system_clothes_materials01/system_clothes_materials01_cc0.zip) |
+| System Hair Materials 01 | 髪の追加マテリアル | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/system_hair_materials01/system_hair_materials01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/system_hair_materials01/system_hair_materials01_cc0.zip) |
+| Equipment 01 | 武器 | [ダウンロード](https://files2.makehumancommunity.org/asset_packs/equipment01/equipment01_cc0.zip) / [ミラー](https://files.makehumancommunity.org/asset_packs/equipment01/equipment01_cc0.zip) |
+
+> **上記パックはすべて CC0（パブリックドメイン）** です。商用利用 OK、クレジット表記不要。
+> CC-BY パックを含む全カタログはこちら：https://static.makehumancommunity.org/assets/assetpacks.html
+
+---
+
+### ステップ 4：アセットパックを Blender に読み込む
+
+ダウンロードした ZIP を MPFB2 に登録します。
+
+1. Blender を開く
+2. 3D ビューポートで **N キー** を押してサイドバーを開く
+3. **MPFB タブ** をクリック
+4. **Apply Assets → Library Settings** を展開
+5. **「Load pack from zip file」** をクリック
+6. ZIP ファイルを保存したフォルダに移動
+7. ZIP ファイルを 1 つ選択（例：`makehuman_system_assets_cc0.zip`）して **OK**
+8. **ステップ 5〜7 を繰り返す**（ダウンロードした ZIP すべてについて）
+9. すべて読み込んだら **Blender を再起動**
+
+> ⚠️ **ZIP は解凍しないでください！** MPFB2 が ZIP のまま読み込みます。
+>
+> 💡 読み込み後の確認：MPFB タブ → **Apply Assets → Library Settings** に読み込んだパックが表示されていれば OK。
+
+---
+
+### ステップ 5：ARCANA でキャラクターを作成
+
+1. Blender のサイドバーで **ARCANA タブ** → **Connect** をクリック
+2. Claude Desktop で以下のようなプロンプトを入力：
+
 ```
-① Blender をインストール（4.2以上なら不要）
-② MPFB2 をインストール（Blender内で完結）
-③ 素材パックをダウンロード＆インストール（髪・肌・目・服）
-④ ARCANA をインストール（AIとBlenderをつなぐ橋）
-⑤ Claude Desktop をインストール（AI本体）
-⑥ つないで話しかける
-```
-
-### Step 1: Blender をインストール
-
-> 既に Blender 4.2 以上が入っていればスキップ。
-
-1. https://www.blender.org/download/ を開く
-2. 自分の OS 用をダウンロード
-3. インストーラーを実行 → 全部「次へ」でOK
-
-### Step 2: MPFB2 をインストール（Blender 内で完結）
-
-MPFB2 は「人体キャラクターをパラメーターで作れるBlenderアドオン」です。体型・顔・髪・肌・服がプリセットで揃っています。
-
-1. Blender を起動
-2. メニューバー → **Edit → Preferences**
-3. 左側の **Get Extensions** をクリック
-4. 検索バーに **「MPFB」** と入力
-5. 「MPFB」が出てくるので **Install** をクリック
-6. 数秒待つとインストール完了
-
-**確認方法：** 3Dビューポートで **Nキー** を押してサイドバーを開く。**「MPFB」タブ** が表示されていれば成功です。
-
-### Step 3: 素材パック（アセットパック）をダウンロード＆インストール
-
-MPFB2 は本体だけだと素体しか作れません。肌・目・髪・服の素材パックを入れます。以下の zip をダウンロードしてください（**解凍不要、そのまま使います**）：
-
-| パック名 | 内容 | ライセンス | リンク |
-|---|---|---|---|
-| **MakeHuman System Assets** | 肌・目・歯・眉毛（必須） | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip) |
-| **Hair 01** | 髪型22種（ボブ・ロング・ブレイド等） | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/hair01/hair01_cc0.zip) |
-| **Skins 01** | 女性用リアルスキン | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/skins01/skins01_cc0.zip) |
-| **Skins 02** | 男性用リアルスキン | CC0 | [ダウンロード](https://files.makehumancommunity.org/asset_packs/skins02/skins02_cc0.zip) |
-
-合計サイズ: 約350MB。全アセットは **CC0**（制限なし、商用利用OK）です。
-
-**Blender でインストール：**
-
-1. MPFB タブ → **Apply Assets** → **Library Settings**
-2. **「Load pack from zip file」** ボタンをクリック
-3. ダウンロードした zip ファイルを選択（4パック分繰り返す）
-4. **Blender を再起動**
-
-### Step 4: 話しかけてキャラクターを作る
-
-ARCANAの接続が完了したら（下の[クイックスタート](#クイックスタート)を参照）、AIにこう話しかけるだけ：
-
-```
-「20代の女性キャラクターを作って。身長160cm、ロングヘア、カジュアルな服装で」
+20代の女性キャラクターを作って。身長160cm、ロングヘア、カジュアルな服装で
 ```
 
 ```
-「筋肉質な男性戦士を作って。190cm、短髪、ダークスキン、バトルアーマー」
+筋肉質な男性戦士を作成。身長190cm、短い黒髪、SF アーマー着用
 ```
 
 ```
-「ピンクのツインテールで制服のアニメ系女の子を作って」
+Create a 25-year-old female character, 165cm tall, with long brown hair and casual clothes
 ```
 
-AIがARCANA経由でMPFB2を操作し、Blenderにキャラクターを自動生成します。
+ARCANA は MPFB2 がインストール済みなら自動的にそのアセットを使用し、未インストールの場合は基本的な生成にフォールバックします。
 
-### オプション：追加アセットパック
+---
 
-バリエーションを増やしたい場合は [MakeHuman Asset Packs ページ](https://static.makehumancommunity.org/assets/assetpacks.html) から追加ダウンロード：
+### トラブルシューティング
 
-- **Hair 02**（ハイポリ髪型20種、CC-BY）— ブレイド、アップド、アフロ
-- **Hair 03**（髪型12種、CC-BY）— カーリー、ロングバリエーション
-- **Dress 01-03** — ガウン、ドレス
-- **Shirts, Pants, Shoes, Hats** — フルワードローブ
-- **Eyebrows 01, Eyelashes 01** — 高解像度フェイシャルディテール
+| 症状 | 対処法 |
+|------|--------|
+| MPFB タブが表示されない | Blender 4.2 以上か確認。N キーでサイドバーを開く。Blender を再起動。 |
+| 髪型・服が選べない | Library Settings でパックが読み込まれているか確認。Blender を再起動。 |
+| 「Load pack from zip file」ボタンがない | Edit → Preferences → Add-ons で MPFB2 が有効か確認。 |
+| ダウンロードリンクが動かない | ミラーリンクを試す。両サーバーはスウェーデンにあるため、時間を置いて再試行。 |
+| Claude が接続できない | Blender の ARCANA タブが「Connected」（緑）になっているか確認。 |
 
+---
+
+### クイックリファレンス：最小構成
+
+最速で始めたい場合は、以下の 4 パック（合計 約 655 MB）だけインストール：
+
+1. **MakeHuman System Assets**（267 MB）— 必須
+2. **Hair 01**（217 MB）— 髪型
+3. **Skins 01**（99 MB）— 女性スキン
+4. **Skins 02**（72 MB）— 男性スキン
+
+これだけでキャラクタークリエイトの基本機能がすべて使えます。
+
+</details>
 
 ## クイックスタート
 
