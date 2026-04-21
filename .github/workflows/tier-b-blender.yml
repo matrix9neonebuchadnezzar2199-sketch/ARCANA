@@ -1,7 +1,7 @@
-# Tier B (minimal): headless Blender sanity — optional; does not run ARCANA addon E2E.
-# Use workflow_dispatch or schedule; not part of the default PR gate.
+# Tier B: headless Blender + full ARCANA server test suite (optional; not a PR gate).
+# Validates bpy on the runner and Node/WebSocket smoke against the repo checkout.
 
-name: Tier B — Blender headless
+name: Tier B — Blender + ARCANA server
 
 on:
   workflow_dispatch:
@@ -9,10 +9,12 @@ on:
     - cron: "0 6 * * 1"
 
 jobs:
-  blender-headless:
+  tier-b:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install Blender (apt)
         run: |
           sudo apt-get update
@@ -24,3 +26,17 @@ jobs:
       - name: Headless bpy smoke
         run: |
           blender --background --python-expr "import bpy; assert hasattr(bpy, 'context'); print('bpy_ok', len(bpy.data.scenes))"
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Server — install, build, full tests (integration + catalog + fake execute)
+        run: |
+          npm ci
+          npm run build
+          npm test
+        working-directory: server

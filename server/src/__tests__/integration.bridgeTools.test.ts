@@ -109,8 +109,9 @@ describe("integration: bridge + SuperSave + real tool handlers", () => {
       toolId: "recipe_fps_scene",
       params: { editor: "unity", terrainSize: 10, timeOfDay: "noon" },
     });
-    expect((r as any).tool).toBe("recipe_fps_scene");
-    expect((r as any).mock).toBe(true);
+    expect(r.success).toBe(true);
+    expect(r.data?.tool).toBe("recipe_fps_scene");
+    expect(r.data?.mock).toBe(true);
   });
 
   test("resolveEditor picks unity for recipe when Unity is connected first", () => {

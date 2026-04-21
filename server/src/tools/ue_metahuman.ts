@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const ueMetahumanTools: ToolDefinition[] = [
   {
@@ -14,7 +14,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       ageRange: z.enum(["young_adult", "adult", "middle_aged", "elderly"]).optional().describe("Age range (default adult)"),
       bodyType: z.enum(["average", "athletic", "heavy", "slim"]).optional().describe("Body type (default average)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_create", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_create", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_set_face",
@@ -37,7 +37,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       foreheadHeight: z.number().min(0).max(1).optional(),
       earSize: z.number().min(0).max(1).optional(),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_set_face", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_set_face", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_set_body",
@@ -55,7 +55,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       muscle: z.number().min(0).max(1).optional(),
       fat: z.number().min(0).max(1).optional(),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_set_body", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_set_body", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_set_hair",
@@ -71,7 +71,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       roughness: z.number().min(0).max(1).optional().describe("Hair roughness"),
       groomDensity: z.number().min(0).max(1).optional().describe("Groom strand density"),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_set_hair", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_set_hair", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_set_skin",
@@ -88,7 +88,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       poreDetail: z.number().min(0).max(1).optional().describe("Pore detail visibility"),
       subsurface: z.number().min(0).max(1).optional().describe("Subsurface scattering strength"),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_set_skin", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_set_skin", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_set_clothing",
@@ -105,7 +105,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       topColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Top color override RGB"),
       bottomColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Bottom color override RGB"),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_set_clothing", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_set_clothing", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_set_expression",
@@ -119,7 +119,7 @@ export const ueMetahumanTools: ToolDefinition[] = [
       morphTargets: z.record(z.number().min(0).max(1)).optional().describe("Individual morph target values"),
       blendStrength: z.number().min(0).max(1).optional().describe("Preset blend strength (default 1.0)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_set_expression", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_set_expression", params as Record<string, any>),
   },
   {
     id: "ue_metahuman_export",
@@ -135,6 +135,6 @@ export const ueMetahumanTools: ToolDefinition[] = [
       includeTextures: z.boolean().optional().describe("Include textures (default true)"),
       lodLevel: z.number().min(0).max(4).optional().describe("LOD level to export (default 0 = highest)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unreal", "ue_metahuman_export", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => bridgeSendAsToolResult("unreal", "ue_metahuman_export", params as Record<string, any>),
   },
 ];

@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const recipeProjectTools: ToolDefinition[] = [
   {
@@ -12,13 +12,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       checks: z.array(z.enum(["missing_refs", "unused_assets", "duplicate_materials", "script_errors", "all"])).optional().describe("Checks to run (default all)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_health_check", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_health_check", params as Record<string, any>),
   },
   {
     id: "project_texture_audit",
@@ -30,13 +24,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       maxSize: z.number().optional().describe("Max recommended texture size in px (default 2048)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_texture_audit", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_texture_audit", params as Record<string, any>),
   },
   {
     id: "project_polygon_budget",
@@ -48,13 +36,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal", "blender"]).describe("Target editor"),
       budget: z.number().optional().describe("Total polygon budget (default 500000)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_polygon_budget", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_polygon_budget", params as Record<string, any>),
   },
   {
     id: "project_naming_convention",
@@ -66,13 +48,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       convention: z.enum(["unity_standard", "ue_standard", "custom"]).optional().describe("Naming convention set"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_naming_convention", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_naming_convention", params as Record<string, any>),
   },
   {
     id: "project_build_size_report",
@@ -83,13 +59,7 @@ export const recipeProjectTools: ToolDefinition[] = [
     inputSchema: z.object({
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_build_size_report", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_build_size_report", params as Record<string, any>),
   },
   {
     id: "project_scene_profiler",
@@ -100,13 +70,7 @@ export const recipeProjectTools: ToolDefinition[] = [
     inputSchema: z.object({
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_scene_profiler", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_scene_profiler", params as Record<string, any>),
   },
   {
     id: "project_missing_reference_fix",
@@ -118,13 +82,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       mode: z.enum(["report", "remove", "suggest"]).optional().describe("Fix mode (default report)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_missing_reference_fix", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_missing_reference_fix", params as Record<string, any>),
   },
   {
     id: "project_layer_tag_setup",
@@ -137,13 +95,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       template: z.enum(["fps", "rpg", "platformer", "racing", "custom"]).describe("Project template"),
       customLayers: z.array(z.string()).optional().describe("Custom layer names (if template is custom)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_layer_tag_setup", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_layer_tag_setup", params as Record<string, any>),
   },
   {
     id: "project_folder_structure",
@@ -155,13 +107,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       genre: z.enum(["fps", "rpg", "platformer", "simulation", "general"]).optional().describe("Game genre for tailored structure"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_folder_structure", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_folder_structure", params as Record<string, any>),
   },
   {
     id: "project_gitignore_setup",
@@ -173,13 +119,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       extras: z.array(z.string()).optional().describe("Extra ignore patterns"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_gitignore_setup", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_gitignore_setup", params as Record<string, any>),
   },
   {
     id: "project_collision_matrix",
@@ -191,13 +131,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       template: z.enum(["fps", "rpg", "platformer", "custom"]).describe("Game template"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_collision_matrix", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_collision_matrix", params as Record<string, any>),
   },
   {
     id: "project_quality_settings",
@@ -209,13 +143,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       platform: z.enum(["pc", "mobile", "console", "vr"]).optional().describe("Target platform"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_quality_settings", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_quality_settings", params as Record<string, any>),
   },
   {
     id: "project_input_preset",
@@ -227,13 +155,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       genre: z.enum(["fps", "tps", "rpg", "platformer", "racing", "fighting"]).describe("Game genre"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_input_preset", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_input_preset", params as Record<string, any>),
   },
   {
     id: "project_audio_setup",
@@ -245,13 +167,7 @@ export const recipeProjectTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       groups: z.array(z.string()).optional().describe("Mixer groups (default BGM, SFX, Voice, Ambience)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_audio_setup", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_audio_setup", params as Record<string, any>),
   },
   {
     id: "project_scene_template_save",
@@ -264,12 +180,6 @@ export const recipeProjectTools: ToolDefinition[] = [
       templateName: z.string().describe("Template name"),
       description: z.string().optional().describe("Template description"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "project_scene_template_save", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "project_scene_template_save", params as Record<string, any>),
   },
 ];

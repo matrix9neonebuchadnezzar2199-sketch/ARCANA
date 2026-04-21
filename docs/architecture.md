@@ -78,7 +78,12 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request 
 
 - `allToolDefinitions.ts` exports `ALL_TOOL_DEFINITIONS` (same list as the MCP server registers). `index.ts` imports it so there is a single registration source.
 - `smoke.allTools.test.ts` asserts: unique tool ids, required fields + Zod `safeParse`, clean registration into a fresh `ToolRegistry`, `bridge.resolveEditor` for every id, and `arcana.discover` by **each distinct category** returns at least one tool when the full catalog is loaded.
+- `smoke.fakeExecuteAll.test.ts` starts the bridge on alternate ports, attaches fake editor WebSocket clients, registers the full catalog, and runs **`arcana.execute`-equivalent** `superSave.execute` with `{}` for **every tool** (no uncaught errors; each result is a `ToolResult` after coercion).
 
 ### Tier B — minimal automation
 
-- Workflow `.github/workflows/tier-b-blender.yml` (manual `workflow_dispatch` and weekly schedule): installs Blender on `ubuntu-latest`, runs `blender --version` and a one-line `bpy` smoke in background mode. This does **not** install the ARCANA Blender add-on or hit the WebSocket bridge; it only proves a headless Blender CLI is viable on the runner for future extension.
+- Workflow `.github/workflows/tier-b-blender.yml` (manual `workflow_dispatch` and weekly schedule): checks out the repo, installs Blender on `ubuntu-latest`, runs `blender --version` and a one-line `bpy` smoke, then runs **`npm ci` / `npm run build` / `npm test`** in `server/` (same suite as PR CI, including fake WebSocket integration and full-catalog smoke). This still does **not** load the ARCANA Blender add-on inside Blender; it combines a real Blender install with the Node test harness.
+
+### SuperSave `execute` / `compose` contract
+
+- `core/supersave.ts` **coerces** handler results: if a tool returns a plain object without a `success` boolean (legacy `bridge.send` return), it is wrapped as `{ success: true, message, data }` so MCP clients always see a `ToolResult`. Recipe tools additionally use `core/bridgeToolResult.ts` for explicit wrapping where practical.

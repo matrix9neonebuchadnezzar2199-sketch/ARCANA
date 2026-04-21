@@ -1,5 +1,6 @@
 ﻿import { ToolDefinition } from "../core/registry";
 import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const recipePipelineTools: ToolDefinition[] = [
   {
@@ -17,7 +18,7 @@ export const recipePipelineTools: ToolDefinition[] = [
     handler: async (params) => {
       try {
         await bridge.send("blender", "pipeline_export_fbx", params);
-        return bridge.send("unity", "pipeline_import_fbx", params);
+        return bridgeSendAsToolResult("unity", "pipeline_import_fbx", params as Record<string, any>);
       } catch (error: any) {
         return { success: false, message: `Error: ${error.message}` };
       }
@@ -37,7 +38,7 @@ export const recipePipelineTools: ToolDefinition[] = [
     handler: async (params) => {
       try {
         await bridge.send("blender", "pipeline_export_fbx_ue", params);
-        return bridge.send("unreal", "pipeline_import_fbx", params);
+        return bridgeSendAsToolResult("unreal", "pipeline_import_fbx", params as Record<string, any>);
       } catch (error: any) {
         return { success: false, message: `Error: ${error.message}` };
       }
@@ -56,7 +57,7 @@ export const recipePipelineTools: ToolDefinition[] = [
     handler: async (params) => {
       try {
         await bridge.send("unity", "pipeline_export_prefab", params);
-        return bridge.send("unreal", "pipeline_import_converted", params);
+        return bridgeSendAsToolResult("unreal", "pipeline_import_converted", params as Record<string, any>);
       } catch (error: any) {
         return { success: false, message: `Error: ${error.message}` };
       }
@@ -74,13 +75,8 @@ export const recipePipelineTools: ToolDefinition[] = [
       targetFormat: z.enum(["png", "tga", "exr", "dds"]).describe("Target format"),
       maxResolution: z.number().optional().describe("Max resolution (default 2048)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "pipeline_texture_batch_convert", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult(params.editor, "pipeline_texture_batch_convert", params as Record<string, any>),
   },
   {
     id: "pipeline_animation_retarget",
@@ -94,13 +90,8 @@ export const recipePipelineTools: ToolDefinition[] = [
       targetSkeleton: z.string().describe("Target skeleton/avatar asset path"),
       boneMapping: z.record(z.string()).optional().describe("Custom bone name mapping overrides"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "pipeline_animation_retarget", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult(params.editor, "pipeline_animation_retarget", params as Record<string, any>),
   },
   {
     id: "pipeline_lod_generator",
@@ -117,7 +108,11 @@ export const recipePipelineTools: ToolDefinition[] = [
     handler: async (params) => {
       try {
         await bridge.send("blender", "pipeline_generate_lods", params);
-        return bridge.send(params.targetEditor, "pipeline_import_lod_group", params);
+        return bridgeSendAsToolResult(
+          params.targetEditor,
+          "pipeline_import_lod_group",
+          params as Record<string, any>
+        );
       } catch (error: any) {
         return { success: false, message: `Error: ${error.message}` };
       }
@@ -137,7 +132,10 @@ export const recipePipelineTools: ToolDefinition[] = [
     handler: async (params) => {
       try {
         const matData = await bridge.send("blender", "pipeline_read_material", params);
-        return bridge.send(params.targetEditor, "pipeline_apply_material", { ...params, matData });
+        return bridgeSendAsToolResult(params.targetEditor, "pipeline_apply_material", {
+          ...params,
+          matData,
+        } as Record<string, any>);
       } catch (error: any) {
         return { success: false, message: `Error: ${error.message}` };
       }
@@ -157,7 +155,10 @@ export const recipePipelineTools: ToolDefinition[] = [
     handler: async (params) => {
       try {
         const bakeResult = await bridge.send("blender", "pipeline_bake_lightmap", params);
-        return bridge.send(params.targetEditor, "pipeline_import_lightmap", { ...params, bakeResult });
+        return bridgeSendAsToolResult(params.targetEditor, "pipeline_import_lightmap", {
+          ...params,
+          bakeResult,
+        } as Record<string, any>);
       } catch (error: any) {
         return { success: false, message: `Error: ${error.message}` };
       }
@@ -176,13 +177,8 @@ export const recipePipelineTools: ToolDefinition[] = [
       maxPolygons: z.number().optional().describe("Max polygon count (default 100000)"),
       maxBones: z.number().optional().describe("Max bone count (default 256)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "pipeline_asset_validator", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult(params.editor, "pipeline_asset_validator", params as Record<string, any>),
   },
   {
     id: "pipeline_batch_export",
@@ -197,12 +193,7 @@ export const recipePipelineTools: ToolDefinition[] = [
       applyModifiers: z.boolean().optional().describe("Apply modifiers before export (default true)"),
       targetEditor: z.enum(["unity", "unreal"]).optional().describe("Optimize settings for target editor"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send("blender", "pipeline_batch_export", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult("blender", "pipeline_batch_export", params as Record<string, any>),
   },
 ];

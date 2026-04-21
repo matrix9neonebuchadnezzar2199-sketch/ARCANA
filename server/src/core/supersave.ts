@@ -1,5 +1,19 @@
 ﻿import { globalRegistry, ToolResult } from "./registry";
 
+/**
+ * Handlers that return the raw editor payload (legacy) are wrapped so MCP / SuperSave always expose {@link ToolResult}.
+ */
+function coerceToolResult(result: unknown, toolId: string): ToolResult {
+  if (result !== null && typeof result === "object" && typeof (result as ToolResult).success === "boolean") {
+    return result as ToolResult;
+  }
+  return {
+    success: true,
+    message: `${toolId} completed`,
+    data: result as any,
+  };
+}
+
 export interface DiscoverParams {
   query?: string;
   category?: string;
@@ -87,7 +101,7 @@ export class SuperSaveEngine {
 
     try {
       const result = await tool.handler(params.params);
-      return result;
+      return coerceToolResult(result, params.toolId);
     } catch (error: any) {
       return {
         success: false,
@@ -111,7 +125,7 @@ export class SuperSaveEngine {
       }
 
       try {
-        lastResult = await tool.handler(step.params);
+        lastResult = coerceToolResult(await tool.handler(step.params), step.toolId);
         results.push({
           toolId: step.toolId,
           result: lastResult

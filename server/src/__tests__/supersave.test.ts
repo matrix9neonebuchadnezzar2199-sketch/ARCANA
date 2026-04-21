@@ -64,6 +64,21 @@ describe("SuperSave", () => {
     expect(result.success).toBe(false);
   });
 
+  test("execute coerces legacy raw handler return into ToolResult", async () => {
+    globalRegistry.register({
+      id: "legacy_raw_tool",
+      name: "Legacy raw",
+      description: "Returns non-ToolResult",
+      descriptionJa: "x",
+      category: "test",
+      inputSchema: {} as any,
+      handler: async () => ({ ping: 1 } as any),
+    });
+    const r = await superSave.execute({ toolId: "legacy_raw_tool", params: {} });
+    expect(r.success).toBe(true);
+    expect((r.data as { ping: number }).ping).toBe(1);
+  });
+
   test("compose runs multiple steps", async () => {
     const result = await superSave.compose({
       steps: [

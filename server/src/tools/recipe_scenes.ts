@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const recipeSceneTools: ToolDefinition[] = [
   {
@@ -14,13 +14,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       timeOfDay: z.enum(["morning", "noon", "evening", "night"]).optional().describe("Lighting preset"),
       spawnCount: z.number().optional().describe("Number of spawn points (default 8)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_fps_scene", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_fps_scene", params as Record<string, any>),
   },
   {
     id: "recipe_tps_scene",
@@ -33,13 +27,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       mapStyle: z.enum(["urban", "forest", "desert", "snow"]).optional().describe("Map theme"),
       coverCount: z.number().optional().describe("Number of cover objects (default 20)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_tps_scene", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_tps_scene", params as Record<string, any>),
   },
   {
     id: "recipe_platformer_scene",
@@ -53,13 +41,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       difficulty: z.enum(["easy", "medium", "hard"]).optional().describe("Difficulty level"),
       platformCount: z.number().optional().describe("Number of platforms (default 15)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_platformer_scene", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_platformer_scene", params as Record<string, any>),
   },
   {
     id: "recipe_horror_scene",
@@ -72,13 +54,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       setting: z.enum(["mansion", "hospital", "forest", "underground"]).optional().describe("Horror setting"),
       fogDensity: z.number().optional().describe("Fog density 0.0-1.0 (default 0.6)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_horror_scene", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_horror_scene", params as Record<string, any>),
   },
   {
     id: "recipe_racing_scene",
@@ -91,13 +67,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       trackType: z.enum(["circuit", "rally", "drag"]).optional().describe("Track type"),
       lapCount: z.number().optional().describe("Number of laps (default 3)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_racing_scene", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_racing_scene", params as Record<string, any>),
   },
   {
     id: "recipe_rpg_dungeon",
@@ -111,13 +81,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       theme: z.enum(["stone", "cave", "ice", "fire"]).optional().describe("Dungeon theme"),
       hasBoss: z.boolean().optional().describe("Include boss room (default true)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_rpg_dungeon", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_rpg_dungeon", params as Record<string, any>),
   },
   {
     id: "recipe_open_world_base",
@@ -130,13 +94,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       worldSize: z.number().optional().describe("World size in km (default 4)"),
       biome: z.enum(["temperate", "tropical", "arctic", "desert"]).optional().describe("Primary biome"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_open_world_base", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_open_world_base", params as Record<string, any>),
   },
   {
     id: "recipe_vr_room",
@@ -149,13 +107,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       roomType: z.enum(["living", "office", "gallery", "lab"]).optional().describe("Room type"),
       interactableCount: z.number().optional().describe("Grabbable objects (default 10)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_vr_room", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_vr_room", params as Record<string, any>),
   },
   {
     id: "recipe_ui_main_menu",
@@ -168,13 +120,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       style: z.enum(["minimal", "cinematic", "retro", "anime"]).optional().describe("UI style"),
       title: z.string().optional().describe("Game title text"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_ui_main_menu", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_ui_main_menu", params as Record<string, any>),
   },
   {
     id: "recipe_ui_hud",
@@ -186,13 +132,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       genre: z.enum(["fps", "rpg", "racing", "platformer"]).optional().describe("Genre preset"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_ui_hud", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_ui_hud", params as Record<string, any>),
   },
   {
     id: "recipe_ui_inventory",
@@ -205,13 +145,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       slotCount: z.number().optional().describe("Inventory slots (default 24)"),
       columns: z.number().optional().describe("Grid columns (default 6)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_ui_inventory", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_ui_inventory", params as Record<string, any>),
   },
   {
     id: "recipe_ui_dialogue",
@@ -224,13 +158,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       choiceCount: z.number().optional().describe("Max choices (default 4)"),
       style: z.enum(["jrpg", "visual_novel", "western", "minimal"]).optional().describe("Dialogue style"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_ui_dialogue", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_ui_dialogue", params as Record<string, any>),
   },
   {
     id: "recipe_lighting_studio",
@@ -242,13 +170,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal", "blender"]).describe("Target editor"),
       preset: z.enum(["soft", "dramatic", "product", "portrait"]).optional().describe("Lighting mood"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_lighting_studio", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_lighting_studio", params as Record<string, any>),
   },
   {
     id: "recipe_pbr_material",
@@ -261,13 +183,7 @@ export const recipeSceneTools: ToolDefinition[] = [
       materialType: z.enum(["brick", "wood", "metal", "fabric", "stone", "glass", "skin"]).describe("Material type"),
       tiling: z.number().optional().describe("UV tiling (default 1)"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_pbr_material", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_pbr_material", params as Record<string, any>),
   },
   {
     id: "recipe_post_process",
@@ -279,12 +195,6 @@ export const recipeSceneTools: ToolDefinition[] = [
       editor: z.enum(["unity", "unreal"]).describe("Target editor"),
       mood: z.enum(["cinematic", "vibrant", "noir", "retro", "horror"]).optional().describe("Visual mood preset"),
     }),
-    handler: async (params) => {
-      try {
-        return bridge.send(params.editor, "recipe_post_process", params);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) => bridgeSendAsToolResult(params.editor, "recipe_post_process", params as Record<string, any>),
   },
 ];
