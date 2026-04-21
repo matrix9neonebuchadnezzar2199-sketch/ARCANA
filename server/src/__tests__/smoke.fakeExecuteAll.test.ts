@@ -1,3 +1,4 @@
+import WebSocket from "ws";
 import { ALL_TOOL_DEFINITIONS } from "../allToolDefinitions";
 import { bridge } from "../bridge";
 import { globalRegistry } from "../core/registry";

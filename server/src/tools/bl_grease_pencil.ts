@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blGreasePencilTools: ToolDefinition[] = [
   {
@@ -15,12 +15,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       location: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Object location"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_gp_create_object", params);
-        return { success: true, message: `Grease Pencil object "${params.name || "GPencil"}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_gp_create_object", params, { successMessage: (_, params) => `Grease Pencil object "${params.name || "GPencil"}" created` });
     },
   },
   {
@@ -36,12 +31,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       blendMode: z.enum(["REGULAR", "OVERLAY", "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]).optional().describe("Blend mode"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_gp_add_layer", params);
-        return { success: true, message: `Layer "${params.layerName}" added to "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_gp_add_layer", params, { successMessage: (_, params) => `Layer "${params.layerName}" added to "${params.objectName}"` });
     },
   },
   {
@@ -63,12 +53,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       lineWidth: z.number().optional().describe("Stroke line width"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_gp_draw_stroke", params);
-        return { success: true, message: `Stroke with ${params.points.length} points drawn on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_gp_draw_stroke", params, { successMessage: (_, params) => `Stroke with ${params.points.length} points drawn on "${params.objectName}"` });
     },
   },
   {
@@ -85,12 +70,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       layerFilter: z.string().optional().describe("Apply only to this layer"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_gp_add_modifier", params);
-        return { success: true, message: `GP modifier ${params.modifierType} added to "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_gp_add_modifier", params, { successMessage: (_, params) => `GP modifier ${params.modifierType} added to "${params.objectName}"` });
     },
   },
   {
@@ -107,12 +87,7 @@ export const blGreasePencilTools: ToolDefinition[] = [
       samples: z.number().optional().describe("Sample count (for Blur, Shadow)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_gp_add_effect", params);
-        return { success: true, message: `GP effect ${params.effectType} added to "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_gp_add_effect", params, { successMessage: (_, params) => `GP effect ${params.effectType} added to "${params.objectName}"` });
     },
   },
   {
@@ -130,14 +105,10 @@ export const blGreasePencilTools: ToolDefinition[] = [
       colorAfter: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Ghost color for future frames"),
       opacity: z.number().optional().describe("Ghost opacity (0-1)"),
     }),
-    handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_gp_set_onion_skinning", params);
-        const state = params.enabled ? "enabled" : "disabled";
-        return { success: true, message: `Onion skinning ${state} on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult("blender", "bl_gp_set_onion_skinning", params, {
+        successMessage: (_, p) =>
+          `Onion skinning ${p.enabled ? "enabled" : "disabled"} on "${p.objectName}"`,
+      }),
   },
 ];

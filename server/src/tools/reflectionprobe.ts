@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const probeCreate: ToolDefinition = {
   id: "probe_create",
@@ -9,13 +9,7 @@ const probeCreate: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ name: z.string().optional(), x: z.number().default(0), y: z.number().default(1), z: z.number().default(0), mode: z.enum(["Baked","Realtime","Custom"]).default("Baked") }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ProbeCreate", p);
-      return r ? { success: true, message: `Reflection Probe created: ${p.name ?? "NewProbe"}`, data: r }
-               : { success: false, message: "Failed to create probe" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ProbeCreate", p, { successMessage: (_, p) => `Reflection Probe created: ${p.name ?? "NewProbe"}` });
   }
 };
 
@@ -27,13 +21,7 @@ const probeSetSize: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string(), sizeX: z.number().default(10), sizeY: z.number().default(10), sizeZ: z.number().default(10) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ProbeSetSize", p);
-      return r ? { success: true, message: `Probe size set on ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to set probe size" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ProbeSetSize", p, { successMessage: (_, p) => `Probe size set on ${p.objectName}` });
   }
 };
 
@@ -45,13 +33,7 @@ const probeSetResolution: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string(), resolution: z.enum(["16","32","64","128","256","512","1024","2048"]).default("256") }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ProbeSetResolution", p);
-      return r ? { success: true, message: `Probe resolution set to ${p.resolution}`, data: r }
-               : { success: false, message: "Failed to set probe resolution" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ProbeSetResolution", p, { successMessage: (_, p) => `Probe resolution set to ${p.resolution}` });
   }
 };
 
@@ -63,13 +45,7 @@ const probeSetIntensity: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string(), intensity: z.number().default(1) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ProbeSetIntensity", p);
-      return r ? { success: true, message: `Probe intensity set to ${p.intensity}`, data: r }
-               : { success: false, message: "Failed to set probe intensity" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ProbeSetIntensity", p, { successMessage: (_, p) => `Probe intensity set to ${p.intensity}` });
   }
 };
 
@@ -81,13 +57,7 @@ const probeBake: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ProbeBake", p);
-      return r ? { success: true, message: `Probe baked: ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to bake probe" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ProbeBake", p, { successMessage: (_, p) => `Probe baked: ${p.objectName}` });
   }
 };
 
@@ -99,13 +69,7 @@ const probeRemove: ToolDefinition = {
   category: "reflectionprobe",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ProbeRemove", p);
-      return r ? { success: true, message: `Probe removed: ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to remove probe" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ProbeRemove", p, { successMessage: (_, p) => `Probe removed: ${p.objectName}` });
   }
 };
 

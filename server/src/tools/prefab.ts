@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const prefabCreate: ToolDefinition = {
   id: "prefab_create",
   name: "Create Prefab",
@@ -12,12 +12,7 @@ export const prefabCreate: ToolDefinition = {
     savePath: z.string().optional().describe("Save path relative to Assets, default Assets/<name>.prefab")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PrefabCreate", params);
-      return { success: true, message: `Created prefab from ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "PrefabCreate", params, { successMessage: (_, params) => `Created prefab from ${params.name}` });
   }
 };
 
@@ -35,12 +30,7 @@ export const prefabInstantiate: ToolDefinition = {
     z: z.number().optional().describe("Z position")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PrefabInstantiate", params);
-      return { success: true, message: `Instantiated prefab: ${params.prefabPath}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "PrefabInstantiate", params, { successMessage: (_, params) => `Instantiated prefab: ${params.prefabPath}` });
   }
 };
 
@@ -55,12 +45,7 @@ export const prefabUnpack: ToolDefinition = {
     completely: z.boolean().optional().describe("Unpack completely including nested, default false")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PrefabUnpack", params);
-      return { success: true, message: `Unpacked prefab: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "PrefabUnpack", params, { successMessage: (_, params) => `Unpacked prefab: ${params.name}` });
   }
 };
 

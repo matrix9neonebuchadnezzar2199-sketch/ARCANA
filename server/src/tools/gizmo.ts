@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const gizmoDrawSphere: ToolDefinition = {
   id: "gizmo_draw_sphere",
@@ -9,13 +9,7 @@ const gizmoDrawSphere: ToolDefinition = {
   category: "gizmo",
   inputSchema: z.object({ x: z.number(), y: z.number(), z: z.number(), radius: z.number().default(1), r: z.number().default(1), g: z.number().default(1), b: z.number().default(0) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "GizmoDrawSphere", p);
-      return r ? { success: true, message: "Gizmo sphere drawn", data: r }
-               : { success: false, message: "Failed to draw gizmo sphere" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "GizmoDrawSphere", p, { successMessage: "Gizmo sphere drawn" });
   }
 };
 
@@ -27,13 +21,7 @@ const gizmoDrawCube: ToolDefinition = {
   category: "gizmo",
   inputSchema: z.object({ x: z.number(), y: z.number(), z: z.number(), sizeX: z.number().default(1), sizeY: z.number().default(1), sizeZ: z.number().default(1), r: z.number().default(0), g: z.number().default(1), b: z.number().default(0) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "GizmoDrawCube", p);
-      return r ? { success: true, message: "Gizmo cube drawn", data: r }
-               : { success: false, message: "Failed to draw gizmo cube" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "GizmoDrawCube", p, { successMessage: "Gizmo cube drawn" });
   }
 };
 
@@ -45,13 +33,7 @@ const gizmoDrawLine: ToolDefinition = {
   category: "gizmo",
   inputSchema: z.object({ fromX: z.number(), fromY: z.number(), fromZ: z.number(), toX: z.number(), toY: z.number(), toZ: z.number(), r: z.number().default(1), g: z.number().default(0), b: z.number().default(0) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "GizmoDrawLine", p);
-      return r ? { success: true, message: "Gizmo line drawn", data: r }
-               : { success: false, message: "Failed to draw gizmo line" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "GizmoDrawLine", p, { successMessage: "Gizmo line drawn" });
   }
 };
 
@@ -63,13 +45,7 @@ const gizmoDrawRay: ToolDefinition = {
   category: "gizmo",
   inputSchema: z.object({ originX: z.number(), originY: z.number(), originZ: z.number(), dirX: z.number(), dirY: z.number(), dirZ: z.number(), r: z.number().default(0), g: z.number().default(0), b: z.number().default(1) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "GizmoDrawRay", p);
-      return r ? { success: true, message: "Gizmo ray drawn", data: r }
-               : { success: false, message: "Failed to draw gizmo ray" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "GizmoDrawRay", p, { successMessage: "Gizmo ray drawn" });
   }
 };
 
@@ -81,13 +57,7 @@ const gizmoDrawLabel: ToolDefinition = {
   category: "gizmo",
   inputSchema: z.object({ x: z.number(), y: z.number(), z: z.number(), text: z.string(), fontSize: z.number().default(12) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "GizmoDrawLabel", p);
-      return r ? { success: true, message: `Label drawn: ${p.text}`, data: r }
-               : { success: false, message: "Failed to draw label" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "GizmoDrawLabel", p, { successMessage: (_, p) => `Label drawn: ${p.text}` });
   }
 };
 
@@ -99,13 +69,7 @@ const gizmoClearAll: ToolDefinition = {
   category: "gizmo",
   inputSchema: z.object({}),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "GizmoClearAll", p);
-      return r ? { success: true, message: "All gizmos cleared", data: r }
-               : { success: false, message: "Failed to clear gizmos" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "GizmoClearAll", p, { successMessage: "All gizmos cleared" });
   }
 };
 

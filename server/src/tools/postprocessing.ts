@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const ppBloom: ToolDefinition = {
   id: "pp_bloom",
@@ -13,12 +13,7 @@ const ppBloom: ToolDefinition = {
     scatter: z.number().min(0).max(1).optional().default(0.7).describe("Scatter amount")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PPBloom", params);
-      return { success: true, message: "Bloom configured", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "PPBloom", params, { successMessage: "Bloom configured" });
   }
 };
 
@@ -35,12 +30,7 @@ const ppColorAdjust: ToolDefinition = {
     hueShift: z.number().min(-180).max(180).optional().default(0).describe("Hue shift")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PPColorAdjust", params);
-      return { success: true, message: "Color adjustments configured", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "PPColorAdjust", params, { successMessage: "Color adjustments configured" });
   }
 };
 
@@ -57,12 +47,7 @@ const ppDepthOfField: ToolDefinition = {
     focalLength: z.number().min(1).max(300).optional().default(50).describe("Focal length (Bokeh only)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PPDepthOfField", params);
-      return { success: true, message: "Depth of Field configured", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "PPDepthOfField", params, { successMessage: "Depth of Field configured" });
   }
 };
 
@@ -78,12 +63,7 @@ const ppVignette: ToolDefinition = {
     color: z.string().optional().default("#000000").describe("Vignette color hex")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PPVignette", params);
-      return { success: true, message: "Vignette configured", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "PPVignette", params, { successMessage: "Vignette configured" });
   }
 };
 
@@ -98,12 +78,7 @@ const ppMotionBlur: ToolDefinition = {
     quality: z.enum(["Low", "Medium", "High"]).optional().default("Medium").describe("Quality level")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PPMotionBlur", params);
-      return { success: true, message: "Motion Blur configured", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "PPMotionBlur", params, { successMessage: "Motion Blur configured" });
   }
 };
 

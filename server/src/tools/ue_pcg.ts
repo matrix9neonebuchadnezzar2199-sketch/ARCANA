@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const uePcgTools: ToolDefinition[] = [
   {
@@ -13,12 +13,7 @@ export const uePcgTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path (e.g. /Game/PCG/)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "PCGCreateGraph", params);
-        return { success: true, message: `PCG graph "${params.name}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "PCGCreateGraph", params, { successMessage: (_, params) => `PCG graph "${params.name}" created` });
     },
   },
   {
@@ -38,12 +33,7 @@ export const uePcgTools: ToolDefinition[] = [
       seed: z.number().optional().describe("Random seed"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "PCGAddScatterNode", params);
-        return { success: true, message: `Scatter node added to "${params.graphName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "PCGAddScatterNode", params, { successMessage: (_, params) => `Scatter node added to "${params.graphName}"` });
     },
   },
   {
@@ -61,12 +51,7 @@ export const uePcgTools: ToolDefinition[] = [
       invert: z.boolean().optional().describe("Invert filter result"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "PCGAddFilterNode", params);
-        return { success: true, message: `${params.filterType} filter added to "${params.graphName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "PCGAddFilterNode", params, { successMessage: (_, params) => `${params.filterType} filter added to "${params.graphName}"` });
     },
   },
   {
@@ -83,12 +68,7 @@ export const uePcgTools: ToolDefinition[] = [
       fillMode: z.enum(["None", "Interior", "Exterior"]).optional().describe("Area fill mode"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "PCGAddSplineSampler", params);
-        return { success: true, message: `Spline sampler added to "${params.graphName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "PCGAddSplineSampler", params, { successMessage: (_, params) => `Spline sampler added to "${params.graphName}"` });
     },
   },
   {
@@ -104,12 +84,7 @@ export const uePcgTools: ToolDefinition[] = [
       generateOnLoad: z.boolean().optional().describe("Generate on level load (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "PCGSpawnActor", params);
-        return { success: true, message: `PCG volume placed for "${params.graphName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "PCGSpawnActor", params, { successMessage: (_, params) => `PCG volume placed for "${params.graphName}"` });
     },
   },
   {
@@ -122,14 +97,9 @@ export const uePcgTools: ToolDefinition[] = [
       actorName: z.string().optional().describe("PCG volume actor name (regenerates all if omitted)"),
       newSeed: z.number().optional().describe("New random seed"),
     }),
-    handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "PCGRegenerate", params);
-        const target = params.actorName || "all PCG actors";
-        return { success: true, message: `PCG regenerated: ${target}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult("unreal", "PCGRegenerate", params, {
+        successMessage: (_, p) => `PCG regenerated: ${p.actorName || "all PCG actors"}`,
+      }),
   },
 ];

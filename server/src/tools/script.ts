@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const scriptCreate: ToolDefinition = {
   id: "script_create",
@@ -13,12 +13,7 @@ const scriptCreate: ToolDefinition = {
     folder: z.string().optional().default("Assets/Scripts").describe("Target folder path")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ScriptCreate", params);
-      return { success: true, message: `Script ${params.className}.cs created in ${params.folder}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ScriptCreate", params, { successMessage: (_, params) => `Script ${params.className}.cs created in ${params.folder}` });
   }
 };
 
@@ -33,12 +28,7 @@ const scriptAttach: ToolDefinition = {
     scriptName: z.string().describe("Script class name to attach")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ScriptAttach", params);
-      return { success: true, message: `${params.scriptName} attached to ${params.objectName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ScriptAttach", params, { successMessage: (_, params) => `${params.scriptName} attached to ${params.objectName}` });
   }
 };
 
@@ -55,12 +45,7 @@ const scriptSetVariable: ToolDefinition = {
     value: z.string().describe("Value as string (auto-converted)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ScriptSetVariable", params);
-      return { success: true, message: `${params.variableName} set to ${params.value} on ${params.scriptName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ScriptSetVariable", params, { successMessage: (_, params) => `${params.variableName} set to ${params.value} on ${params.scriptName}` });
   }
 };
 
@@ -77,12 +62,7 @@ const scriptInvokeMethod: ToolDefinition = {
     args: z.string().optional().default("").describe("Comma-separated arguments")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ScriptInvokeMethod", params);
-      return { success: true, message: `${params.methodName} invoked on ${params.scriptName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ScriptInvokeMethod", params, { successMessage: (_, params) => `${params.methodName} invoked on ${params.scriptName}` });
   }
 };
 

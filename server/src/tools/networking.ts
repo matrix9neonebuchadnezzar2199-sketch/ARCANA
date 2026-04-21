@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const netSetup: ToolDefinition = {
   id: "net_setup",
@@ -8,7 +8,7 @@ const netSetup: ToolDefinition = {
   descriptionJa: "シーンにNetworkManagerを追加・設定する",
   category: "networking",
   inputSchema: z.object({ transport: z.enum(["Unity", "Steam", "EOS"]).optional().default("Unity").describe("Transport type"), maxPlayers: z.number().optional().default(16).describe("Max player count"), port: z.number().optional().default(7777).describe("Port number") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "NetSetup", params); return { success: true, message: `NetworkManager configured: ${params.transport}, max ${params.maxPlayers}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "NetSetup", params, { successMessage: (_, params) => `NetworkManager configured: ${params.transport}, max ${params.maxPlayers}` }) }
 };
 
 const netSpawn: ToolDefinition = {
@@ -18,7 +18,7 @@ const netSpawn: ToolDefinition = {
   descriptionJa: "プレハブをネットワークスポーン可能オブジェクトとして登録する",
   category: "networking",
   inputSchema: z.object({ prefabPath: z.string().describe("Prefab asset path"), playerPrefab: z.boolean().optional().default(false).describe("Set as default player prefab") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "NetSpawn", params); return { success: true, message: `Network prefab registered: ${params.prefabPath}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "NetSpawn", params, { successMessage: (_, params) => `Network prefab registered: ${params.prefabPath}` }) }
 };
 
 const netSendRpc: ToolDefinition = {
@@ -28,7 +28,7 @@ const netSendRpc: ToolDefinition = {
   descriptionJa: "サーバーまたはクライアントにRPCを送信する",
   category: "networking",
   inputSchema: z.object({ objectName: z.string().describe("NetworkObject name"), methodName: z.string().describe("RPC method name"), target: z.enum(["Server", "Clients", "Owner"]).optional().default("Server").describe("RPC target"), args: z.string().optional().default("").describe("Comma-separated arguments") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "NetSendRpc", params); return { success: true, message: `RPC ${params.methodName} sent to ${params.target}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "NetSendRpc", params, { successMessage: (_, params) => `RPC ${params.methodName} sent to ${params.target}` }) }
 };
 
 const netSyncVar: ToolDefinition = {
@@ -38,7 +38,7 @@ const netSyncVar: ToolDefinition = {
   descriptionJa: "同期ネットワーク変数の値を設定する",
   category: "networking",
   inputSchema: z.object({ objectName: z.string().describe("NetworkObject name"), variableName: z.string().describe("NetworkVariable field name"), value: z.string().describe("Value as string") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "NetSyncVar", params); return { success: true, message: `${params.variableName} synced on ${params.objectName}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "NetSyncVar", params, { successMessage: (_, params) => `${params.variableName} synced on ${params.objectName}` }) }
 };
 
 const netConnect: ToolDefinition = {
@@ -48,7 +48,7 @@ const netConnect: ToolDefinition = {
   descriptionJa: "Host/Server/Clientとしてネットワークを開始する",
   category: "networking",
   inputSchema: z.object({ mode: z.enum(["Host", "Server", "Client"]).describe("Network mode"), address: z.string().optional().default("127.0.0.1").describe("Server address (Client mode)") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "NetConnect", params); return { success: true, message: `Network started as ${params.mode}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "NetConnect", params, { successMessage: (_, params) => `Network started as ${params.mode}` }) }
 };
 
 const netDisconnect: ToolDefinition = {
@@ -58,7 +58,7 @@ const netDisconnect: ToolDefinition = {
   descriptionJa: "現在のネットワークセッションを終了する",
   category: "networking",
   inputSchema: z.object({}),
-  handler: async () => { try { const r = await bridge.send("unity", "NetDisconnect", {}); return { success: true, message: "Network disconnected", data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async () => bridgeSendAsToolResult("unity", "NetDisconnect", {}, { successMessage: "Network disconnected" })
 };
 
 export const networkingTools: ToolDefinition[] = [netSetup, netSpawn, netSendRpc, netSyncVar, netConnect, netDisconnect];

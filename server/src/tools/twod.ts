@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const twodCreateSprite: ToolDefinition = {
   id: "2d_create_sprite",
@@ -8,7 +8,7 @@ const twodCreateSprite: ToolDefinition = {
   descriptionJa: "SpriteRenderer付きの新しいGameObjectを作成する",
   category: "2d",
   inputSchema: z.object({ name: z.string().optional().default("Sprite").describe("Object name"), spritePath: z.string().optional().describe("Sprite asset path"), x: z.number().optional().default(0), y: z.number().optional().default(0), z: z.number().optional().default(0), color: z.string().optional().default("#FFFFFF").describe("Tint color hex") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "2dCreateSprite", params); return { success: true, message: `Sprite created: ${params.name}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "2dCreateSprite", params, { successMessage: (_, params) => `Sprite created: ${params.name}` }) }
 };
 
 const twodSetSortingLayer: ToolDefinition = {
@@ -18,7 +18,7 @@ const twodSetSortingLayer: ToolDefinition = {
   descriptionJa: "SpriteRendererのソーティングレイヤーと順序を設定する",
   category: "2d",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), layerName: z.string().optional().default("Default").describe("Sorting layer name"), order: z.number().optional().default(0).describe("Order in layer") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "2dSetSortingLayer", params); return { success: true, message: `Sorting set: ${params.layerName} order ${params.order}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "2dSetSortingLayer", params, { successMessage: (_, params) => `Sorting set: ${params.layerName} order ${params.order}` }) }
 };
 
 const twodCreateTilemap: ToolDefinition = {
@@ -28,7 +28,7 @@ const twodCreateTilemap: ToolDefinition = {
   descriptionJa: "Grid親付きの新しいTilemapを作成する",
   category: "2d",
   inputSchema: z.object({ name: z.string().optional().default("Tilemap").describe("Tilemap name"), cellSize: z.number().optional().default(1).describe("Grid cell size") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "2dCreateTilemap", params); return { success: true, message: `Tilemap created: ${params.name}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "2dCreateTilemap", params, { successMessage: (_, params) => `Tilemap created: ${params.name}` }) }
 };
 
 const twodSetTile: ToolDefinition = {
@@ -38,7 +38,7 @@ const twodSetTile: ToolDefinition = {
   descriptionJa: "Tilemap上のグリッド位置にタイルを配置する",
   category: "2d",
   inputSchema: z.object({ tilemapName: z.string().describe("Tilemap name"), tilePath: z.string().describe("Tile asset path"), gridX: z.number().describe("Grid X position"), gridY: z.number().describe("Grid Y position") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "2dSetTile", params); return { success: true, message: `Tile placed at (${params.gridX}, ${params.gridY})`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "2dSetTile", params, { successMessage: (_, params) => `Tile placed at (${params.gridX}, ${params.gridY})` }) }
 };
 
 const twodAddCollider2D: ToolDefinition = {
@@ -48,7 +48,7 @@ const twodAddCollider2D: ToolDefinition = {
   descriptionJa: "GameObjectに2Dコライダーを追加する",
   category: "2d",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), type: z.enum(["Box", "Circle", "Capsule", "Polygon", "Edge", "Composite"]).describe("2D collider type"), isTrigger: z.boolean().optional().default(false).describe("Is trigger") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "2dAddCollider", params); return { success: true, message: `${params.type}Collider2D added to ${params.name}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "2dAddCollider", params, { successMessage: (_, params) => `${params.type}Collider2D added to ${params.name}` }) }
 };
 
 const twodAddAnimator: ToolDefinition = {
@@ -58,7 +58,7 @@ const twodAddAnimator: ToolDefinition = {
   descriptionJa: "2Dスプライトアニメーションコントローラー付きAnimatorを追加する",
   category: "2d",
   inputSchema: z.object({ name: z.string().describe("GameObject name"), controllerPath: z.string().optional().describe("Animator controller asset path") }),
-  handler: async (params) => { try { const r = await bridge.send("unity", "2dAddAnimator", params); return { success: true, message: `2D Animator added to ${params.name}`, data: r }; } catch (e: any) { return { success: false, message: e.message }; } }
+  handler: async (params) => { return bridgeSendAsToolResult("unity", "2dAddAnimator", params, { successMessage: (_, params) => `2D Animator added to ${params.name}` }) }
 };
 
 export const twodTools: ToolDefinition[] = [twodCreateSprite, twodSetSortingLayer, twodCreateTilemap, twodSetTile, twodAddCollider2D, twodAddAnimator];

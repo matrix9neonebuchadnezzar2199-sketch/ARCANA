@@ -1,5 +1,4 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
 import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const recipePipelineTools: ToolDefinition[] = [
@@ -16,12 +15,10 @@ export const recipePipelineTools: ToolDefinition[] = [
       applyTransform: z.boolean().optional().describe("Apply transform on export (default true)"),
     }),
     handler: async (params) => {
-      try {
-        await bridge.send("blender", "pipeline_export_fbx", params);
-        return bridgeSendAsToolResult("unity", "pipeline_import_fbx", params as Record<string, any>);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      const p = params as Record<string, any>;
+      const ex = await bridgeSendAsToolResult("blender", "pipeline_export_fbx", p);
+      if (!ex.success) return ex;
+      return bridgeSendAsToolResult("unity", "pipeline_import_fbx", p);
     },
   },
   {
@@ -36,12 +33,10 @@ export const recipePipelineTools: ToolDefinition[] = [
       generateCollision: z.boolean().optional().describe("Auto-generate collision (default true)"),
     }),
     handler: async (params) => {
-      try {
-        await bridge.send("blender", "pipeline_export_fbx_ue", params);
-        return bridgeSendAsToolResult("unreal", "pipeline_import_fbx", params as Record<string, any>);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      const p = params as Record<string, any>;
+      const ex = await bridgeSendAsToolResult("blender", "pipeline_export_fbx_ue", p);
+      if (!ex.success) return ex;
+      return bridgeSendAsToolResult("unreal", "pipeline_import_fbx", p);
     },
   },
   {
@@ -55,12 +50,10 @@ export const recipePipelineTools: ToolDefinition[] = [
       unrealPath: z.string().optional().describe("Unreal destination path"),
     }),
     handler: async (params) => {
-      try {
-        await bridge.send("unity", "pipeline_export_prefab", params);
-        return bridgeSendAsToolResult("unreal", "pipeline_import_converted", params as Record<string, any>);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      const p = params as Record<string, any>;
+      const ex = await bridgeSendAsToolResult("unity", "pipeline_export_prefab", p);
+      if (!ex.success) return ex;
+      return bridgeSendAsToolResult("unreal", "pipeline_import_converted", p);
     },
   },
   {
@@ -106,16 +99,10 @@ export const recipePipelineTools: ToolDefinition[] = [
       reductionRatios: z.array(z.number()).optional().describe("Polygon reduction ratios per level (default [1.0, 0.5, 0.25])"),
     }),
     handler: async (params) => {
-      try {
-        await bridge.send("blender", "pipeline_generate_lods", params);
-        return bridgeSendAsToolResult(
-          params.targetEditor,
-          "pipeline_import_lod_group",
-          params as Record<string, any>
-        );
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      const p = params as Record<string, any>;
+      const gen = await bridgeSendAsToolResult("blender", "pipeline_generate_lods", p);
+      if (!gen.success) return gen;
+      return bridgeSendAsToolResult(p.targetEditor, "pipeline_import_lod_group", p);
     },
   },
   {
@@ -130,15 +117,13 @@ export const recipePipelineTools: ToolDefinition[] = [
       targetMaterialPath: z.string().optional().describe("Target material asset path"),
     }),
     handler: async (params) => {
-      try {
-        const matData = await bridge.send("blender", "pipeline_read_material", params);
-        return bridgeSendAsToolResult(params.targetEditor, "pipeline_apply_material", {
-          ...params,
-          matData,
-        } as Record<string, any>);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      const p = params as Record<string, any>;
+      const read = await bridgeSendAsToolResult("blender", "pipeline_read_material", p);
+      if (!read.success) return read;
+      return bridgeSendAsToolResult(p.targetEditor, "pipeline_apply_material", {
+        ...p,
+        matData: read.data,
+      } as Record<string, any>);
     },
   },
   {
@@ -153,15 +138,13 @@ export const recipePipelineTools: ToolDefinition[] = [
       samples: z.number().optional().describe("Bake samples (default 128)"),
     }),
     handler: async (params) => {
-      try {
-        const bakeResult = await bridge.send("blender", "pipeline_bake_lightmap", params);
-        return bridgeSendAsToolResult(params.targetEditor, "pipeline_import_lightmap", {
-          ...params,
-          bakeResult,
-        } as Record<string, any>);
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      const p = params as Record<string, any>;
+      const bake = await bridgeSendAsToolResult("blender", "pipeline_bake_lightmap", p);
+      if (!bake.success) return bake;
+      return bridgeSendAsToolResult(p.targetEditor, "pipeline_import_lightmap", {
+        ...p,
+        bakeResult: bake.data,
+      } as Record<string, any>);
     },
   },
   {

@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const editorPlayMode: ToolDefinition = {
   id: "editor_play_mode",
@@ -11,12 +11,7 @@ const editorPlayMode: ToolDefinition = {
     action: z.enum(["play", "stop", "pause"]).describe("Play mode action")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EditorPlayMode", params);
-      return { success: true, message: `Play mode: ${params.action}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "EditorPlayMode", params, { successMessage: (_, params) => `Play mode: ${params.action}` });
   }
 };
 
@@ -30,12 +25,7 @@ const editorSaveScene: ToolDefinition = {
     path: z.string().optional().describe("Save path (omit to save current)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EditorSaveScene", params);
-      return { success: true, message: "Scene saved", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "EditorSaveScene", params, { successMessage: "Scene saved" });
   }
 };
 
@@ -49,12 +39,7 @@ const editorLoadScene: ToolDefinition = {
     path: z.string().describe("Scene asset path (e.g. Assets/Scenes/Main.unity)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EditorLoadScene", params);
-      return { success: true, message: `Scene loaded: ${params.path}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "EditorLoadScene", params, { successMessage: (_, params) => `Scene loaded: ${params.path}` });
   }
 };
 
@@ -68,12 +53,7 @@ const editorUndoRedo: ToolDefinition = {
     action: z.enum(["undo", "redo"]).describe("Undo or Redo")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EditorUndoRedo", params);
-      return { success: true, message: `${params.action} executed`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "EditorUndoRedo", params, { successMessage: (_, params) => `${params.action} executed` });
   }
 };
 
@@ -85,12 +65,7 @@ const editorClearConsole: ToolDefinition = {
   category: "editor",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "EditorClearConsole", {});
-      return { success: true, message: "Console cleared", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "EditorClearConsole", {}, { successMessage: "Console cleared" });
   }
 };
 

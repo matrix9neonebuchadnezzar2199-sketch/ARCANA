@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const componentAdd: ToolDefinition = {
   id: "component_add",
   name: "Add Component",
@@ -12,12 +12,7 @@ export const componentAdd: ToolDefinition = {
     componentType: z.string().describe("Component type name, e.g. Rigidbody, BoxCollider, AudioSource")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ComponentAdd", params);
-      return { success: true, message: `Added ${params.componentType} to ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ComponentAdd", params, { successMessage: (_, params) => `Added ${params.componentType} to ${params.name}` });
   }
 };
 
@@ -32,12 +27,7 @@ export const componentRemove: ToolDefinition = {
     componentType: z.string().describe("Component type name to remove")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ComponentRemove", params);
-      return { success: true, message: `Removed ${params.componentType} from ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ComponentRemove", params, { successMessage: (_, params) => `Removed ${params.componentType} from ${params.name}` });
   }
 };
 
@@ -53,12 +43,7 @@ export const componentSetEnabled: ToolDefinition = {
     enabled: z.boolean().describe("Enable or disable")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ComponentSetEnabled", params);
-      return { success: true, message: `Set ${params.componentType} enabled=${params.enabled} on ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ComponentSetEnabled", params, { successMessage: (_, params) => `Set ${params.componentType} enabled=${params.enabled} on ${params.name}` });
   }
 };
 
@@ -72,12 +57,7 @@ export const componentList: ToolDefinition = {
     name: z.string().describe("Target GameObject name")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ComponentList", params);
-      return { success: true, message: `Components on ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ComponentList", params, { successMessage: (_, params) => `Components on ${params.name}` });
   }
 };
 

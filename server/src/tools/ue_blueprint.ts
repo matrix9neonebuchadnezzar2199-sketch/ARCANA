@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const ueBpCreate: ToolDefinition = {
   id: "ue_bp_create", name: "Create Blueprint",
@@ -7,7 +7,7 @@ const ueBpCreate: ToolDefinition = {
   descriptionJa: "新しいBlueprintクラスを作成",
   category: "ue_blueprint",
   inputSchema: z.object({ name: z.string(), parentClass: z.enum(["Actor","Pawn","Character","GameMode","PlayerController","Widget"]).default("Actor"), path: z.string().default("/Game/Blueprints") }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpCreate", p); return r ? { success: true, message: `Blueprint created: ${p.name}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpCreate", p, { successMessage: (_, p) => `Blueprint created: ${p.name}` }) }
 };
 
 const ueBpAddComponent: ToolDefinition = {
@@ -16,7 +16,7 @@ const ueBpAddComponent: ToolDefinition = {
   descriptionJa: "Blueprintにコンポーネントを追加",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string(), componentType: z.string(), componentName: z.string().optional() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpAddComponent", p); return r ? { success: true, message: `Component ${p.componentType} added`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpAddComponent", p, { successMessage: (_, p) => `Component ${p.componentType} added` }) }
 };
 
 const ueBpAddVariable: ToolDefinition = {
@@ -25,7 +25,7 @@ const ueBpAddVariable: ToolDefinition = {
   descriptionJa: "Blueprintに変数を追加",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string(), varName: z.string(), varType: z.enum(["Bool","Int","Float","String","Vector","Rotator","Transform","Object"]).default("Float"), defaultValue: z.any().optional() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpAddVariable", p); return r ? { success: true, message: `Variable ${p.varName} added`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpAddVariable", p, { successMessage: (_, p) => `Variable ${p.varName} added` }) }
 };
 
 const ueBpAddFunction: ToolDefinition = {
@@ -34,7 +34,7 @@ const ueBpAddFunction: ToolDefinition = {
   descriptionJa: "Blueprintにカスタム関数を追加",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string(), funcName: z.string(), isPure: z.boolean().default(false) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpAddFunction", p); return r ? { success: true, message: `Function ${p.funcName} added`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpAddFunction", p, { successMessage: (_, p) => `Function ${p.funcName} added` }) }
 };
 
 const ueBpAddEvent: ToolDefinition = {
@@ -43,7 +43,7 @@ const ueBpAddEvent: ToolDefinition = {
   descriptionJa: "イベントノードを追加（BeginPlay, Tick, Overlap等）",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string(), eventType: z.enum(["BeginPlay","Tick","EndPlay","ActorBeginOverlap","ActorEndOverlap","AnyDamage","Hit"]).default("BeginPlay") }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpAddEvent", p); return r ? { success: true, message: `Event ${p.eventType} added`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpAddEvent", p, { successMessage: (_, p) => `Event ${p.eventType} added` }) }
 };
 
 const ueBpAddNode: ToolDefinition = {
@@ -52,7 +52,7 @@ const ueBpAddNode: ToolDefinition = {
   descriptionJa: "Blueprintイベントグラフにノードを追加",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string(), nodeType: z.string(), posX: z.number().default(0), posY: z.number().default(0) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpAddNode", p); return r ? { success: true, message: `Node ${p.nodeType} added`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpAddNode", p, { successMessage: (_, p) => `Node ${p.nodeType} added` }) }
 };
 
 const ueBpConnectNodes: ToolDefinition = {
@@ -61,7 +61,7 @@ const ueBpConnectNodes: ToolDefinition = {
   descriptionJa: "Blueprintグラフ内の2つのノードを接続",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string(), fromNode: z.string(), fromPin: z.string(), toNode: z.string(), toPin: z.string() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpConnectNodes", p); return r ? { success: true, message: `Connected ${p.fromNode} -> ${p.toNode}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpConnectNodes", p, { successMessage: (_, p) => `Connected ${p.fromNode} -> ${p.toNode}` }) }
 };
 
 const ueBpCompile: ToolDefinition = {
@@ -70,7 +70,7 @@ const ueBpCompile: ToolDefinition = {
   descriptionJa: "Blueprintをコンパイルしてエラーを報告",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpCompile", p); return r ? { success: true, message: `Blueprint compiled: ${p.bpName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpCompile", p, { successMessage: (_, p) => `Blueprint compiled: ${p.bpName}` }) }
 };
 
 const ueBpSpawn: ToolDefinition = {
@@ -79,7 +79,7 @@ const ueBpSpawn: ToolDefinition = {
   descriptionJa: "Blueprintのインスタンスをレベルにスポーン",
   category: "ue_blueprint",
   inputSchema: z.object({ bpPath: z.string(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0), name: z.string().optional() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpSpawn", p); return r ? { success: true, message: "Blueprint actor spawned", data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpSpawn", p, { successMessage: "Blueprint actor spawned" }) }
 };
 
 const ueBpGetInfo: ToolDefinition = {
@@ -88,7 +88,7 @@ const ueBpGetInfo: ToolDefinition = {
   descriptionJa: "Blueprintのコンポーネント・変数・関数情報を取得",
   category: "ue_blueprint",
   inputSchema: z.object({ bpName: z.string() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "BpGetInfo", p); return r ? { success: true, message: `Info for ${p.bpName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "BpGetInfo", p, { successMessage: (_, p) => `Info for ${p.bpName}` }) }
 };
 
 export const ueBlueprintTools: ToolDefinition[] = [

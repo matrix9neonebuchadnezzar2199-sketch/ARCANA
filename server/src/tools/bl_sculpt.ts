@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blSculptTools: ToolDefinition[] = [
   {
@@ -15,12 +15,7 @@ export const blSculptTools: ToolDefinition[] = [
       enableDyntopo: z.boolean().optional().describe("Enable dynamic topology sculpting"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_sculpt_enter_mode", params);
-        return { success: true, message: `Sculpt mode entered on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_sculpt_enter_mode", params, { successMessage: (_, params) => `Sculpt mode entered on "${params.objectName}"` });
     },
   },
   {
@@ -37,12 +32,7 @@ export const blSculptTools: ToolDefinition[] = [
       direction: z.enum(["ADD", "SUBTRACT"]).optional().describe("Stroke direction"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_sculpt_set_brush", params);
-        return { success: true, message: `Brush set to ${params.brush}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_sculpt_set_brush", params, { successMessage: (_, params) => `Brush set to ${params.brush}` });
     },
   },
   {
@@ -62,12 +52,7 @@ export const blSculptTools: ToolDefinition[] = [
       radius: z.number().optional().describe("Override brush radius"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_sculpt_apply_stroke", params);
-        return { success: true, message: `Sculpt stroke applied (${params.points.length} points) on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_sculpt_apply_stroke", params, { successMessage: (_, params) => `Sculpt stroke applied (${params.points.length} points) on "${params.objectName}"` });
     },
   },
   {
@@ -85,12 +70,7 @@ export const blSculptTools: ToolDefinition[] = [
       preserveVolume: z.boolean().optional().describe("Preserve volume"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_sculpt_remesh", params);
-        return { success: true, message: `${params.mode} remesh applied to "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_sculpt_remesh", params, { successMessage: (_, params) => `${params.mode} remesh applied to "${params.objectName}"` });
     },
   },
   {
@@ -106,12 +86,7 @@ export const blSculptTools: ToolDefinition[] = [
       extractThickness: z.number().optional().describe("Thickness for mask extract"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_sculpt_mask_operations", params);
-        return { success: true, message: `Mask ${params.operation} applied on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_sculpt_mask_operations", params, { successMessage: (_, params) => `Mask ${params.operation} applied on "${params.objectName}"` });
     },
   },
   {
@@ -127,12 +102,7 @@ export const blSculptTools: ToolDefinition[] = [
       threshold: z.number().optional().describe("Threshold angle for normal-based init"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_sculpt_face_sets", params);
-        return { success: true, message: `Face set ${params.operation} on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_sculpt_face_sets", params, { successMessage: (_, params) => `Face set ${params.operation} on "${params.objectName}"` });
     },
   },
 ];

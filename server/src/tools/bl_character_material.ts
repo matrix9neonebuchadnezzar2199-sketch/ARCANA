@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blCharacterMaterialTools: ToolDefinition[] = [
   {
@@ -14,7 +14,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       preset: z.enum(["fair", "light", "medium", "olive", "tan", "brown", "dark_brown", "dark"]).optional().describe("Skin color preset"),
       subsurfaceStrength: z.number().min(0).max(1).optional().describe("Subsurface scattering strength (default 0.3)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_skin_color", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_skin_color", params) },
   },
   {
     id: "bl_char_set_skin_texture",
@@ -27,7 +27,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       texture: z.enum(["smooth", "freckles", "pores", "aged", "rough", "baby_smooth"]).describe("Skin texture type"),
       intensity: z.number().min(0).max(1).optional().describe("Texture intensity (default 0.5)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_skin_texture", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_skin_texture", params) },
   },
   {
     id: "bl_char_add_mole",
@@ -41,7 +41,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       customUV: z.object({ u: z.number(), v: z.number() }).optional().describe("Custom UV position (if position is custom)"),
       size: z.number().min(0).max(1).optional().describe("Mole size (0=tiny, 1=large, default 0.2)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_add_mole", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_add_mole", params) },
   },
   {
     id: "bl_char_set_makeup",
@@ -60,7 +60,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       eyeliner: z.number().min(0).max(1).optional().describe("Eyeliner thickness (0=none)"),
       foundation: z.number().min(0).max(1).optional().describe("Foundation coverage (0=none)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_makeup", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_makeup", params) },
   },
   {
     id: "bl_char_set_eye_material",
@@ -76,7 +76,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       wetness: z.number().min(0).max(1).optional().describe("Eye wetness/reflection (default 0.7)"),
       pupilDilation: z.number().min(0).max(1).optional().describe("Pupil dilation (0=pinpoint, 1=dilated)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_eye_material", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_eye_material", params) },
   },
   {
     id: "bl_char_set_nail_color",
@@ -92,7 +92,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       tipColor: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("French tip color RGB"),
       target: z.enum(["fingers", "toes", "both"]).optional().describe("Apply to fingers, toes, or both (default both)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_nail_color", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_nail_color", params) },
   },
   {
     id: "bl_char_set_body_tattoo",
@@ -109,7 +109,7 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       rotation: z.number().optional().describe("Rotation in degrees (default 0)"),
       opacity: z.number().min(0).max(1).optional().describe("Opacity (default 1.0)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_body_tattoo", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_body_tattoo", params) },
   },
   {
     id: "bl_char_set_scar",
@@ -125,6 +125,6 @@ export const blCharacterMaterialTools: ToolDefinition[] = [
       depth: z.number().min(0).max(1).optional().describe("Scar depth/visibility (0=shallow, 1=deep)"),
       age: z.enum(["fresh", "healing", "old", "faded"]).optional().describe("Scar age (default old)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_scar", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_scar", params) },
   },
 ];

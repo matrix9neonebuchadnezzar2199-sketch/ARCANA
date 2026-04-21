@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const unityVrchatTools: ToolDefinition[] = [
   {
@@ -13,7 +13,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       viewpointOffset: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Viewpoint position offset (default auto-calculated from head bone)"),
       lipSyncMode: z.enum(["viseme_blend_shapes", "jaw_flap_bone", "jaw_flap_blend_shape"]).optional().describe("Lip sync mode (default viseme_blend_shapes)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_setup_avatar", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_setup_avatar", params) },
   },
   {
     id: "unity_vrc_add_physbone",
@@ -33,7 +33,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       allowGrabbing: z.boolean().optional().describe("Allow grabbing (default true)"),
       allowPosing: z.boolean().optional().describe("Allow posing (default true)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_add_physbone", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_add_physbone", params) },
   },
   {
     id: "unity_vrc_batch_physbone",
@@ -52,7 +52,7 @@ export const unityVrchatTools: ToolDefinition[] = [
         radius: z.number().optional(),
       })).describe("Array of PhysBone chain configurations"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_batch_physbone", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_batch_physbone", params) },
   },
   {
     id: "unity_vrc_setup_expressions",
@@ -65,7 +65,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       template: z.enum(["basic", "full", "minimal"]).optional().describe("Template complexity (default basic)"),
       customToggles: z.array(z.string()).optional().describe("Custom toggle names to include (e.g. Hat, Jacket, Glasses)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_setup_expressions", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_setup_expressions", params) },
   },
   {
     id: "unity_vrc_add_toggle",
@@ -81,7 +81,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       icon: z.string().optional().describe("Icon texture path (optional)"),
       saved: z.boolean().optional().describe("Save toggle state between sessions (default true)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_add_toggle", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_add_toggle", params) },
   },
   {
     id: "unity_vrc_set_viseme",
@@ -94,7 +94,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       autoMap: z.boolean().optional().describe("Auto-map visemes by naming convention (default true)"),
       customMapping: z.record(z.string()).optional().describe("Custom viseme-to-blendshape mapping overrides"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_set_viseme", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_set_viseme", params) },
   },
   {
     id: "unity_vrc_set_eye_tracking",
@@ -111,7 +111,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       rotationRangeHorizontal: z.number().optional().describe("Max horizontal rotation degrees (default 18)"),
       blinkBlendShape: z.string().optional().describe("Blink blend shape name (auto-detected if possible)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_set_eye_tracking", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_set_eye_tracking", params) },
   },
   {
     id: "unity_vrc_set_bounding_box",
@@ -125,7 +125,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       manualSize: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Manual bounding box size (if mode is manual)"),
       manualCenter: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Manual bounding box center offset"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_set_bounding_box", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_set_bounding_box", params) },
   },
   {
     id: "unity_vrc_validate",
@@ -138,7 +138,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       targetRank: z.enum(["excellent", "good", "medium", "poor"]).optional().describe("Target rank to validate against (default good)"),
       autoFix: z.boolean().optional().describe("Attempt auto-fix for simple issues (default false)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_validate", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_validate", params) },
   },
   {
     id: "unity_vrc_setup_fallback",
@@ -150,7 +150,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       gameObjectName: z.string().describe("Target avatar root GameObject name"),
       fallbackType: z.enum(["generic", "slim", "impostor"]).optional().describe("Fallback type (default generic)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_setup_fallback", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_setup_fallback", params) },
   },
   {
     id: "unity_vrc_setup_face_tracking",
@@ -164,7 +164,7 @@ export const unityVrchatTools: ToolDefinition[] = [
       binaryParameters: z.boolean().optional().describe("Use binary parameters for optimization (default false)"),
       customMapping: z.record(z.string()).optional().describe("Custom expression-to-blendshape mapping overrides"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_setup_face_tracking", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_setup_face_tracking", params) },
   },
   {
     id: "unity_vrc_upload_prep",
@@ -179,6 +179,6 @@ export const unityVrchatTools: ToolDefinition[] = [
       tags: z.array(z.string()).optional().describe("Tags for avatar search"),
       releaseStatus: z.enum(["public", "private"]).optional().describe("Release visibility (default private)"),
     }),
-    handler: async (params) => { try { return await bridge.send("unity", "unity_vrc_upload_prep", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("unity", "unity_vrc_upload_prep", params) },
   },
 ];

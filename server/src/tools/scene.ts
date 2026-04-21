@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const sceneListObjects: ToolDefinition = {
   id: "scene_list_objects",
   name: "List Scene Objects",
@@ -11,19 +11,7 @@ export const sceneListObjects: ToolDefinition = {
     includeInactive: z.boolean().optional().describe("Include inactive objects")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "SceneListObjects", params);
-      return {
-        success: true,
-        message: "Scene objects retrieved",
-        data: result
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        message: `Failed to list scene objects: ${error.message}`
-      };
-    }
+    return bridgeSendAsToolResult("unity", "SceneListObjects", params, { successMessage: "Scene objects retrieved" });
   }
 };
 
@@ -44,19 +32,7 @@ export const sceneCreateGameObject: ToolDefinition = {
     color: z.string().optional().describe("Color as hex string, e.g. #FF0000")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "SceneCreateGameObject", params);
-      return {
-        success: true,
-        message: `Created GameObject: ${params.name}`,
-        data: result
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        message: `Failed to create GameObject: ${error.message}`
-      };
-    }
+    return bridgeSendAsToolResult("unity", "SceneCreateGameObject", params, { successMessage: (_, params) => `Created GameObject: ${params.name}` });
   }
 };
 
@@ -70,19 +46,7 @@ export const sceneDeleteGameObject: ToolDefinition = {
     name: z.string().describe("Name of the GameObject to delete")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "SceneDeleteGameObject", params);
-      return {
-        success: true,
-        message: `Deleted GameObject: ${params.name}`,
-        data: result
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        message: `Failed to delete GameObject: ${error.message}`
-      };
-    }
+    return bridgeSendAsToolResult("unity", "SceneDeleteGameObject", params, { successMessage: (_, params) => `Deleted GameObject: ${params.name}` });
   }
 };
 

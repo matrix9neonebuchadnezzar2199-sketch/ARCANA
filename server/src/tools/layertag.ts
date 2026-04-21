@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const layertagSetLayer: ToolDefinition = {
   id: "layertag_set_layer",
   name: "Set Layer",
@@ -13,12 +13,7 @@ export const layertagSetLayer: ToolDefinition = {
     includeChildren: z.boolean().optional().describe("Apply to children, default true")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LayerTagSetLayer", params);
-      return { success: true, message: `Set layer of ${params.name} to ${params.layer}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LayerTagSetLayer", params, { successMessage: (_, params) => `Set layer of ${params.name} to ${params.layer}` });
   }
 };
 
@@ -33,12 +28,7 @@ export const layertagSetTag: ToolDefinition = {
     tag: z.string().describe("Tag name, e.g. Player, Enemy, Untagged")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LayerTagSetTag", params);
-      return { success: true, message: `Set tag of ${params.name} to ${params.tag}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LayerTagSetTag", params, { successMessage: (_, params) => `Set tag of ${params.name} to ${params.tag}` });
   }
 };
 
@@ -53,12 +43,7 @@ export const layertagRename: ToolDefinition = {
     newName: z.string().describe("New name")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LayerTagRename", params);
-      return { success: true, message: `Renamed ${params.name} to ${params.newName}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LayerTagRename", params, { successMessage: (_, params) => `Renamed ${params.name} to ${params.newName}` });
   }
 };
 

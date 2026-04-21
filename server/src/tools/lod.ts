@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const lodCreateGroup: ToolDefinition = {
   id: "lod_create_group",
@@ -9,13 +9,7 @@ const lodCreateGroup: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), levels: z.number().default(3) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "LodCreateGroup", p);
-      return r ? { success: true, message: `LOD Group created on ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to create LOD Group" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LodCreateGroup", p, { successMessage: (_, p) => `LOD Group created on ${p.objectName}` });
   }
 };
 
@@ -27,13 +21,7 @@ const lodSetTransitions: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), transitions: z.array(z.number()) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "LodSetTransitions", p);
-      return r ? { success: true, message: `LOD transitions set on ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to set transitions" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LodSetTransitions", p, { successMessage: (_, p) => `LOD transitions set on ${p.objectName}` });
   }
 };
 
@@ -45,13 +33,7 @@ const lodAssignRenderer: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), lodLevel: z.number(), rendererName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "LodAssignRenderer", p);
-      return r ? { success: true, message: `Renderer assigned to LOD ${p.lodLevel}`, data: r }
-               : { success: false, message: "Failed to assign renderer" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LodAssignRenderer", p, { successMessage: (_, p) => `Renderer assigned to LOD ${p.lodLevel}` });
   }
 };
 
@@ -63,13 +45,7 @@ const lodSetFadeMode: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string(), fadeMode: z.enum(["None","CrossFade","SpeedTree"]).default("CrossFade") }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "LodSetFadeMode", p);
-      return r ? { success: true, message: `Fade mode set to ${p.fadeMode}`, data: r }
-               : { success: false, message: "Failed to set fade mode" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LodSetFadeMode", p, { successMessage: (_, p) => `Fade mode set to ${p.fadeMode}` });
   }
 };
 
@@ -81,13 +57,7 @@ const lodGetInfo: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "LodGetInfo", p);
-      return r ? { success: true, message: "LOD info retrieved", data: r }
-               : { success: false, message: "Failed to get LOD info" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LodGetInfo", p, { successMessage: "LOD info retrieved" });
   }
 };
 
@@ -99,13 +69,7 @@ const lodRemove: ToolDefinition = {
   category: "lod",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "LodRemove", p);
-      return r ? { success: true, message: `LOD Group removed from ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to remove LOD Group" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LodRemove", p, { successMessage: (_, p) => `LOD Group removed from ${p.objectName}` });
   }
 };
 

@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const clothAdd: ToolDefinition = {
   id: "cloth_add",
@@ -9,13 +9,7 @@ const clothAdd: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ClothAdd", p);
-      return r ? { success: true, message: `Cloth added to ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to add cloth" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ClothAdd", p, { successMessage: (_, p) => `Cloth added to ${p.objectName}` });
   }
 };
 
@@ -27,13 +21,7 @@ const clothSetParams: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), damping: z.number().min(0).max(1).default(0.1), stiffness: z.number().min(0).max(1).default(0.5), stretchLimit: z.number().default(0.1), friction: z.number().min(0).max(1).default(0.5) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ClothSetParams", p);
-      return r ? { success: true, message: `Cloth params updated on ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to set cloth params" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ClothSetParams", p, { successMessage: (_, p) => `Cloth params updated on ${p.objectName}` });
   }
 };
 
@@ -45,13 +33,7 @@ const clothSetGravity: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), useGravity: z.boolean().default(true), externalX: z.number().default(0), externalY: z.number().default(0), externalZ: z.number().default(0) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ClothSetGravity", p);
-      return r ? { success: true, message: `Cloth gravity set on ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to set cloth gravity" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ClothSetGravity", p, { successMessage: (_, p) => `Cloth gravity set on ${p.objectName}` });
   }
 };
 
@@ -63,13 +45,7 @@ const clothAddCollider: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string(), colliderObject: z.string(), colliderType: z.enum(["sphere","capsule"]).default("sphere") }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ClothAddCollider", p);
-      return r ? { success: true, message: `Cloth collider added from ${p.colliderObject}`, data: r }
-               : { success: false, message: "Failed to add cloth collider" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ClothAddCollider", p, { successMessage: (_, p) => `Cloth collider added from ${p.colliderObject}` });
   }
 };
 
@@ -81,13 +57,7 @@ const clothRemove: ToolDefinition = {
   category: "cloth",
   inputSchema: z.object({ objectName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "ClothRemove", p);
-      return r ? { success: true, message: `Cloth removed from ${p.objectName}`, data: r }
-               : { success: false, message: "Failed to remove cloth" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "ClothRemove", p, { successMessage: (_, p) => `Cloth removed from ${p.objectName}` });
   }
 };
 

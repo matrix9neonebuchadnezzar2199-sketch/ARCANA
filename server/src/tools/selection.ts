@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const selectObject: ToolDefinition = {
   id: "select_object",
@@ -11,12 +11,7 @@ const selectObject: ToolDefinition = {
     name: z.string().describe("GameObject name to select")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "SelectObject", params);
-      return { success: true, message: `Selected: ${params.name}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "SelectObject", params, { successMessage: (_, params) => `Selected: ${params.name}` });
   }
 };
 
@@ -28,12 +23,7 @@ const selectAll: ToolDefinition = {
   category: "selection",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "SelectAll", {});
-      return { success: true, message: "All objects selected", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "SelectAll", {}, { successMessage: "All objects selected" });
   }
 };
 
@@ -45,12 +35,7 @@ const selectNone: ToolDefinition = {
   category: "selection",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "SelectNone", {});
-      return { success: true, message: "Selection cleared", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "SelectNone", {}, { successMessage: "Selection cleared" });
   }
 };
 
@@ -62,12 +47,7 @@ const selectInvert: ToolDefinition = {
   category: "selection",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "SelectInvert", {});
-      return { success: true, message: "Selection inverted", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "SelectInvert", {}, { successMessage: "Selection inverted" });
   }
 };
 

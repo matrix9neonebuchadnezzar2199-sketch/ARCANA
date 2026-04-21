@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const navBake: ToolDefinition = {
   id: "nav_bake",
@@ -9,12 +9,7 @@ const navBake: ToolDefinition = {
   category: "navigation",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "NavBake", {});
-      return { success: true, message: "NavMesh baked successfully", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "NavBake", {}, { successMessage: "NavMesh baked successfully" });
   }
 };
 
@@ -31,12 +26,7 @@ const navAddAgent: ToolDefinition = {
     height: z.number().optional().default(2).describe("Agent height")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "NavAddAgent", params);
-      return { success: true, message: `NavMeshAgent added to ${params.name}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "NavAddAgent", params, { successMessage: (_, params) => `NavMeshAgent added to ${params.name}` });
   }
 };
 
@@ -54,12 +44,7 @@ const navAddObstacle: ToolDefinition = {
     sizeZ: z.number().optional().default(1).describe("Obstacle size Z")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "NavAddObstacle", params);
-      return { success: true, message: `NavMeshObstacle added to ${params.name}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "NavAddObstacle", params, { successMessage: (_, params) => `NavMeshObstacle added to ${params.name}` });
   }
 };
 
@@ -76,12 +61,7 @@ const navAddLink: ToolDefinition = {
     bidirectional: z.boolean().optional().default(true).describe("Bidirectional link")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "NavAddLink", params);
-      return { success: true, message: `OffMeshLink added to ${params.name}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "NavAddLink", params, { successMessage: (_, params) => `OffMeshLink added to ${params.name}` });
   }
 };
 

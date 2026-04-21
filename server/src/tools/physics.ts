@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const physicsAddRigidbody: ToolDefinition = {
   id: "physics_add_rigidbody",
   name: "Add Rigidbody",
@@ -14,12 +14,7 @@ export const physicsAddRigidbody: ToolDefinition = {
     isKinematic: z.boolean().optional().describe("Is kinematic, default false")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PhysicsAddRigidbody", params);
-      return { success: true, message: `Added Rigidbody to ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "PhysicsAddRigidbody", params, { successMessage: (_, params) => `Added Rigidbody to ${params.name}` });
   }
 };
 
@@ -35,12 +30,7 @@ export const physicsAddCollider: ToolDefinition = {
     isTrigger: z.boolean().optional().describe("Is trigger, default false")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PhysicsAddCollider", params);
-      return { success: true, message: `Added ${params.type} collider to ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "PhysicsAddCollider", params, { successMessage: (_, params) => `Added ${params.type} collider to ${params.name}` });
   }
 };
 
@@ -56,12 +46,7 @@ export const physicsSetGravity: ToolDefinition = {
     z: z.number().optional().describe("Gravity Z, default 0")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "PhysicsSetGravity", params);
-      return { success: true, message: `Set gravity to (${params.x || 0}, ${params.y}, ${params.z || 0})`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "PhysicsSetGravity", params, { successMessage: (_, params) => `Set gravity to (${params.x || 0}, ${params.y}, ${params.z || 0})` });
   }
 };
 

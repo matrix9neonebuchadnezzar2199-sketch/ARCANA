@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const ueEnhancedInputTools: ToolDefinition[] = [
   {
@@ -15,12 +15,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       consumeInput: z.boolean().optional().describe("Consume input (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "EnhancedInputCreateAction", params);
-        return { success: true, message: `Input Action "${params.name}" created (${params.valueType})`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "EnhancedInputCreateAction", params, { successMessage: (_, params) => `Input Action "${params.name}" created (${params.valueType})` });
     },
   },
   {
@@ -34,12 +29,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       path: z.string().optional().describe("Content path"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "EnhancedInputCreateMappingContext", params);
-        return { success: true, message: `Mapping Context "${params.name}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "EnhancedInputCreateMappingContext", params, { successMessage: (_, params) => `Mapping Context "${params.name}" created` });
     },
   },
   {
@@ -54,12 +44,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       key: z.string().describe("Key name (e.g. W, SpaceBar, Gamepad_Left2D, MouseXY2D)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "EnhancedInputAddMapping", params);
-        return { success: true, message: `Key "${params.key}" mapped to "${params.actionName}" in "${params.contextName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "EnhancedInputAddMapping", params, { successMessage: (_, params) => `Key "${params.key}" mapped to "${params.actionName}" in "${params.contextName}"` });
     },
   },
   {
@@ -82,12 +67,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       deadZoneUpper: z.number().optional().describe("Dead zone upper threshold"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "EnhancedInputAddModifier", params);
-        return { success: true, message: `Modifier ${params.modifierType} added to "${params.key}" on "${params.actionName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "EnhancedInputAddModifier", params, { successMessage: (_, params) => `Modifier ${params.modifierType} added to "${params.key}" on "${params.actionName}"` });
     },
   },
   {
@@ -106,12 +86,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       interval: z.number().optional().describe("Pulse interval in seconds (for Pulse trigger)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "EnhancedInputAddTrigger", params);
-        return { success: true, message: `Trigger ${params.triggerType} added to "${params.key}" on "${params.actionName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "EnhancedInputAddTrigger", params, { successMessage: (_, params) => `Trigger ${params.triggerType} added to "${params.key}" on "${params.actionName}"` });
     },
   },
   {
@@ -124,12 +99,7 @@ export const ueEnhancedInputTools: ToolDefinition[] = [
       contextName: z.string().describe("Mapping Context name"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unreal", "EnhancedInputListContext", params);
-        return { success: true, message: `Mappings listed for "${params.contextName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unreal", "EnhancedInputListContext", params, { successMessage: (_, params) => `Mappings listed for "${params.contextName}"` });
     },
   },
 ];

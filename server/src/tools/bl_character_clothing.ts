@@ -1,5 +1,5 @@
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blCharacterClothingTools: ToolDefinition[] = [
   {
@@ -24,7 +24,7 @@ export const blCharacterClothingTools: ToolDefinition[] = [
       outfit: z.string().optional().describe("Full outfit asset. Call bl_char_list_clothing to see all available assets"),
       clothes: z.array(z.string()).optional().describe("List of clothing asset names to apply"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_clothing", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_clothing", params) },
   },
   {
     id: "bl_char_remove_clothing",
@@ -36,7 +36,7 @@ export const blCharacterClothingTools: ToolDefinition[] = [
       name: z.string().optional().describe("Target character object name"),
       slot: z.string().optional().describe("Slot to remove (e.g. 'top', 'shoes', 'all'). Default: 'all'"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_remove_clothing", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_remove_clothing", params) },
   },
   {
     id: "bl_char_list_clothing",
@@ -45,7 +45,7 @@ export const blCharacterClothingTools: ToolDefinition[] = [
     descriptionJa: "List available clothing assets by category from installed packs.",
     category: "BL_CharacterClothing",
     inputSchema: z.object({}),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_list_clothing", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_list_clothing", params) },
   },
   {
     id: "bl_char_list_hair",
@@ -54,10 +54,10 @@ export const blCharacterClothingTools: ToolDefinition[] = [
     descriptionJa: "List installed MPFB2 hair assets. Call before bl_char_set_hair_style.",
     category: "BL_CharacterHair",
     inputSchema: z.object({}),
-    handler: async (params: Record<string, unknown>) => {
-      const result = await bridge.send("blender", "bl_char_list_hair", params);
-      return result ?? "Failed to list hair assets";
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult("blender", "bl_char_list_hair", params, {
+        successMessage: "Hair assets listed",
+      }),
   },
   {
     id: "bl_char_list_skins",
@@ -66,8 +66,8 @@ export const blCharacterClothingTools: ToolDefinition[] = [
     descriptionJa: "List installed MPFB2 skin assets. Call before bl_char_set_skin_color.",
     category: "BL_CharacterMaterial",
     inputSchema: z.object({}),
-    handler: async (params: Record<string, unknown>) => {
-      const result = await bridge.send("blender", "bl_char_list_skins", params);
-      return result ?? "Failed to list skin assets";
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult("blender", "bl_char_list_skins", params, {
+        successMessage: "Skin assets listed",
+      }),
   },];

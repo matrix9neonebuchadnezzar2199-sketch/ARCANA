@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const constraintPosition: ToolDefinition = {
   id: "constraint_position",
@@ -13,12 +13,7 @@ const constraintPosition: ToolDefinition = {
     weight: z.number().min(0).max(1).optional().default(1).describe("Constraint weight")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ConstraintPosition", params);
-      return { success: true, message: `PositionConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ConstraintPosition", params, { successMessage: (_, params) => `PositionConstraint added to ${params.name} -> ${params.sourceName}` });
   }
 };
 
@@ -34,12 +29,7 @@ const constraintRotation: ToolDefinition = {
     weight: z.number().min(0).max(1).optional().default(1).describe("Constraint weight")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ConstraintRotation", params);
-      return { success: true, message: `RotationConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ConstraintRotation", params, { successMessage: (_, params) => `RotationConstraint added to ${params.name} -> ${params.sourceName}` });
   }
 };
 
@@ -55,12 +45,7 @@ const constraintScale: ToolDefinition = {
     weight: z.number().min(0).max(1).optional().default(1).describe("Constraint weight")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ConstraintScale", params);
-      return { success: true, message: `ScaleConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ConstraintScale", params, { successMessage: (_, params) => `ScaleConstraint added to ${params.name} -> ${params.sourceName}` });
   }
 };
 
@@ -77,12 +62,7 @@ const constraintAim: ToolDefinition = {
     aimAxis: z.enum(["X", "Y", "Z", "NegX", "NegY", "NegZ"]).optional().default("Z").describe("Aim axis")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "ConstraintAim", params);
-      return { success: true, message: `AimConstraint added to ${params.name} -> ${params.sourceName}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "ConstraintAim", params, { successMessage: (_, params) => `AimConstraint added to ${params.name} -> ${params.sourceName}` });
   }
 };
 

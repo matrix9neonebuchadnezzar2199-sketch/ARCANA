@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const inputSystemTools: ToolDefinition[] = [
   {
@@ -13,12 +13,7 @@ export const inputSystemTools: ToolDefinition[] = [
       mapName: z.string().describe("Action map name (e.g. Player, UI, Vehicle)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "InputSystemCreateActionMap", params);
-        return { success: true, message: `Action map "${params.mapName}" created in "${params.assetName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "InputSystemCreateActionMap", params, { successMessage: (_, params) => `Action map "${params.mapName}" created in "${params.assetName}"` });
     },
   },
   {
@@ -35,12 +30,7 @@ export const inputSystemTools: ToolDefinition[] = [
       controlType: z.enum(["Vector2", "Float", "Button", "Vector3", "Quaternion", "Integer", "Stick", "Dpad", "Touch"]).optional().describe("Expected control type"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "InputSystemAddAction", params);
-        return { success: true, message: `Action "${params.actionName}" added to "${params.mapName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "InputSystemAddAction", params, { successMessage: (_, params) => `Action "${params.actionName}" added to "${params.mapName}"` });
     },
   },
   {
@@ -58,12 +48,7 @@ export const inputSystemTools: ToolDefinition[] = [
       compositePart: z.string().optional().describe("Part in composite (e.g. up, down, left, right)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "InputSystemAddBinding", params);
-        return { success: true, message: `Binding "${params.path}" added to "${params.actionName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "InputSystemAddBinding", params, { successMessage: (_, params) => `Binding "${params.path}" added to "${params.actionName}"` });
     },
   },
   {
@@ -79,12 +64,7 @@ export const inputSystemTools: ToolDefinition[] = [
       compositeType: z.enum(["2DVector", "3DVector", "1DAxis", "ButtonWithOneModifier", "ButtonWithTwoModifiers"]).describe("Composite type"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "InputSystemAddComposite", params);
-        return { success: true, message: `Composite ${params.compositeType} added to "${params.actionName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "InputSystemAddComposite", params, { successMessage: (_, params) => `Composite ${params.compositeType} added to "${params.actionName}"` });
     },
   },
   {
@@ -97,12 +77,7 @@ export const inputSystemTools: ToolDefinition[] = [
       assetName: z.string().describe("Input Actions asset name"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "InputSystemListActions", params);
-        return { success: true, message: `Actions listed for "${params.assetName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "InputSystemListActions", params, { successMessage: (_, params) => `Actions listed for "${params.assetName}"` });
     },
   },
   {
@@ -120,12 +95,7 @@ export const inputSystemTools: ToolDefinition[] = [
       })).describe("Required devices for this scheme"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "InputSystemSetControlScheme", params);
-        return { success: true, message: `Control scheme "${params.schemeName}" configured`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "InputSystemSetControlScheme", params, { successMessage: (_, params) => `Control scheme "${params.schemeName}" configured` });
     },
   },
 ];

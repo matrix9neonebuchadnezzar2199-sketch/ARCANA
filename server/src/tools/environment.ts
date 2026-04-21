@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const envSetSkybox: ToolDefinition = {
   id: "env_set_skybox",
   name: "Set Skybox",
@@ -11,12 +11,7 @@ export const envSetSkybox: ToolDefinition = {
     materialPath: z.string().describe("Skybox material path relative to Assets")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EnvSetSkybox", params);
-      return { success: true, message: `Set skybox to ${params.materialPath}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "EnvSetSkybox", params, { successMessage: (_, params) => `Set skybox to ${params.materialPath}` });
   }
 };
 
@@ -35,12 +30,7 @@ export const envSetFog: ToolDefinition = {
     endDistance: z.number().optional().describe("End distance for linear fog")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EnvSetFog", params);
-      return { success: true, message: `Fog ${params.enabled ? "enabled" : "disabled"}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "EnvSetFog", params, { successMessage: (_, params) => `Fog ${params.enabled ? "enabled" : "disabled"}` });
   }
 };
 
@@ -56,12 +46,7 @@ export const envSetReflection: ToolDefinition = {
     bounces: z.number().optional().describe("Reflection bounces 1-5")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "EnvSetReflection", params);
-      return { success: true, message: "Environment reflection updated", data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "EnvSetReflection", params, { successMessage: "Environment reflection updated" });
   }
 };
 

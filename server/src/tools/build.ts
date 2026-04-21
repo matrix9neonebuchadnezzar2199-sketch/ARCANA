@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const buildSetPlatform: ToolDefinition = {
   id: "build_set_platform",
@@ -11,12 +11,7 @@ const buildSetPlatform: ToolDefinition = {
     platform: z.enum(["Windows", "Mac", "Linux", "Android", "iOS", "WebGL", "PS5", "Switch"]).describe("Target platform")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "BuildSetPlatform", params);
-      return { success: true, message: `Platform switched to ${params.platform}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "BuildSetPlatform", params, { successMessage: (_, params) => `Platform switched to ${params.platform}` });
   }
 };
 
@@ -31,12 +26,7 @@ const buildAddScene: ToolDefinition = {
     enabled: z.boolean().optional().default(true).describe("Enable in build")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "BuildAddScene", params);
-      return { success: true, message: `Scene added to build: ${params.path}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "BuildAddScene", params, { successMessage: (_, params) => `Scene added to build: ${params.path}` });
   }
 };
 
@@ -53,12 +43,7 @@ const buildSetPlayerSettings: ToolDefinition = {
     defaultIcon: z.string().optional().describe("Icon asset path")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "BuildSetPlayer", params);
-      return { success: true, message: "Player settings updated", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "BuildSetPlayer", params, { successMessage: "Player settings updated" });
   }
 };
 
@@ -73,12 +58,7 @@ const buildExecute: ToolDefinition = {
     development: z.boolean().optional().default(false).describe("Development build")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "BuildExecute", params);
-      return { success: true, message: `Build output to ${params.outputPath}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "BuildExecute", params, { successMessage: (_, params) => `Build output to ${params.outputPath}` });
   }
 };
 
@@ -90,12 +70,7 @@ const buildGetSettings: ToolDefinition = {
   category: "build",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "BuildGetSettings", {});
-      return { success: true, message: "Build settings retrieved", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "BuildGetSettings", {}, { successMessage: "Build settings retrieved" });
   }
 };
 
@@ -107,12 +82,7 @@ const buildClean: ToolDefinition = {
   category: "build",
   inputSchema: z.object({}),
   handler: async () => {
-    try {
-      const result = await bridge.send("unity", "BuildClean", {});
-      return { success: true, message: "Build cache cleaned", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "BuildClean", {}, { successMessage: "Build cache cleaned" });
   }
 };
 

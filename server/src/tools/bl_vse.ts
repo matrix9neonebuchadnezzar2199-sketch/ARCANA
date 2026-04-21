@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blVseTools: ToolDefinition[] = [
   {
@@ -19,12 +19,7 @@ export const blVseTools: ToolDefinition[] = [
       text: z.string().optional().describe("Text content (for TEXT strip)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_vse_add_strip", params);
-        return { success: true, message: `${params.stripType} strip added to channel ${params.channel} at frame ${params.frameStart}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_vse_add_strip", params, { successMessage: (_, params) => `${params.stripType} strip added to channel ${params.channel} at frame ${params.frameStart}` });
     },
   },
   {
@@ -42,12 +37,7 @@ export const blVseTools: ToolDefinition[] = [
       wipeAngle: z.number().optional().describe("Wipe angle in degrees"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_vse_add_transition", params);
-        return { success: true, message: `${params.transitionType} transition added between "${params.stripA}" and "${params.stripB}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_vse_add_transition", params, { successMessage: (_, params) => `${params.transitionType} transition added between "${params.stripA}" and "${params.stripB}"` });
     },
   },
   {
@@ -66,12 +56,7 @@ export const blVseTools: ToolDefinition[] = [
       glowThreshold: z.number().optional().describe("Glow threshold (for GLOW)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_vse_add_effect", params);
-        return { success: true, message: `${params.effectType} effect added on "${params.inputStrip}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_vse_add_effect", params, { successMessage: (_, params) => `${params.effectType} effect added on "${params.inputStrip}"` });
     },
   },
   {
@@ -86,12 +71,7 @@ export const blVseTools: ToolDefinition[] = [
       cutType: z.enum(["SOFT", "HARD"]).optional().describe("Cut type (SOFT keeps source, HARD duplicates data)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_vse_cut_strip", params);
-        return { success: true, message: `Strip "${params.stripName}" cut at frame ${params.frame}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_vse_cut_strip", params, { successMessage: (_, params) => `Strip "${params.stripName}" cut at frame ${params.frame}` });
     },
   },
   {
@@ -112,12 +92,7 @@ export const blVseTools: ToolDefinition[] = [
       mute: z.boolean().optional().describe("Mute the strip"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_vse_set_strip_properties", params);
-        return { success: true, message: `Properties updated on strip "${params.stripName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_vse_set_strip_properties", params, { successMessage: (_, params) => `Properties updated on strip "${params.stripName}"` });
     },
   },
   {
@@ -137,12 +112,7 @@ export const blVseTools: ToolDefinition[] = [
       resolutionY: z.number().optional().describe("Output height"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_vse_render_animation", params);
-        return { success: true, message: `VSE render started: ${params.outputPath}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_vse_render_animation", params, { successMessage: (_, params) => `VSE render started: ${params.outputPath}` });
     },
   },
 ];

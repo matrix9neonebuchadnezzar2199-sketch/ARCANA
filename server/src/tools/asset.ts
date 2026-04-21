@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const assetSearch: ToolDefinition = {
   id: "asset_search",
@@ -12,12 +12,7 @@ const assetSearch: ToolDefinition = {
     folder: z.string().optional().default("Assets").describe("Folder to search in")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AssetSearch", params);
-      return { success: true, message: "Asset search completed", data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "AssetSearch", params, { successMessage: "Asset search completed" });
   }
 };
 
@@ -32,12 +27,7 @@ const assetImport: ToolDefinition = {
     destPath: z.string().optional().default("Assets/Imports").describe("Destination folder in project")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AssetImport", params);
-      return { success: true, message: `Asset imported to ${params.destPath}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "AssetImport", params, { successMessage: (_, params) => `Asset imported to ${params.destPath}` });
   }
 };
 
@@ -51,12 +41,7 @@ const assetDelete: ToolDefinition = {
     path: z.string().describe("Asset path relative to project (e.g. Assets/Materials/MyMat.mat)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AssetDelete", params);
-      return { success: true, message: `Asset deleted: ${params.path}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "AssetDelete", params, { successMessage: (_, params) => `Asset deleted: ${params.path}` });
   }
 };
 
@@ -71,12 +56,7 @@ const assetMove: ToolDefinition = {
     newPath: z.string().describe("New asset path")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AssetMove", params);
-      return { success: true, message: `Asset moved: ${params.oldPath} -> ${params.newPath}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "AssetMove", params, { successMessage: (_, params) => `Asset moved: ${params.oldPath} -> ${params.newPath}` });
   }
 };
 
@@ -91,12 +71,7 @@ const assetDuplicate: ToolDefinition = {
     newName: z.string().optional().describe("New name for the copy (optional)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AssetDuplicate", params);
-      return { success: true, message: `Asset duplicated: ${params.path}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "AssetDuplicate", params, { successMessage: (_, params) => `Asset duplicated: ${params.path}` });
   }
 };
 

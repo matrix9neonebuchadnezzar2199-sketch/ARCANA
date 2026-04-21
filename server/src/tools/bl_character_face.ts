@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blCharacterFaceTools: ToolDefinition[] = [
   {
@@ -14,7 +14,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       width: z.number().min(0).max(1).optional().describe("Face width fine-tune"),
       length: z.number().min(0).max(1).optional().describe("Face length fine-tune"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_face_outline", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_face_outline", params) },
   },
   {
     id: "bl_char_set_jaw",
@@ -28,7 +28,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       jawWidth: z.number().min(0).max(1).optional().describe("Jaw width"),
       jawAngle: z.number().min(0).max(1).optional().describe("Jaw angle (0=round, 1=sharp)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_jaw", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_jaw", params) },
   },
   {
     id: "bl_char_set_cheekbone",
@@ -41,7 +41,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       cheekHeight: z.number().min(0).max(1).optional().describe("Cheekbone height"),
       cheekWidth: z.number().min(0).max(1).optional().describe("Cheekbone width"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_cheekbone", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_cheekbone", params) },
   },
   {
     id: "bl_char_set_eye_shape",
@@ -56,7 +56,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       eyeHeight: z.number().min(0).max(1).optional().describe("Eye vertical position"),
       eyeAngle: z.number().min(-1).max(1).optional().describe("Eye angle (-1=downturned, 0=neutral, 1=upturned)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_eye_shape", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_eye_shape", params) },
   },
   {
     id: "bl_char_set_eyelid",
@@ -69,7 +69,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       doubleFoldWidth: z.number().min(0).max(1).optional().describe("Double eyelid fold width (0=none/monolid, 1=deep)"),
       lidThickness: z.number().min(0).max(1).optional().describe("Eyelid thickness"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_eyelid", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_eyelid", params) },
   },
   {
     id: "bl_char_set_pupil",
@@ -84,7 +84,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       irisPreset: z.enum(["brown", "blue", "green", "hazel", "gray", "amber", "red", "violet"]).optional().describe("Iris color preset"),
       irisPattern: z.enum(["default", "detailed", "anime", "cat", "heterochromia"]).optional().describe("Iris pattern type"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_pupil", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_pupil", params) },
   },
   {
     id: "bl_char_set_eyebrow",
@@ -99,7 +99,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       angle: z.number().min(-1).max(1).optional().describe("Eyebrow angle (-1=down, 1=up)"),
       height: z.number().min(0).max(1).optional().describe("Eyebrow vertical position"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_eyebrow", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_eyebrow", params) },
   },
   {
     id: "bl_char_set_nose",
@@ -114,7 +114,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       tipAngle: z.number().min(-1).max(1).optional().describe("Nose tip angle (-1=down, 1=up)"),
       bridgeWidth: z.number().min(0).max(1).optional().describe("Nose bridge width"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_nose", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_nose", params) },
   },
   {
     id: "bl_char_set_mouth",
@@ -129,7 +129,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       lowerLipThickness: z.number().min(0).max(1).optional().describe("Lower lip thickness"),
       cornerHeight: z.number().min(-1).max(1).optional().describe("Mouth corner (-1=frown, 0=neutral, 1=smile)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_mouth", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_mouth", params) },
   },
   {
     id: "bl_char_set_ear",
@@ -143,7 +143,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       earAngle: z.number().min(0).max(1).optional().describe("Ear protrusion angle (0=flat, 1=protruding)"),
       elfPointiness: z.number().min(0).max(1).optional().describe("Elf ear pointiness (0=human, 1=full elf)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_ear", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_ear", params) },
   },
   {
     id: "bl_char_set_forehead",
@@ -156,7 +156,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       foreheadHeight: z.number().min(0).max(1).optional().describe("Forehead height"),
       foreheadRoundness: z.number().min(0).max(1).optional().describe("Forehead roundness"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_forehead", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_forehead", params) },
   },
   {
     id: "bl_char_set_chin",
@@ -170,7 +170,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       pointiness: z.number().min(0).max(1).optional().describe("Chin pointiness (0=round, 1=pointed)"),
       protrusion: z.number().min(0).max(1).optional().describe("Chin protrusion"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_chin", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_chin", params) },
   },
   {
     id: "bl_char_set_temple",
@@ -182,7 +182,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       templeWidth: z.number().min(0).max(1).describe("Temple width (0=narrow, 1=wide)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_temple", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_temple", params) },
   },
   {
     id: "bl_char_set_nasolabial",
@@ -194,7 +194,7 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       depth: z.number().min(0).max(1).describe("Nasolabial fold depth (0=none, 1=deep)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_nasolabial", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_nasolabial", params) },
   },
   {
     id: "bl_char_set_face_preset",
@@ -207,6 +207,6 @@ export const blCharacterFaceTools: ToolDefinition[] = [
       preset: z.enum(["anime", "realistic", "semi_realistic", "chibi", "western_cartoon"]).describe("Face preset"),
       strength: z.number().min(0).max(1).optional().describe("Preset blend strength (default 1.0)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_face_preset", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_face_preset", params) },
   },
 ];

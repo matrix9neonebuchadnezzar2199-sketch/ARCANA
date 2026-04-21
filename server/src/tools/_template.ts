@@ -6,7 +6,7 @@
 
 import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 
 export const templateTool: ToolDefinition = {
   id: "category_action",
@@ -19,18 +19,6 @@ export const templateTool: ToolDefinition = {
     param2: z.number().optional().describe("Optional param2")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "CategoryAction", params);
-      return {
-        success: true,
-        message: "Action completed successfully",
-        data: result
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        message: `Failed: ${error.message}`
-      };
-    }
+    return bridgeSendAsToolResult("unity", "CategoryAction", params, { successMessage: "Action completed successfully" });
   }
 };

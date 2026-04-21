@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const renderScreenshot: ToolDefinition = {
   id: "render_screenshot",
@@ -14,12 +14,7 @@ const renderScreenshot: ToolDefinition = {
     superSize: z.number().optional().default(1).describe("Super sampling multiplier 1-4")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "RenderScreenshot", params);
-      return { success: true, message: `Screenshot saved to ${params.path}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "RenderScreenshot", params, { successMessage: (_, params) => `Screenshot saved to ${params.path}` });
   }
 };
 
@@ -35,12 +30,7 @@ const renderSetResolution: ToolDefinition = {
     fullscreen: z.boolean().optional().default(false).describe("Fullscreen mode")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "RenderSetResolution", params);
-      return { success: true, message: `Resolution set to ${params.width}x${params.height}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "RenderSetResolution", params, { successMessage: (_, params) => `Resolution set to ${params.width}x${params.height}` });
   }
 };
 
@@ -54,12 +44,7 @@ const renderSetQuality: ToolDefinition = {
     level: z.enum(["Very Low", "Low", "Medium", "High", "Very High", "Ultra"]).describe("Quality level name")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "RenderSetQuality", params);
-      return { success: true, message: `Quality set to ${params.level}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "RenderSetQuality", params, { successMessage: (_, params) => `Quality set to ${params.level}` });
   }
 };
 
@@ -77,12 +62,7 @@ const renderCaptureSkybox: ToolDefinition = {
     resolution: z.number().optional().default(512).describe("Cubemap face resolution")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "RenderCaptureSkybox", params);
-      return { success: true, message: `Cubemap saved to ${params.path}`, data: result };
-    } catch (e: any) {
-      return { success: false, message: e.message };
-    }
+    return bridgeSendAsToolResult("unity", "RenderCaptureSkybox", params, { successMessage: (_, params) => `Cubemap saved to ${params.path}` });
   }
 };
 

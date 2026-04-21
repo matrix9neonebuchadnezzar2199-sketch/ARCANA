@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const vfxCreateParticle: ToolDefinition = {
   id: "vfx_create_particle",
   name: "Create Particle System",
@@ -15,12 +15,7 @@ export const vfxCreateParticle: ToolDefinition = {
     maxParticles: z.number().optional().describe("Max particles, default 1000")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "VFXCreateParticle", params);
-      return { success: true, message: `Created particle system: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "VFXCreateParticle", params, { successMessage: (_, params) => `Created particle system: ${params.name}` });
   }
 };
 
@@ -35,12 +30,7 @@ export const vfxSetColor: ToolDefinition = {
     color: z.string().describe("Color as hex string")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "VFXSetColor", params);
-      return { success: true, message: `Set particle color of ${params.name} to ${params.color}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "VFXSetColor", params, { successMessage: (_, params) => `Set particle color of ${params.name} to ${params.color}` });
   }
 };
 
@@ -56,12 +46,7 @@ export const vfxSetSpeed: ToolDefinition = {
     startLifetime: z.number().optional().describe("Start lifetime in seconds, default 5")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "VFXSetSpeed", params);
-      return { success: true, message: `Set particle speed of ${params.name} to ${params.startSpeed}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "VFXSetSpeed", params, { successMessage: (_, params) => `Set particle speed of ${params.name} to ${params.startSpeed}` });
   }
 };
 
@@ -77,12 +62,7 @@ export const vfxSetShape: ToolDefinition = {
     radius: z.number().optional().describe("Shape radius, default 1")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "VFXSetShape", params);
-      return { success: true, message: `Set particle shape of ${params.name} to ${params.shape}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "VFXSetShape", params, { successMessage: (_, params) => `Set particle shape of ${params.name} to ${params.shape}` });
   }
 };
 

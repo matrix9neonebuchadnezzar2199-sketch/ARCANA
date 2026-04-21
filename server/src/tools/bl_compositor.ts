@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blCompositorTools: ToolDefinition[] = [
   {
@@ -12,12 +12,7 @@ export const blCompositorTools: ToolDefinition[] = [
       useNodes: z.boolean().optional().describe("Enable node-based compositing (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_enable", params);
-        return { success: true, message: "Compositor enabled", data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_enable", params, { successMessage: "Compositor enabled" });
     },
   },
   {
@@ -33,12 +28,7 @@ export const blCompositorTools: ToolDefinition[] = [
       locationY: z.number().optional().describe("Y position"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_add_node", params);
-        return { success: true, message: `Compositor node "${params.nodeType}" added`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_add_node", params, { successMessage: (_, params) => `Compositor node "${params.nodeType}" added` });
     },
   },
   {
@@ -54,12 +44,7 @@ export const blCompositorTools: ToolDefinition[] = [
       toSocket: z.union([z.string(), z.number()]).describe("Input socket name or index"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_connect", params);
-        return { success: true, message: `Connected ${params.fromNode}[${params.fromSocket}] -> ${params.toNode}[${params.toSocket}]`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_connect", params, { successMessage: (_, params) => `Connected ${params.fromNode}[${params.fromSocket}] -> ${params.toNode}[${params.toSocket}]` });
     },
   },
   {
@@ -76,12 +61,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect between Render Layers and Composite (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_add_glare", params);
-        return { success: true, message: `Glare (${params.glareType}) added`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_add_glare", params, { successMessage: (_, params) => `Glare (${params.glareType}) added` });
     },
   },
   {
@@ -100,12 +80,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect in chain (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_add_color_correction", params);
-        return { success: true, message: "Color correction chain added", data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_add_color_correction", params, { successMessage: "Color correction chain added" });
     },
   },
   {
@@ -120,12 +95,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect to Render Layers (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_add_denoise", params);
-        return { success: true, message: "Denoise node added", data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_add_denoise", params, { successMessage: "Denoise node added" });
     },
   },
   {
@@ -140,12 +110,7 @@ export const blCompositorTools: ToolDefinition[] = [
       autoConnect: z.boolean().optional().describe("Auto-connect in chain (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_compositor_add_vignette", params);
-        return { success: true, message: `Vignette added (intensity: ${params.intensity || 0.5})`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_compositor_add_vignette", params, { successMessage: (_, params) => `Vignette added (intensity: ${params.intensity || 0.5})` });
     },
   },
 ];

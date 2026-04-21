@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const tilemapTools: ToolDefinition[] = [
   {
@@ -16,12 +16,7 @@ export const tilemapTools: ToolDefinition[] = [
       sortingOrder: z.number().optional().describe("Sorting order in layer"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TilemapCreate", params);
-        return { success: true, message: `Tilemap "${params.name || "Tilemap"}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TilemapCreate", params, { successMessage: (_, params) => `Tilemap "${params.name || "Tilemap"}" created` });
     },
   },
   {
@@ -39,12 +34,7 @@ export const tilemapTools: ToolDefinition[] = [
       })).describe("Array of tile placements"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TilemapSetTiles", params);
-        return { success: true, message: `${params.tiles.length} tiles placed on "${params.tilemapName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TilemapSetTiles", params, { successMessage: (_, params) => `${params.tiles.length} tiles placed on "${params.tilemapName}"` });
     },
   },
   {
@@ -62,12 +52,7 @@ export const tilemapTools: ToolDefinition[] = [
       height: z.number().describe("Rectangle height in cells"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TilemapFillRect", params);
-        return { success: true, message: `Filled ${params.width}x${params.height} area on "${params.tilemapName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TilemapFillRect", params, { successMessage: (_, params) => `Filled ${params.width}x${params.height} area on "${params.tilemapName}"` });
     },
   },
   {
@@ -84,13 +69,7 @@ export const tilemapTools: ToolDefinition[] = [
       }).optional().describe("Region to clear (omit to clear all)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TilemapClear", params);
-        const msg = params.region ? `Region cleared on "${params.tilemapName}"` : `All tiles cleared from "${params.tilemapName}"`;
-        return { success: true, message: msg, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TilemapClear", params, { successMessage: (_, params) => params.region ? `Region cleared on "${params.tilemapName}"` : `All tiles cleared from "${params.tilemapName}"` });
     },
   },
   {
@@ -106,12 +85,7 @@ export const tilemapTools: ToolDefinition[] = [
       physicsLayer: z.string().optional().describe("Physics layer name"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TilemapAddCollider", params);
-        return { success: true, message: `Collider added to "${params.tilemapName}"${params.useComposite !== false ? " (composite)" : ""}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TilemapAddCollider", params, { successMessage: (_, params) => `Collider added to "${params.tilemapName}"${params.useComposite !== false ? " (composite)" : ""}` });
     },
   },
 ];

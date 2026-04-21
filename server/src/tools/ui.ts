@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const uiCreateCanvas: ToolDefinition = {
   id: "ui_create_canvas",
   name: "Create Canvas",
@@ -12,12 +12,7 @@ export const uiCreateCanvas: ToolDefinition = {
     renderMode: z.enum(["ScreenSpaceOverlay", "ScreenSpaceCamera", "WorldSpace"]).optional().describe("Render mode, default ScreenSpaceOverlay")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "UICreateCanvas", params);
-      return { success: true, message: `Created canvas: ${params.name || "Canvas"}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "UICreateCanvas", params, { successMessage: (_, params) => `Created canvas: ${params.name || "Canvas"}` });
   }
 };
 
@@ -36,12 +31,7 @@ export const uiCreateText: ToolDefinition = {
     y: z.number().optional().describe("Anchored Y position")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "UICreateText", params);
-      return { success: true, message: `Created text: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "UICreateText", params, { successMessage: (_, params) => `Created text: ${params.name}` });
   }
 };
 
@@ -61,12 +51,7 @@ export const uiCreateButton: ToolDefinition = {
     color: z.string().optional().describe("Button color as hex string")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "UICreateButton", params);
-      return { success: true, message: `Created button: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "UICreateButton", params, { successMessage: (_, params) => `Created button: ${params.name}` });
   }
 };
 
@@ -86,12 +71,7 @@ export const uiCreateImage: ToolDefinition = {
     y: z.number().optional().describe("Anchored Y position")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "UICreateImage", params);
-      return { success: true, message: `Created image: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "UICreateImage", params, { successMessage: (_, params) => `Created image: ${params.name}` });
   }
 };
 

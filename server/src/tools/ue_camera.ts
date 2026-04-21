@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const ueCameraCreate: ToolDefinition = {
   id: "ue_camera_create", name: "Create Camera",
@@ -7,7 +7,7 @@ const ueCameraCreate: ToolDefinition = {
   descriptionJa: "レベルにCameraActorをスポーン",
   category: "ue_camera",
   inputSchema: z.object({ name: z.string().optional(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(200), fov: z.number().default(90) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "CameraCreate", p); return r ? { success: true, message: "Camera created", data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "CameraCreate", p, { successMessage: "Camera created" }) }
 };
 
 const ueCameraSetFov: ToolDefinition = {
@@ -16,7 +16,7 @@ const ueCameraSetFov: ToolDefinition = {
   descriptionJa: "カメラの視野角を設定",
   category: "ue_camera",
   inputSchema: z.object({ actorName: z.string(), fov: z.number().default(90) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "CameraSetFov", p); return r ? { success: true, message: `FOV set to ${p.fov}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "CameraSetFov", p, { successMessage: (_, p) => `FOV set to ${p.fov}` }) }
 };
 
 const ueCameraSetActive: ToolDefinition = {
@@ -25,7 +25,7 @@ const ueCameraSetActive: ToolDefinition = {
   descriptionJa: "カメラをアクティブビューポートカメラに設定",
   category: "ue_camera",
   inputSchema: z.object({ actorName: z.string() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "CameraSetActive", p); return r ? { success: true, message: `Active camera: ${p.actorName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "CameraSetActive", p, { successMessage: (_, p) => `Active camera: ${p.actorName}` }) }
 };
 
 const ueCameraSetPostProcess: ToolDefinition = {
@@ -34,7 +34,7 @@ const ueCameraSetPostProcess: ToolDefinition = {
   descriptionJa: "カメラのポストプロセス設定を変更",
   category: "ue_camera",
   inputSchema: z.object({ actorName: z.string(), bloom: z.number().default(0.675), exposure: z.number().default(1), motionBlur: z.number().default(0.5), dofFocalDistance: z.number().optional() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "CameraSetPostProcess", p); return r ? { success: true, message: `Post-process set on ${p.actorName}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "CameraSetPostProcess", p, { successMessage: (_, p) => `Post-process set on ${p.actorName}` }) }
 };
 
 const ueCameraSetAspectRatio: ToolDefinition = {
@@ -43,7 +43,7 @@ const ueCameraSetAspectRatio: ToolDefinition = {
   descriptionJa: "カメラのアスペクト比制約を設定",
   category: "ue_camera",
   inputSchema: z.object({ actorName: z.string(), aspectRatio: z.number().default(1.777), constrainAspect: z.boolean().default(true) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "CameraSetAspect", p); return r ? { success: true, message: `Aspect ratio set to ${p.aspectRatio}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "CameraSetAspect", p, { successMessage: (_, p) => `Aspect ratio set to ${p.aspectRatio}` }) }
 };
 
 const ueCameraLookAt: ToolDefinition = {
@@ -52,7 +52,7 @@ const ueCameraLookAt: ToolDefinition = {
   descriptionJa: "カメラをターゲット位置に向ける",
   category: "ue_camera",
   inputSchema: z.object({ actorName: z.string(), targetX: z.number(), targetY: z.number(), targetZ: z.number() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "CameraLookAt", p); return r ? { success: true, message: `Camera looking at (${p.targetX},${p.targetY},${p.targetZ})`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "CameraLookAt", p, { successMessage: (_, p) => `Camera looking at (${p.targetX},${p.targetY},${p.targetZ})` }) }
 };
 
 export const ueCameraTools: ToolDefinition[] = [

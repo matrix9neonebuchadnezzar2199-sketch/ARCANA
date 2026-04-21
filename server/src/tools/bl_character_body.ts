@@ -1,5 +1,5 @@
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blCharacterBodyTools: ToolDefinition[] = [
   {
@@ -14,7 +14,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       bodyType: z.enum(["slim", "average", "athletic", "muscular", "heavy"]).optional().describe("Body type preset (default average)"),
       style: z.enum(["realistic", "anime", "chibi", "semi_realistic"]).optional().describe("Art style (default realistic)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_create_base", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_create_base", params) },
   },
   {
     id: "bl_char_set_height",
@@ -26,7 +26,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       heightCm: z.number().min(100).max(220).describe("Height in centimeters"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_height", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_height", params) },
   },
   {
     id: "bl_char_set_body_proportion",
@@ -41,7 +41,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       waist: z.number().min(0).max(1).optional().describe("Waist size"),
       hip: z.number().min(0).max(1).optional().describe("Hip size"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_body_proportion", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_body_proportion", params) },
   },
   {
     id: "bl_char_set_muscle",
@@ -53,7 +53,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       muscle: z.number().min(0).max(1).describe("Muscle mass value"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_muscle", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_muscle", params) },
   },
   {
     id: "bl_char_set_body_fat",
@@ -65,7 +65,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       bodyFat: z.number().min(0).max(1).describe("Body fat ratio"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_body_fat", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_body_fat", params) },
   },
   {
     id: "bl_char_set_arm_length",
@@ -77,7 +77,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       armLength: z.number().min(0).max(1).describe("Arm length ratio"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_arm_length", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_arm_length", params) },
   },
   {
     id: "bl_char_set_leg_length",
@@ -89,7 +89,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       legLength: z.number().min(0).max(1).describe("Leg length ratio"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_leg_length", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_leg_length", params) },
   },
   {
     id: "bl_char_set_hand_size",
@@ -101,7 +101,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       handSize: z.number().min(0).max(1).describe("Hand size ratio"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hand_size", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hand_size", params) },
   },
   {
     id: "bl_char_set_foot_size",
@@ -113,7 +113,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       footSize: z.number().min(0).max(1).describe("Foot size ratio"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_foot_size", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_foot_size", params) },
   },
   {
     id: "bl_char_set_neck",
@@ -126,7 +126,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       neckLength: z.number().min(0).max(1).optional().describe("Neck length (0=short, 1=long)"),
       neckThickness: z.number().min(0).max(1).optional().describe("Neck thickness (0=thin, 1=thick)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_neck", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_neck", params) },
   },
   {
     id: "bl_char_set_torso",
@@ -138,7 +138,7 @@ export const blCharacterBodyTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       torsoLength: z.number().min(0).max(1).describe("Torso length (0=short, 0.5=normal, 1=long)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_torso", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_torso", params) },
   },
   {
     id: "bl_char_add_accessory_slot",
@@ -156,6 +156,6 @@ export const blCharacterBodyTools: ToolDefinition[] = [
         z: z.number().optional(),
       }).optional().describe("Position offset from bone"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_add_accessory_slot", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_add_accessory_slot", params) },
   },
 ];

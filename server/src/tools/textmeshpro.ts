@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const textmeshproTools: ToolDefinition[] = [
   {
@@ -19,12 +19,7 @@ export const textmeshproTools: ToolDefinition[] = [
       position: z.object({ x: z.number(), y: z.number(), z: z.number() }).optional().describe("Position"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TMPCreateText", params);
-        return { success: true, message: `TMP text "${params.name || "Text"}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TMPCreateText", params, { successMessage: (_, params) => `TMP text "${params.name || "Text"}" created` });
     },
   },
   {
@@ -39,12 +34,7 @@ export const textmeshproTools: ToolDefinition[] = [
       richText: z.boolean().optional().describe("Enable rich text tags (default: true)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TMPSetText", params);
-        return { success: true, message: `Text updated on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TMPSetText", params, { successMessage: (_, params) => `Text updated on "${params.objectName}"` });
     },
   },
   {
@@ -67,12 +57,7 @@ export const textmeshproTools: ToolDefinition[] = [
       autoSizeMax: z.number().optional().describe("Max font size for auto-size"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TMPSetStyle", params);
-        return { success: true, message: `Style updated on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TMPSetStyle", params, { successMessage: (_, params) => `Style updated on "${params.objectName}"` });
     },
   },
   {
@@ -89,12 +74,7 @@ export const textmeshproTools: ToolDefinition[] = [
       bottomRight: z.object({ r: z.number(), g: z.number(), b: z.number() }).describe("Bottom-right color"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TMPSetColorGradient", params);
-        return { success: true, message: `Color gradient applied on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TMPSetColorGradient", params, { successMessage: (_, params) => `Color gradient applied on "${params.objectName}"` });
     },
   },
   {
@@ -109,12 +89,7 @@ export const textmeshproTools: ToolDefinition[] = [
       materialPreset: z.string().optional().describe("Material preset name"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TMPSetFontAsset", params);
-        return { success: true, message: `Font changed to "${params.fontAssetName}" on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TMPSetFontAsset", params, { successMessage: (_, params) => `Font changed to "${params.fontAssetName}" on "${params.objectName}"` });
     },
   },
   {
@@ -133,12 +108,7 @@ export const textmeshproTools: ToolDefinition[] = [
       fontSize: z.number().optional().describe("Font size"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "TMPCreateInputField", params);
-        return { success: true, message: `TMP Input Field "${params.name || "InputField"}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "TMPCreateInputField", params, { successMessage: (_, params) => `TMP Input Field "${params.name || "InputField"}" created` });
     },
   },
 ];

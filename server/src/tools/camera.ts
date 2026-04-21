@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const cameraCreate: ToolDefinition = {
   id: "camera_create",
   name: "Create Camera",
@@ -15,12 +15,7 @@ export const cameraCreate: ToolDefinition = {
     fov: z.number().optional().describe("Field of view, default 60")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "CameraCreate", params);
-      return { success: true, message: `Created camera: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "CameraCreate", params, { successMessage: (_, params) => `Created camera: ${params.name}` });
   }
 };
 
@@ -35,12 +30,7 @@ export const cameraSetFOV: ToolDefinition = {
     fov: z.number().min(1).max(179).describe("Field of view in degrees")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "CameraSetFOV", params);
-      return { success: true, message: `Set FOV of ${params.name} to ${params.fov}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "CameraSetFOV", params, { successMessage: (_, params) => `Set FOV of ${params.name} to ${params.fov}` });
   }
 };
 
@@ -56,12 +46,7 @@ export const cameraSetBackground: ToolDefinition = {
     clearFlags: z.enum(["Skybox", "SolidColor", "Depth", "Nothing"]).optional().describe("Camera clear flags")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "CameraSetBackground", params);
-      return { success: true, message: `Set background of ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "CameraSetBackground", params, { successMessage: (_, params) => `Set background of ${params.name}` });
   }
 };
 

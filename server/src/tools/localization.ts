@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const localizationTools: ToolDefinition[] = [
   {
@@ -13,12 +13,7 @@ export const localizationTools: ToolDefinition[] = [
       setAsDefault: z.boolean().optional().describe("Set as project default locale"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "LocalizationAddLocale", params);
-        return { success: true, message: `Locale "${params.localeCode}" added${params.setAsDefault ? " (default)" : ""}`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "LocalizationAddLocale", params, { successMessage: (_, params) => `Locale "${params.localeCode}" added${params.setAsDefault ? " (default)" : ""}` });
     },
   },
   {
@@ -32,12 +27,7 @@ export const localizationTools: ToolDefinition[] = [
       path: z.string().optional().describe("Asset path relative to Assets/ (default: Assets/Localization)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "LocalizationCreateStringTable", params);
-        return { success: true, message: `String table "${params.tableName}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "LocalizationCreateStringTable", params, { successMessage: (_, params) => `String table "${params.tableName}" created` });
     },
   },
   {
@@ -51,15 +41,11 @@ export const localizationTools: ToolDefinition[] = [
       key: z.string().describe("Entry key (e.g. MENU_START, DIALOG_GREETING_01)"),
       values: z.record(z.string()).describe("Locale-to-value map, e.g. { en: 'Start', ja: 'スタート' }"),
     }),
-    handler: async (params) => {
-      try {
-        const localeCount = Object.keys(params.values).length;
-        const result = await bridge.send("unity", "LocalizationAddEntry", params);
-        return { success: true, message: `Entry "${params.key}" added to "${params.tableName}" for ${localeCount} locale(s)`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
-    },
+    handler: async (params) =>
+      bridgeSendAsToolResult("unity", "LocalizationAddEntry", params, {
+        successMessage: (_, p) =>
+          `Entry "${p.key}" added to "${p.tableName}" for ${Object.keys(p.values).length} locale(s)`,
+      }),
   },
   {
     id: "localization_batch_import",
@@ -76,12 +62,7 @@ export const localizationTools: ToolDefinition[] = [
       overwrite: z.boolean().optional().describe("Overwrite existing keys (default: false)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "LocalizationBatchImport", params);
-        return { success: true, message: `${params.entries.length} entries imported to "${params.tableName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "LocalizationBatchImport", params, { successMessage: (_, params) => `${params.entries.length} entries imported to "${params.tableName}"` });
     },
   },
   {
@@ -96,12 +77,7 @@ export const localizationTools: ToolDefinition[] = [
       entryKey: z.string().describe("Entry key to bind"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "LocalizationBindUI", params);
-        return { success: true, message: `"${params.objectName}" bound to "${params.tableName}/${params.entryKey}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "LocalizationBindUI", params, { successMessage: (_, params) => `"${params.objectName}" bound to "${params.tableName}/${params.entryKey}"` });
     },
   },
 ];

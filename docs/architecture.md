@@ -86,4 +86,4 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request 
 
 ### SuperSave `execute` / `compose` contract
 
-- `core/supersave.ts` **coerces** handler results: if a tool returns a plain object without a `success` boolean (legacy `bridge.send` return), it is wrapped as `{ success: true, message, data }` so MCP clients always see a `ToolResult`. Recipe tools additionally use `core/bridgeToolResult.ts` for explicit wrapping where practical.
+- `core/bridgeToolResult.ts` exports `bridgeSendAsToolResult(editor, pluginToolName, params, options?)`, which wraps `bridge.send` and always returns `{ success, message, data? }`. **Tool handlers** in `server/src/tools/` call this helper (or return an equivalent `ToolResult`) instead of returning raw plugin payloads. `core/supersave.ts` still **coerces** any stray non-`ToolResult` return as a safety net for MCP clients.

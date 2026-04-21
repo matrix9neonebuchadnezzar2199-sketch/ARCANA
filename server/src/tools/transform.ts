@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const transformSetPosition: ToolDefinition = {
   id: "transform_set_position",
   name: "Set Position",
@@ -14,12 +14,7 @@ export const transformSetPosition: ToolDefinition = {
     z: z.number().describe("Z position")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TransformSetPosition", params);
-      return { success: true, message: `Moved ${params.name} to (${params.x}, ${params.y}, ${params.z})`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TransformSetPosition", params, { successMessage: (_, params) => `Moved ${params.name} to (${params.x}, ${params.y}, ${params.z})` });
   }
 };
 
@@ -36,12 +31,7 @@ export const transformSetRotation: ToolDefinition = {
     z: z.number().describe("Z rotation in degrees")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TransformSetRotation", params);
-      return { success: true, message: `Rotated ${params.name} to (${params.x}, ${params.y}, ${params.z})`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TransformSetRotation", params, { successMessage: (_, params) => `Rotated ${params.name} to (${params.x}, ${params.y}, ${params.z})` });
   }
 };
 
@@ -58,12 +48,7 @@ export const transformSetScale: ToolDefinition = {
     z: z.number().describe("Z scale")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TransformSetScale", params);
-      return { success: true, message: `Scaled ${params.name} to (${params.x}, ${params.y}, ${params.z})`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TransformSetScale", params, { successMessage: (_, params) => `Scaled ${params.name} to (${params.x}, ${params.y}, ${params.z})` });
   }
 };
 
@@ -78,12 +63,7 @@ export const transformSetParent: ToolDefinition = {
     parentName: z.string().describe("Parent GameObject name, or empty to unparent")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TransformSetParent", params);
-      return { success: true, message: `Set parent of ${params.childName} to ${params.parentName}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TransformSetParent", params, { successMessage: (_, params) => `Set parent of ${params.childName} to ${params.parentName}` });
   }
 };
 
@@ -100,12 +80,7 @@ export const transformLookAt: ToolDefinition = {
     targetZ: z.number().describe("Target Z position")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TransformLookAt", params);
-      return { success: true, message: `${params.name} now looks at (${params.targetX}, ${params.targetY}, ${params.targetZ})`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TransformLookAt", params, { successMessage: (_, params) => `${params.name} now looks at (${params.targetX}, ${params.targetY}, ${params.targetZ})` });
   }
 };
 

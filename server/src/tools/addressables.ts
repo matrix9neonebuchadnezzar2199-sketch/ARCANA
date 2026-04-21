@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const addressablesTools: ToolDefinition[] = [
   {
@@ -15,12 +15,7 @@ export const addressablesTools: ToolDefinition[] = [
       bundleMode: z.enum(["PackTogether", "PackSeparately", "PackTogetherByLabel"]).optional().describe("Bundle packing mode"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "AddressablesCreateGroup", params);
-        return { success: true, message: `Addressable group "${params.groupName}" created`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "AddressablesCreateGroup", params, { successMessage: (_, params) => `Addressable group "${params.groupName}" created` });
     },
   },
   {
@@ -36,12 +31,7 @@ export const addressablesTools: ToolDefinition[] = [
       labels: z.array(z.string()).optional().describe("Labels to assign"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "AddressablesMarkAsset", params);
-        return { success: true, message: `Asset "${params.assetPath}" marked as Addressable`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "AddressablesMarkAsset", params, { successMessage: (_, params) => `Asset "${params.assetPath}" marked as Addressable` });
     },
   },
   {
@@ -56,12 +46,7 @@ export const addressablesTools: ToolDefinition[] = [
       removeLabels: z.array(z.string()).optional().describe("Labels to remove"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "AddressablesSetLabels", params);
-        return { success: true, message: `Labels updated for "${params.address}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "AddressablesSetLabels", params, { successMessage: (_, params) => `Labels updated for "${params.address}"` });
     },
   },
   {
@@ -75,12 +60,7 @@ export const addressablesTools: ToolDefinition[] = [
       profileName: z.string().optional().describe("Build profile name to use"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "AddressablesBuild", params);
-        return { success: true, message: `Addressables build ${params.cleanBuild ? "(clean) " : ""}completed`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "AddressablesBuild", params, { successMessage: (_, params) => `Addressables build ${params.cleanBuild ? "(clean) " : ""}completed` });
     },
   },
   {
@@ -94,12 +74,7 @@ export const addressablesTools: ToolDefinition[] = [
       groupFilter: z.string().optional().describe("Filter groups by name pattern"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "AddressablesListGroups", params);
-        return { success: true, message: "Addressable groups listed", data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "AddressablesListGroups", params, { successMessage: "Addressable groups listed" });
     },
   },
   {
@@ -113,12 +88,7 @@ export const addressablesTools: ToolDefinition[] = [
       autoFix: z.boolean().optional().describe("Auto-fix detected issues"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("unity", "AddressablesAnalyze", params);
-        return { success: true, message: "Addressables analysis completed", data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("unity", "AddressablesAnalyze", params, { successMessage: "Addressables analysis completed" });
     },
   },
 ];

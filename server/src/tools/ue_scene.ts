@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const ueSceneListActors: ToolDefinition = {
   id: "ue_scene_list_actors",
@@ -9,13 +9,7 @@ const ueSceneListActors: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ filter: z.string().optional() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unreal", "SceneListActors", p);
-      return r ? { success: true, message: "Actors listed", data: r }
-               : { success: false, message: "Failed to list actors" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unreal", "SceneListActors", p, { successMessage: "Actors listed" });
   }
 };
 
@@ -27,13 +21,7 @@ const ueSceneSpawnActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ type: z.enum(["Cube","Sphere","Cylinder","Cone","Plane","Empty","PointLight","SpotLight"]).default("Cube"), name: z.string().optional(), x: z.number().default(0), y: z.number().default(0), z: z.number().default(0) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unreal", "SceneSpawnActor", p);
-      return r ? { success: true, message: `Actor spawned: ${p.type}`, data: r }
-               : { success: false, message: "Failed to spawn actor" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unreal", "SceneSpawnActor", p, { successMessage: (_, p) => `Actor spawned: ${p.type}` });
   }
 };
 
@@ -45,13 +33,7 @@ const ueSceneDeleteActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unreal", "SceneDeleteActor", p);
-      return r ? { success: true, message: `Actor deleted: ${p.actorName}`, data: r }
-               : { success: false, message: "Failed to delete actor" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unreal", "SceneDeleteActor", p, { successMessage: (_, p) => `Actor deleted: ${p.actorName}` });
   }
 };
 
@@ -63,13 +45,7 @@ const ueSceneDuplicateActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string(), newName: z.string().optional() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unreal", "SceneDuplicateActor", p);
-      return r ? { success: true, message: `Actor duplicated: ${p.actorName}`, data: r }
-               : { success: false, message: "Failed to duplicate actor" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unreal", "SceneDuplicateActor", p, { successMessage: (_, p) => `Actor duplicated: ${p.actorName}` });
   }
 };
 
@@ -81,13 +57,7 @@ const ueSceneRenameActor: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string(), newName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unreal", "SceneRenameActor", p);
-      return r ? { success: true, message: `Renamed to ${p.newName}`, data: r }
-               : { success: false, message: "Failed to rename actor" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unreal", "SceneRenameActor", p, { successMessage: (_, p) => `Renamed to ${p.newName}` });
   }
 };
 
@@ -99,13 +69,7 @@ const ueSceneGetActorInfo: ToolDefinition = {
   category: "ue_scene",
   inputSchema: z.object({ actorName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unreal", "SceneGetActorInfo", p);
-      return r ? { success: true, message: `Info for ${p.actorName}`, data: r }
-               : { success: false, message: "Failed to get actor info" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unreal", "SceneGetActorInfo", p, { successMessage: (_, p) => `Info for ${p.actorName}` });
   }
 };
 

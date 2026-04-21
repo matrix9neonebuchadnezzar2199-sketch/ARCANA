@@ -1,5 +1,5 @@
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 
 const blExecuteCode: ToolDefinition = {
@@ -12,14 +12,7 @@ const blExecuteCode: ToolDefinition = {
     code: z.string().describe("Python code to execute in Blender"),
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("blender", "bl_execute_code", params);
-      return result
-        ? { success: true, message: "Code executed", data: result }
-        : { success: false, message: "Execution failed" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("blender", "bl_execute_code", params, { successMessage: "Code executed" });
   },
 };
 

@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blGeometryNodesTools: ToolDefinition[] = [
   {
@@ -13,12 +13,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       treeName: z.string().optional().describe("Node tree name"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_create_tree", params);
-        return { success: true, message: `Geometry Nodes tree created on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_create_tree", params, { successMessage: (_, params) => `Geometry Nodes tree created on "${params.objectName}"` });
     },
   },
   {
@@ -35,12 +30,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       locationY: z.number().optional().describe("Node Y position in editor"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_add_node", params);
-        return { success: true, message: `Node "${params.nodeType}" added to "${params.treeName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_add_node", params, { successMessage: (_, params) => `Node "${params.nodeType}" added to "${params.treeName}"` });
     },
   },
   {
@@ -57,12 +47,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       toSocket: z.union([z.string(), z.number()]).describe("Input socket name or index"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_connect", params);
-        return { success: true, message: `Connected ${params.fromNode}[${params.fromSocket}] -> ${params.toNode}[${params.toSocket}]`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_connect", params, { successMessage: (_, params) => `Connected ${params.fromNode}[${params.fromSocket}] -> ${params.toNode}[${params.toSocket}]` });
     },
   },
   {
@@ -78,12 +63,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       value: z.union([z.number(), z.boolean(), z.string(), z.array(z.number())]).describe("Value to set (number, bool, string, or array for vector)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_set_input", params);
-        return { success: true, message: `Input "${params.socketName}" set on "${params.nodeName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_set_input", params, { successMessage: (_, params) => `Input "${params.socketName}" set on "${params.nodeName}"` });
     },
   },
   {
@@ -102,12 +82,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       alignToNormal: z.boolean().optional().describe("Align instances to surface normal"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_add_scatter_setup", params);
-        return { success: true, message: `Scatter setup created: "${params.instanceObject}" on "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_add_scatter_setup", params, { successMessage: (_, params) => `Scatter setup created: "${params.instanceObject}" on "${params.objectName}"` });
     },
   },
   {
@@ -122,12 +97,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       offset: z.object({ x: z.number(), y: z.number(), z: z.number() }).describe("Offset between instances"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_add_array_setup", params);
-        return { success: true, message: `Array setup: ${params.count}x "${params.objectName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_add_array_setup", params, { successMessage: (_, params) => `Array setup: ${params.count}x "${params.objectName}"` });
     },
   },
   {
@@ -143,12 +113,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       noiseScale: z.number().optional().describe("Noise scale (for NoiseDisplace)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_add_deform_node", params);
-        return { success: true, message: `${params.deformType} deformation added to "${params.treeName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_add_deform_node", params, { successMessage: (_, params) => `${params.deformType} deformation added to "${params.treeName}"` });
     },
   },
   {
@@ -166,12 +131,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       maxValue: z.number().optional().describe("Maximum value (for numeric types)"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_add_group_input", params);
-        return { success: true, message: `Group input "${params.inputName}" (${params.inputType}) added to "${params.treeName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_add_group_input", params, { successMessage: (_, params) => `Group input "${params.inputName}" (${params.inputType}) added to "${params.treeName}"` });
     },
   },
   {
@@ -189,12 +149,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       fillCaps: z.boolean().optional().describe("Fill end caps"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_add_curve_setup", params);
-        return { success: true, message: `Curve-to-Mesh setup (${params.curveType}) added to "${params.treeName}"`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_add_curve_setup", params, { successMessage: (_, params) => `Curve-to-Mesh setup (${params.curveType}) added to "${params.treeName}"` });
     },
   },
   {
@@ -207,12 +162,7 @@ export const blGeometryNodesTools: ToolDefinition[] = [
       treeName: z.string().describe("Node tree name"),
     }),
     handler: async (params) => {
-      try {
-        const result = await bridge.send("blender", "bl_geonodes_list_tree", params);
-        return { success: true, message: `Node tree "${params.treeName}" listed`, data: result };
-      } catch (error: any) {
-        return { success: false, message: `Error: ${error.message}` };
-      }
+      return bridgeSendAsToolResult("blender", "bl_geonodes_list_tree", params, { successMessage: (_, params) => `Node tree "${params.treeName}" listed` });
     },
   },
 ];

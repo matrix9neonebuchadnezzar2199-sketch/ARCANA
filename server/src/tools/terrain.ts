@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const terrainCreate: ToolDefinition = {
   id: "terrain_create",
   name: "Create Terrain",
@@ -13,12 +13,7 @@ export const terrainCreate: ToolDefinition = {
     height: z.number().optional().describe("Max terrain height, default 100")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TerrainCreate", params);
-      return { success: true, message: "Terrain created", data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TerrainCreate", params, { successMessage: "Terrain created" });
   }
 };
 
@@ -35,12 +30,7 @@ export const terrainSetHeight: ToolDefinition = {
     radius: z.number().optional().describe("Brush radius in samples, default 5")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TerrainSetHeight", params);
-      return { success: true, message: "Terrain height set", data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TerrainSetHeight", params, { successMessage: "Terrain height set" });
   }
 };
 
@@ -55,12 +45,7 @@ export const terrainAddTexture: ToolDefinition = {
     tileSize: z.number().optional().describe("Texture tile size, default 10")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TerrainAddTexture", params);
-      return { success: true, message: "Terrain texture added", data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TerrainAddTexture", params, { successMessage: "Terrain texture added" });
   }
 };
 
@@ -77,12 +62,7 @@ export const terrainAddTrees: ToolDefinition = {
     maxScale: z.number().optional().describe("Maximum tree scale, default 1.2")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "TerrainAddTrees", params);
-      return { success: true, message: `Added ${params.count || 100} trees`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TerrainAddTrees", params, { successMessage: (_, params) => `Added ${params.count || 100} trees` });
   }
 };
 

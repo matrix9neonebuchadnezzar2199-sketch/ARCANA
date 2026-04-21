@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const optGetSceneStats: ToolDefinition = {
   id: "opt_get_scene_stats",
   name: "Get Scene Statistics",
@@ -9,12 +9,7 @@ export const optGetSceneStats: ToolDefinition = {
   category: "optimization",
   inputSchema: z.object({}),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "OptGetSceneStats", params);
-      return { success: true, message: "Scene statistics retrieved", data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OptGetSceneStats", params, { successMessage: "Scene statistics retrieved" });
   }
 };
 
@@ -30,12 +25,7 @@ export const optSetStatic: ToolDefinition = {
     includeChildren: z.boolean().optional().describe("Apply to children, default true")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "OptSetStatic", params);
-      return { success: true, message: `Set static on ${params.name} to ${params.isStatic}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OptSetStatic", params, { successMessage: (_, params) => `Set static on ${params.name} to ${params.isStatic}` });
   }
 };
 
@@ -51,12 +41,7 @@ export const optAddLODGroup: ToolDefinition = {
     fadeMode: z.enum(["None", "CrossFade", "SpeedTree"]).optional().describe("LOD fade mode, default None")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "OptAddLODGroup", params);
-      return { success: true, message: `Added LOD Group to ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OptAddLODGroup", params, { successMessage: (_, params) => `Added LOD Group to ${params.name}` });
   }
 };
 
@@ -68,12 +53,7 @@ export const optRemoveMissingScripts: ToolDefinition = {
   category: "optimization",
   inputSchema: z.object({}),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "OptRemoveMissingScripts", params);
-      return { success: true, message: "Removed missing scripts", data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OptRemoveMissingScripts", params, { successMessage: "Removed missing scripts" });
   }
 };
 

@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const ueMeshImport: ToolDefinition = {
   id: "ue_mesh_import", name: "Import Static Mesh",
@@ -7,7 +7,7 @@ const ueMeshImport: ToolDefinition = {
   descriptionJa: "FBX/OBJファイルからスタティックメッシュをインポート",
   category: "ue_mesh",
   inputSchema: z.object({ filePath: z.string(), destPath: z.string().default("/Game/Meshes") }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "MeshImport", p); return r ? { success: true, message: "Mesh imported", data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "MeshImport", p, { successMessage: "Mesh imported" }) }
 };
 
 const ueMeshSetCollision: ToolDefinition = {
@@ -16,7 +16,7 @@ const ueMeshSetCollision: ToolDefinition = {
   descriptionJa: "スタティックメッシュのコリジョン設定を変更",
   category: "ue_mesh",
   inputSchema: z.object({ actorName: z.string(), collisionType: z.enum(["NoCollision","QueryOnly","PhysicsOnly","QueryAndPhysics"]).default("QueryAndPhysics"), complexAsSimple: z.boolean().default(false) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "MeshSetCollision", p); return r ? { success: true, message: `Collision set: ${p.collisionType}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "MeshSetCollision", p, { successMessage: (_, p) => `Collision set: ${p.collisionType}` }) }
 };
 
 const ueMeshSetLod: ToolDefinition = {
@@ -25,7 +25,7 @@ const ueMeshSetLod: ToolDefinition = {
   descriptionJa: "スタティックメッシュのLOD設定を変更",
   category: "ue_mesh",
   inputSchema: z.object({ actorName: z.string(), lodCount: z.number().default(3), autoComputeLOD: z.boolean().default(true) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "MeshSetLod", p); return r ? { success: true, message: `LOD set: ${p.lodCount} levels`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "MeshSetLod", p, { successMessage: (_, p) => `LOD set: ${p.lodCount} levels` }) }
 };
 
 const ueMeshMerge: ToolDefinition = {
@@ -34,7 +34,7 @@ const ueMeshMerge: ToolDefinition = {
   descriptionJa: "複数のスタティックメッシュアクターを1つに結合",
   category: "ue_mesh",
   inputSchema: z.object({ actorNames: z.array(z.string()), newName: z.string().default("MergedMesh") }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "MeshMerge", p); return r ? { success: true, message: `Merged ${p.actorNames.length} meshes`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "MeshMerge", p, { successMessage: (_, p) => `Merged ${p.actorNames.length} meshes` }) }
 };
 
 const ueMeshGetInfo: ToolDefinition = {
@@ -43,7 +43,7 @@ const ueMeshGetInfo: ToolDefinition = {
   descriptionJa: "メッシュの頂点数・三角形数・バウンズを取得",
   category: "ue_mesh",
   inputSchema: z.object({ actorName: z.string() }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "MeshGetInfo", p); return r ? { success: true, message: "Mesh info retrieved", data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "MeshGetInfo", p, { successMessage: "Mesh info retrieved" }) }
 };
 
 const ueMeshSetNanite: ToolDefinition = {
@@ -52,7 +52,7 @@ const ueMeshSetNanite: ToolDefinition = {
   descriptionJa: "スタティックメッシュのNaniteを有効/無効（UE5）",
   category: "ue_mesh",
   inputSchema: z.object({ actorName: z.string(), enabled: z.boolean().default(true) }),
-  handler: async (p) => { try { const r = await bridge.send("unreal", "MeshSetNanite", p); return r ? { success: true, message: `Nanite ${p.enabled ? "enabled" : "disabled"}`, data: r } : { success: false, message: "Failed" }; } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } }
+  handler: async (p) => { return bridgeSendAsToolResult("unreal", "MeshSetNanite", p, { successMessage: (_, p) => `Nanite ${p.enabled ? "enabled" : "disabled"}` }) }
 };
 
 export const ueMeshTools: ToolDefinition[] = [

@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const animAddAnimator: ToolDefinition = {
   id: "anim_add_animator",
   name: "Add Animator",
@@ -12,12 +12,7 @@ export const animAddAnimator: ToolDefinition = {
     controllerPath: z.string().optional().describe("Animator controller path relative to Assets")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AnimAddAnimator", params);
-      return { success: true, message: `Added Animator to ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AnimAddAnimator", params, { successMessage: (_, params) => `Added Animator to ${params.name}` });
   }
 };
 
@@ -34,12 +29,7 @@ export const animSetParameter: ToolDefinition = {
     value: z.any().optional().describe("Parameter value")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AnimSetParameter", params);
-      return { success: true, message: `Set ${params.paramName} on ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AnimSetParameter", params, { successMessage: (_, params) => `Set ${params.paramName} on ${params.name}` });
   }
 };
 
@@ -55,12 +45,7 @@ export const animPlay: ToolDefinition = {
     layer: z.number().optional().describe("Animator layer, default 0")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AnimPlay", params);
-      return { success: true, message: `Playing ${params.stateName} on ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AnimPlay", params, { successMessage: (_, params) => `Playing ${params.stateName} on ${params.name}` });
   }
 };
 
@@ -80,12 +65,7 @@ export const animCreateClip: ToolDefinition = {
     loop: z.boolean().optional().describe("Loop the animation, default false")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AnimCreateClip", params);
-      return { success: true, message: `Created animation clip: ${params.clipName}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AnimCreateClip", params, { successMessage: (_, params) => `Created animation clip: ${params.clipName}` });
   }
 };
 

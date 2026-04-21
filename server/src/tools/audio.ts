@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const audioAddSource: ToolDefinition = {
   id: "audio_add_source",
   name: "Add Audio Source",
@@ -15,12 +15,7 @@ export const audioAddSource: ToolDefinition = {
     playOnAwake: z.boolean().optional().describe("Play on awake, default true")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AudioAddSource", params);
-      return { success: true, message: `Added audio source to ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AudioAddSource", params, { successMessage: (_, params) => `Added audio source to ${params.name}` });
   }
 };
 
@@ -35,12 +30,7 @@ export const audioSetVolume: ToolDefinition = {
     volume: z.number().min(0).max(1).describe("Volume 0-1")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AudioSetVolume", params);
-      return { success: true, message: `Set volume of ${params.name} to ${params.volume}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AudioSetVolume", params, { successMessage: (_, params) => `Set volume of ${params.name} to ${params.volume}` });
   }
 };
 
@@ -57,12 +47,7 @@ export const audioSetSpatial: ToolDefinition = {
     maxDistance: z.number().optional().describe("Max hearing distance, default 500")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "AudioSetSpatial", params);
-      return { success: true, message: `Set spatial audio on ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "AudioSetSpatial", params, { successMessage: (_, params) => `Set spatial audio on ${params.name}` });
   }
 };
 

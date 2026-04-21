@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const lightingCreateLight: ToolDefinition = {
   id: "lighting_create_light",
   name: "Create Light",
@@ -17,12 +17,7 @@ export const lightingCreateLight: ToolDefinition = {
     intensity: z.number().optional().describe("Light intensity")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LightingCreateLight", params);
-      return { success: true, message: `Created ${params.type} light: ${params.name}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LightingCreateLight", params, { successMessage: (_, params) => `Created ${params.type} light: ${params.name}` });
   }
 };
 
@@ -37,12 +32,7 @@ export const lightingSetColor: ToolDefinition = {
     color: z.string().describe("Color as hex string")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LightingSetColor", params);
-      return { success: true, message: `Set light color of ${params.name} to ${params.color}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LightingSetColor", params, { successMessage: (_, params) => `Set light color of ${params.name} to ${params.color}` });
   }
 };
 
@@ -57,12 +47,7 @@ export const lightingSetIntensity: ToolDefinition = {
     intensity: z.number().describe("Light intensity value")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LightingSetIntensity", params);
-      return { success: true, message: `Set intensity of ${params.name} to ${params.intensity}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LightingSetIntensity", params, { successMessage: (_, params) => `Set intensity of ${params.name} to ${params.intensity}` });
   }
 };
 
@@ -77,12 +62,7 @@ export const lightingSetShadow: ToolDefinition = {
     mode: z.enum(["None", "Hard", "Soft"]).describe("Shadow mode")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LightingSetShadow", params);
-      return { success: true, message: `Set shadow mode of ${params.name} to ${params.mode}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LightingSetShadow", params, { successMessage: (_, params) => `Set shadow mode of ${params.name} to ${params.mode}` });
   }
 };
 
@@ -97,12 +77,7 @@ export const lightingSetAmbient: ToolDefinition = {
     intensity: z.number().optional().describe("Ambient intensity")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "LightingSetAmbient", params);
-      return { success: true, message: `Set ambient light to ${params.color}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "LightingSetAmbient", params, { successMessage: (_, params) => `Set ambient light to ${params.color}` });
   }
 };
 

@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 export const materialSetColor: ToolDefinition = {
   id: "material_set_color",
   name: "Set Material Color",
@@ -12,12 +12,7 @@ export const materialSetColor: ToolDefinition = {
     color: z.string().describe("Color as hex string, e.g. #FF0000")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "MaterialSetColor", params);
-      return { success: true, message: `Set color of ${params.name} to ${params.color}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "MaterialSetColor", params, { successMessage: (_, params) => `Set color of ${params.name} to ${params.color}` });
   }
 };
 
@@ -32,12 +27,7 @@ export const materialSetTransparency: ToolDefinition = {
     alpha: z.number().min(0).max(1).describe("Alpha value 0 (transparent) to 1 (opaque)")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "MaterialSetTransparency", params);
-      return { success: true, message: `Set transparency of ${params.name} to ${params.alpha}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "MaterialSetTransparency", params, { successMessage: (_, params) => `Set transparency of ${params.name} to ${params.alpha}` });
   }
 };
 
@@ -53,12 +43,7 @@ export const materialSetEmission: ToolDefinition = {
     intensity: z.number().optional().describe("Emission intensity, default 1.0")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "MaterialSetEmission", params);
-      return { success: true, message: `Set emission of ${params.name} to ${params.color}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "MaterialSetEmission", params, { successMessage: (_, params) => `Set emission of ${params.name} to ${params.color}` });
   }
 };
 
@@ -73,12 +58,7 @@ export const materialSetShader: ToolDefinition = {
     shader: z.string().describe("Shader name, e.g. Standard, Unlit/Color, Universal Render Pipeline/Lit")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "MaterialSetShader", params);
-      return { success: true, message: `Set shader of ${params.name} to ${params.shader}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "MaterialSetShader", params, { successMessage: (_, params) => `Set shader of ${params.name} to ${params.shader}` });
   }
 };
 
@@ -93,12 +73,7 @@ export const materialSetTexture: ToolDefinition = {
     texturePath: z.string().describe("Path to texture file relative to Assets folder")
   }),
   handler: async (params) => {
-    try {
-      const result = await bridge.send("unity", "MaterialSetTexture", params);
-      return { success: true, message: `Set texture of ${params.name} to ${params.texturePath}`, data: result };
-    } catch (error: any) {
-      return { success: false, message: `Failed: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "MaterialSetTexture", params, { successMessage: (_, params) => `Set texture of ${params.name} to ${params.texturePath}` });
   }
 };
 

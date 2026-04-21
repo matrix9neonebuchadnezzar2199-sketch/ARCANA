@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 export const blCharacterHairTools: ToolDefinition[] = [
   {
@@ -12,7 +12,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       style: z.enum(["straight_long", "straight_short", "straight_bob", "wavy_long", "wavy_medium", "curly_long", "curly_short", "afro", "ponytail", "twintail", "bun", "braids", "mohawk", "buzzcut", "undercut", "asymmetric", "hime_cut"]).describe("Hair style preset"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_style", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_style", params) },
   },
   {
     id: "bl_char_set_hair_length",
@@ -26,7 +26,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       sideCm: z.number().min(0).max(150).optional().describe("Side hair length in cm"),
       backCm: z.number().min(0).max(150).optional().describe("Back hair length in cm"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_length", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_length", params) },
   },
   {
     id: "bl_char_set_hair_color",
@@ -39,7 +39,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       colorRgb: z.object({ r: z.number().min(0).max(1), g: z.number().min(0).max(1), b: z.number().min(0).max(1) }).optional().describe("Hair color as RGB (0-1)"),
       preset: z.enum(["black", "dark_brown", "brown", "light_brown", "blonde", "platinum_blonde", "ash", "ash_gray", "ash_brown", "ash_blonde", "silver", "white", "red", "auburn", "ginger", "pink", "blue", "green", "purple", "lavender", "orange", "teal"]).optional().describe("Color preset name"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_color", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_color", params) },
   },
   {
     id: "bl_char_set_hair_gradient",
@@ -54,7 +54,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       gradientPosition: z.number().min(0).max(1).optional().describe("Where gradient starts (0=root, 1=tip, default 0.5)"),
       style: z.enum(["ombre", "balayage", "dip_dye", "roots_only"]).optional().describe("Gradient style"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_gradient", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_gradient", params) },
   },
   {
     id: "bl_char_set_hair_highlight",
@@ -69,7 +69,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       width: z.number().min(0).max(1).optional().describe("Streak width (0=thin, 1=thick)"),
       count: z.number().min(1).max(20).optional().describe("Number of highlight streaks (default 3)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_highlight", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_highlight", params) },
   },
   {
     id: "bl_char_set_hair_volume",
@@ -81,7 +81,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       volume: z.number().min(0).max(1).describe("Hair volume (0=flat, 0.5=normal, 1=very fluffy)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_volume", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_volume", params) },
   },
   {
     id: "bl_char_set_hair_shine",
@@ -93,7 +93,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       objectName: z.string().optional().describe("Target character object name"),
       shine: z.number().min(0).max(1).describe("Shininess (0=matte, 0.5=normal, 1=glossy)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_shine", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_shine", params) },
   },
   {
     id: "bl_char_set_hair_physics",
@@ -109,7 +109,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       collisionRadius: z.number().min(0).max(0.5).optional().describe("Collision radius in meters (default 0.05)"),
       damping: z.number().min(0).max(1).optional().describe("Damping (default 0.4)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_physics", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_physics", params) },
   },
   {
     id: "bl_char_set_hair_part",
@@ -122,7 +122,7 @@ export const blCharacterHairTools: ToolDefinition[] = [
       partStyle: z.enum(["center", "left", "right", "zigzag", "none"]).describe("Parting style"),
       partOffset: z.number().min(-1).max(1).optional().describe("Fine offset (-1=far left, 0=center, 1=far right)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_set_hair_part", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_set_hair_part", params) },
   },
   {
     id: "bl_char_add_hair_accessory",
@@ -136,6 +136,6 @@ export const blCharacterHairTools: ToolDefinition[] = [
       position: z.enum(["top", "side_left", "side_right", "back", "bangs"]).optional().describe("Placement position (default top)"),
       color: z.object({ r: z.number(), g: z.number(), b: z.number() }).optional().describe("Accessory color RGB (0-1)"),
     }),
-    handler: async (params) => { try { return await bridge.send("blender", "bl_char_add_hair_accessory", params); } catch (error: any) { return { success: false, message: `Error: ${error.message}` }; } },
+    handler: async (params) => { return bridgeSendAsToolResult("blender", "bl_char_add_hair_accessory", params) },
   },
 ];

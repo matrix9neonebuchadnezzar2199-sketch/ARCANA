@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const tagmgrAddTag: ToolDefinition = {
   id: "tagmgr_add_tag",
@@ -9,13 +9,7 @@ const tagmgrAddTag: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({ tagName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "TagmgrAddTag", p);
-      return r ? { success: true, message: `Tag added: ${p.tagName}`, data: r }
-               : { success: false, message: "Failed to add tag" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TagmgrAddTag", p, { successMessage: (_, p) => `Tag added: ${p.tagName}` });
   }
 };
 
@@ -27,13 +21,7 @@ const tagmgrAddLayer: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({ layerName: z.string(), layerIndex: z.number().optional() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "TagmgrAddLayer", p);
-      return r ? { success: true, message: `Layer added: ${p.layerName}`, data: r }
-               : { success: false, message: "Failed to add layer" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TagmgrAddLayer", p, { successMessage: (_, p) => `Layer added: ${p.layerName}` });
   }
 };
 
@@ -45,13 +33,7 @@ const tagmgrAddSortingLayer: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({ layerName: z.string() }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "TagmgrAddSortingLayer", p);
-      return r ? { success: true, message: `Sorting layer added: ${p.layerName}`, data: r }
-               : { success: false, message: "Failed to add sorting layer" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TagmgrAddSortingLayer", p, { successMessage: (_, p) => `Sorting layer added: ${p.layerName}` });
   }
 };
 
@@ -63,13 +45,7 @@ const tagmgrListAll: ToolDefinition = {
   category: "tagmanager",
   inputSchema: z.object({}),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "TagmgrListAll", p);
-      return r ? { success: true, message: "Tags and layers listed", data: r }
-               : { success: false, message: "Failed to list tags and layers" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "TagmgrListAll", p, { successMessage: "Tags and layers listed" });
   }
 };
 

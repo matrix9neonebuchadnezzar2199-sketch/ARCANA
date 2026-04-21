@@ -1,5 +1,5 @@
 ﻿import { ToolDefinition } from "../core/registry";
-import { bridge } from "../bridge";
+import { bridgeSendAsToolResult } from "../core/bridgeToolResult";
 import { z } from "zod";
 const occlusionBake: ToolDefinition = {
   id: "occlusion_bake",
@@ -9,13 +9,7 @@ const occlusionBake: ToolDefinition = {
   category: "occlusion",
   inputSchema: z.object({}),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "OcclusionBake", p);
-      return r ? { success: true, message: "Occlusion culling bake started", data: r }
-               : { success: false, message: "Failed to bake occlusion" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OcclusionBake", p, { successMessage: "Occlusion culling bake started" });
   }
 };
 
@@ -27,13 +21,7 @@ const occlusionSetOccluder: ToolDefinition = {
   category: "occlusion",
   inputSchema: z.object({ objectName: z.string(), enabled: z.boolean().default(true) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "OcclusionSetOccluder", p);
-      return r ? { success: true, message: `${p.objectName} occluder static: ${p.enabled}`, data: r }
-               : { success: false, message: "Failed to set occluder" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OcclusionSetOccluder", p, { successMessage: (_, p) => `${p.objectName} occluder static: ${p.enabled}` });
   }
 };
 
@@ -45,13 +33,7 @@ const occlusionSetOccludee: ToolDefinition = {
   category: "occlusion",
   inputSchema: z.object({ objectName: z.string(), enabled: z.boolean().default(true) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "OcclusionSetOccludee", p);
-      return r ? { success: true, message: `${p.objectName} occludee static: ${p.enabled}`, data: r }
-               : { success: false, message: "Failed to set occludee" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OcclusionSetOccludee", p, { successMessage: (_, p) => `${p.objectName} occludee static: ${p.enabled}` });
   }
 };
 
@@ -63,13 +45,7 @@ const occlusionSetParams: ToolDefinition = {
   category: "occlusion",
   inputSchema: z.object({ smallestOccluder: z.number().default(5), smallestHole: z.number().default(0.25), backfaceThreshold: z.number().default(100) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "OcclusionSetParams", p);
-      return r ? { success: true, message: "Occlusion parameters updated", data: r }
-               : { success: false, message: "Failed to set occlusion params" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OcclusionSetParams", p, { successMessage: "Occlusion parameters updated" });
   }
 };
 
@@ -81,13 +57,7 @@ const occlusionClear: ToolDefinition = {
   category: "occlusion",
   inputSchema: z.object({}),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "OcclusionClear", p);
-      return r ? { success: true, message: "Occlusion data cleared", data: r }
-               : { success: false, message: "Failed to clear occlusion data" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OcclusionClear", p, { successMessage: "Occlusion data cleared" });
   }
 };
 
@@ -99,13 +69,7 @@ const occlusionVisualize: ToolDefinition = {
   category: "occlusion",
   inputSchema: z.object({ enabled: z.boolean().default(true) }),
   handler: async (p) => {
-    try {
-      const r = await bridge.send("unity", "OcclusionVisualize", p);
-      return r ? { success: true, message: `Occlusion visualization: ${p.enabled ? "on" : "off"}`, data: r }
-               : { success: false, message: "Failed to toggle visualization" };
-    } catch (error: any) {
-      return { success: false, message: `Error: ${error.message}` };
-    }
+    return bridgeSendAsToolResult("unity", "OcclusionVisualize", p, { successMessage: (_, p) => `Occlusion visualization: ${p.enabled ? "on" : "off"}` });
   }
 };
 
