@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
 
-import { ToolDefinition, ToolResult } from "../core/registry";
+import { ToolDefinition } from "../core/registry";
 
 // ============================================================
 // Image Analysis Prompt Templates
@@ -354,7 +354,6 @@ const imageToSceneTool: ToolDefinition = {
   }),
   handler: async (params: any) => { try { const data = params.analysisJson;
     const editor = params.targetEditor || "blender";
-    const prefix = editor === "blender" ? "bl_" : editor === "unity" ? "" : "ue_";
     const pipeline: any[] = [];
 
     // 1. Terrain

@@ -6,6 +6,8 @@
 
 import { WebSocketServer, WebSocket } from "ws";
 
+import { ARCANA_SERVER_VERSION } from "./version";
+
 interface EditorConnection {
   ws: WebSocket;
   editor: string;
@@ -97,7 +99,7 @@ class ArcanaBridge {
       conn.ws.send(JSON.stringify({
         type: "registered",
         server: "arcana-mcp-server",
-        serverVersion: "6.0.0",
+        serverVersion: ARCANA_SERVER_VERSION,
       }));
       return;
     }

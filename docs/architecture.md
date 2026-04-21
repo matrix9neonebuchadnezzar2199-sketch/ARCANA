@@ -11,7 +11,7 @@ Layer 2: ARCANA MCP Server (Node.js + TypeScript)
   |
   | WebSocket (bidirectional, JSON messages)
   |
-Layer 3: Editor Plugins (Unity C# / Blender Python)
+Layer 3: Editor Plugins (Unity C#, Unreal Engine C++, Blender Python)
 ```
 
 ## Layer 2: MCP Server
@@ -28,8 +28,7 @@ Key modules:
 
 - `core/registry.ts` - Tool storage, search, categorization
 - `core/supersave.ts` - 4 meta-tools (discover, inspect, execute, compose)
-- `bridge/unity-bridge.ts` - WebSocket client to Unity plugin
-- `bridge/blender-bridge.ts` - WebSocket client to Blender addon
+- `bridge.ts` - WebSocket servers for Unity (:9877), Unreal (:9878), Blender (:9879); routes tool calls to the connected editor
 - `tools/*.ts` - Individual tool definitions
 - `index.ts` - MCP server entry point
 

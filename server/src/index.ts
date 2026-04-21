@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { globalRegistry } from "./core/registry";
 import { superSave } from "./core/supersave";
+import { ARCANA_SERVER_VERSION } from "./version";
 
 // Import all tool modules
 import { sceneTools } from "./tools/scene";
@@ -226,7 +227,7 @@ console.error(`[ARCANA] ${allTools.length} tools registered across ${new Set(all
 // Start WebSocket bridges for Unity/UE/Blender
 bridge.start();
 
-const server = new Server({ name: "arcana-mcp-server", version: "2.0.0" }, { capabilities: { tools: {} } });
+const server = new Server({ name: "arcana-mcp-server", version: ARCANA_SERVER_VERSION }, { capabilities: { tools: {} } });
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
@@ -256,7 +257,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("[ARCANA] MCP Server running (v6.0.0 - 832 tools)");
+  console.error(`[ARCANA] MCP Server running (v${ARCANA_SERVER_VERSION}, ${globalRegistry.count()} tools)`);
 }
 
 main().catch(console.error);
