@@ -29,17 +29,15 @@
     "url": "https://github.com/matrix9neonebuchadnezzar2199-sketch/ARCANA.git"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "ws": "^8.16.0",
-    "zod": "^3.22.0"
+    "zod": "^3.25.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.11.0",
     "@types/ws": "^8.5.10",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
     "eslint": "^10.0.0",
     "globals": "^17.4.0",
     "jest": "^29.7.0",

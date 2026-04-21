@@ -43,3 +43,11 @@ Desktop.ini
 .vscode/
 *.swp
 *.swo
+
+# Root has no package.json; avoid committing an accidental empty npm lockfile
+/package-lock.json
+
+# Optional local agent / client config (not part of upstream ARCANA)
+/arcana-config.json
+/my-agent_EN/
+/my-agent_JP/
