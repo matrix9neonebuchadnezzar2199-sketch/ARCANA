@@ -21,7 +21,7 @@ The server is the core of ARCANA. It handles:
 - MCP protocol communication with AI clients
 - Tool registry and discovery
 - SuperSave meta-tool routing
-- WebSocket bridges to Unity and Blender
+- WebSocket bridges to Unity, Unreal Engine, and Blender
 - Request/response matching with timeout handling
 
 Key modules:
@@ -59,3 +59,17 @@ User: "Create a red cube at (0, 5, 0)"
   -> Editor plugin executes the tool (Unity tools support Undo/Redo where applicable)
   -> Result flows back through the chain
 ```
+
+## Phase 7: CI and integration tests (Tier A)
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request to `main`:
+
+1. `npm ci` in `server/`
+2. `npm audit --audit-level=high`
+3. `npm run lint`
+4. `npm run build`
+5. `npm test` (Jest with `--runInBand` so the global registry and bridge stay deterministic)
+
+**Integration tests** (`src/__tests__/integration.bridgeTools.test.ts`) start the real `bridge` on high ports (29877–29879), attach lightweight WebSocket clients that mimic editor plugins (`register` + tool replies), register a small slice of real tool definitions, and run SuperSave chains (discover → inspect → execute, `compose`, Blender / UE / recipe samples). This validates the MCP server path without installing Unity, UE, or Blender on the runner.
+
+**Tier B** (real editors) remains manual or a separate workflow; it is not part of this CI job.

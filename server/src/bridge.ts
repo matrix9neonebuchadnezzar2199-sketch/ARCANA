@@ -15,6 +15,12 @@ interface EditorConnection {
   ready: boolean;
 }
 
+const DEFAULT_BRIDGE_PORTS = {
+  unity: 9877,
+  unreal: 9878,
+  blender: 9879,
+} as const;
+
 class ArcanaBridge {
   private servers: Map<string, WebSocketServer> = new Map();
   private connections: Map<string, EditorConnection> = new Map();
@@ -24,13 +30,17 @@ class ArcanaBridge {
     timeout: NodeJS.Timeout;
   }> = new Map();
 
-  private ports: Record<string, number> = {
-    unity: 9877,
-    unreal: 9878,
-    blender: 9879,
-  };
+  private ports: Record<string, number> = { ...DEFAULT_BRIDGE_PORTS };
 
-  start() {
+  /**
+   * Start WebSocket listeners for each editor. Idempotent if servers are already running.
+   * @param overridePorts optional ports (e.g. CI integration tests use high ports to avoid clashes)
+   */
+  start(overridePorts?: Partial<{ [K in keyof typeof DEFAULT_BRIDGE_PORTS]: number }>) {
+    if (this.servers.size > 0) {
+      return;
+    }
+    this.ports = { ...DEFAULT_BRIDGE_PORTS, ...overridePorts };
     for (const [editor, port] of Object.entries(this.ports)) {
       this.startServer(editor, port);
     }

@@ -10,7 +10,8 @@
     "dev": "ts-node src/index.ts",
     "watch": "tsc --watch",
     "lint": "eslint src/",
-    "test": "jest"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch --runInBand"
   },
   "keywords": [
     "mcp",

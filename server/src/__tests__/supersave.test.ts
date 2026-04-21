@@ -13,7 +13,7 @@ const makeTool = (id: string, category = "test"): ToolDefinition => ({
 
 describe("SuperSave", () => {
   beforeEach(() => {
-    (globalRegistry as any).tools.clear();
+    globalRegistry.clearForTesting();
     globalRegistry.register(makeTool("bl_object_create", "bl_object"));
     globalRegistry.register(makeTool("bl_object_delete", "bl_object"));
     globalRegistry.register(makeTool("scene_list", "scene"));

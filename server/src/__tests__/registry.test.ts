@@ -12,7 +12,7 @@ const makeTool = (id: string, category = "test"): ToolDefinition => ({
 
 describe("Registry", () => {
   beforeEach(() => {
-    (globalRegistry as any).tools.clear();
+    globalRegistry.clearForTesting();
   });
 
   test("register and retrieve a tool", () => {

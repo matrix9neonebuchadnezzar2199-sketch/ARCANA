@@ -60,6 +60,11 @@ export class ToolRegistry {
   count(): number {
     return this.tools.size;
   }
+
+  /** Clears all tools — intended for Jest only; never call from production MCP code paths. */
+  clearForTesting(): void {
+    this.tools.clear();
+  }
 }
 
 export const globalRegistry = new ToolRegistry();

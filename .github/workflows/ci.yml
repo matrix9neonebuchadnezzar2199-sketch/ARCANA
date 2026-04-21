@@ -20,9 +20,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: server/package-lock.json
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
+        working-directory: server
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+        working-directory: server
+
+      - name: Lint
+        run: npm run lint
         working-directory: server
 
       - name: Build
@@ -30,9 +40,5 @@ jobs:
         working-directory: server
 
       - name: Test
-        run: npm test -- --verbose
-        working-directory: server
-
-      - name: Lint
-        run: npx eslint src/
+        run: npm test
         working-directory: server
