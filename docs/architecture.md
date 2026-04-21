@@ -55,7 +55,7 @@ User: "Create a red cube at (0, 5, 0)"
        params: { name: "Cube", primitive: "Cube",
                  position: {x:0, y:5, z:0}, color: "#FF0000" }
      })
-  -> Server sends WebSocket message to Unity plugin
-  -> Unity plugin creates the cube with Undo support
+  -> Server sends a WebSocket message to the resolved editor (Unity / Unreal / Blender)
+  -> Editor plugin executes the tool (Unity tools support Undo/Redo where applicable)
   -> Result flows back through the chain
 ```
