@@ -73,3 +73,12 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request 
 **Integration tests** (`src/__tests__/integration.bridgeTools.test.ts`) start the real `bridge` on high ports (29877–29879), attach lightweight WebSocket clients that mimic editor plugins (`register` + tool replies), register a small slice of real tool definitions, and run SuperSave chains (discover → inspect → execute, `compose`, Blender / UE / recipe samples). This validates the MCP server path without installing Unity, UE, or Blender on the runner.
 
 **Tier B** (real editors) remains manual or a separate workflow; it is not part of this CI job.
+
+### Full catalog smoke (Tier A+)
+
+- `allToolDefinitions.ts` exports `ALL_TOOL_DEFINITIONS` (same list as the MCP server registers). `index.ts` imports it so there is a single registration source.
+- `smoke.allTools.test.ts` asserts: unique tool ids, required fields + Zod `safeParse`, clean registration into a fresh `ToolRegistry`, `bridge.resolveEditor` for every id, and `arcana.discover` by **each distinct category** returns at least one tool when the full catalog is loaded.
+
+### Tier B — minimal automation
+
+- Workflow `.github/workflows/tier-b-blender.yml` (manual `workflow_dispatch` and weekly schedule): installs Blender on `ubuntu-latest`, runs `blender --version` and a one-line `bpy` smoke in background mode. This does **not** install the ARCANA Blender add-on or hit the WebSocket bridge; it only proves a headless Blender CLI is viable on the runner for future extension.

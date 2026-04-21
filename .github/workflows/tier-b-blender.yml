@@ -1,0 +1,26 @@
+# Tier B (minimal): headless Blender sanity — optional; does not run ARCANA addon E2E.
+# Use workflow_dispatch or schedule; not part of the default PR gate.
+
+name: Tier B — Blender headless
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  blender-headless:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install Blender (apt)
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender
+
+      - name: Verify Blender CLI
+        run: blender --version
+
+      - name: Headless bpy smoke
+        run: |
+          blender --background --python-expr "import bpy; assert hasattr(bpy, 'context'); print('bpy_ok', len(bpy.data.scenes))"

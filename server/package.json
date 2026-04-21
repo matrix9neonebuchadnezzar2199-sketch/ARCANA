@@ -11,6 +11,7 @@
     "watch": "tsc --watch",
     "lint": "eslint src/",
     "test": "jest --runInBand",
+    "test:smoke": "jest smoke.allTools --runInBand",
     "test:watch": "jest --watch --runInBand"
   },
   "keywords": [
