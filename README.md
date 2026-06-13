@@ -5,7 +5,7 @@
 Control **Unity**, **Unreal Engine**, and **Blender** with natural language.
 Build scenes in seconds. Create characters like a game. Free and open source, forever.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#tool-overview) [![94 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 4.2+](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![751 Tools](https://img.shields.io/badge/Tools-751-blue.svg)](#tool-overview) [![112 Categories](https://img.shields.io/badge/Categories-112-purple.svg)](#tool-overview) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 4.2+](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 [日本語版はこちら](README_ja.md) | English
 
@@ -13,11 +13,11 @@ Build scenes in seconds. Create characters like a game. Free and open source, fo
 
 ## Why ARCANA?
 
-Most MCP editor tools support one editor with 20-60 tools. ARCANA provides **832 tools across 3 editors and 94 Categories** from a single server — including **one-command scene generation** and **game-style character creation**.
+Most MCP editor tools support one editor with 20-60 tools. ARCANA provides **751 tools across 3 editors and 112 categories** from a single server — including **one-command scene generation** and **game-style character creation**.
 
 |  | ARCANA | Typical MCP tool |
 | --- | --- | --- |
-| **Tools** | **832** | 20-60 |
+| **Tools** | **751** | 20-60 |
 | **Editors** | Unity + UE + Blender | Single editor |
 | **Scene Generation** | One command | - |
 | **Character Creation** | Game-style sliders | - |
@@ -78,7 +78,7 @@ ARCANA connects AI assistants (Claude, ChatGPT, Gemini, Copilot, Cursor) to **Un
 
 ## Key Features
 
-- **832 Tools / 94 Categories** — Unity 358, Unreal Engine 192, Blender 238, Cross-Editor 40
+- **751 Tools / 112 Categories** — Unity 325, Unreal Engine 162, Blender 220, Cross-Editor 40
 - **3 Editor Support** — One server controls Unity, UE, and Blender simultaneously
 - **Natural Language** — Describe what you want, AI does it
 - **Any AI Client** — Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
@@ -180,13 +180,13 @@ Create MetaHuman, set face/body/hair/skin/clothing, expression presets, export (
 ```
 AI Client           MCP            ARCANA Server        Editors
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT, etc.    stdio/SSE    832 tools / 94 cat  ----> UE 5    :9878
+ChatGPT, etc.    stdio/SSE    751 tools / 112 cat ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
 
 ## Tool Overview
 
-### Unity Tools (358 tools / 53 categories)
+### Unity Tools (325 tools / 58 categories)
 
 <details>
 <summary>Click to expand Unity tool list</summary>
@@ -253,7 +253,7 @@ ChatGPT, etc.    stdio/SSE    832 tools / 94 cat  ----> UE 5    :9878
 
 </details>
 
-### Unreal Engine Tools (192 tools / 27 categories)
+### Unreal Engine Tools (162 tools / 24 categories)
 
 <details>
 <summary>Click to expand Unreal Engine tool list</summary>
@@ -288,7 +288,7 @@ ChatGPT, etc.    stdio/SSE    832 tools / 94 cat  ----> UE 5    :9878
 
 </details>
 
-### Blender Tools (238 tools / 27 categories)
+### Blender Tools (220 tools / 26 categories)
 
 <details>
 <summary>Click to expand Blender tool list</summary>
@@ -342,7 +342,7 @@ ChatGPT, etc.    stdio/SSE    832 tools / 94 cat  ----> UE 5    :9878
 
 ## SuperSave Mode
 
-Instead of registering all 832 tools, SuperSave exposes only **4 meta-tools**:
+Instead of registering all 751 tools, SuperSave exposes only **4 meta-tools**:
 
 | Meta-Tool | Purpose |
 | --- | --- |
@@ -810,7 +810,7 @@ Same as Option A Step 5 above. Install the plugin for your editor (Blender / Uni
 | 2 | Done | Unity 302 tools (46 categories) |
 | 3 | Done | Unreal Engine 136 tools (20 categories) |
 | 4 | Done | Blender 140 tools (15 categories) |
-| 5 | **Done** | **832 tools, Recipe system, Character creation, Cross-editor pipeline** |
+| 5 | **Done** | **751 tools, Recipe system, Character creation, Cross-editor pipeline** |
 | 6 | **Done** | **UE C++ plugin, Blender Python addon, WebSocket bridge, AI client configs** |
 | 7 | Next | End-to-end testing, CI/CD, community recipes |
 

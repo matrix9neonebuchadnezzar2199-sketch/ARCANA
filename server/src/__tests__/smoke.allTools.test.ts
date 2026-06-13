@@ -5,8 +5,13 @@ import { globalRegistry } from "../core/registry";
 import { superSave } from "../core/supersave";
 
 const EDITOR_TARGETS = new Set(["unity", "unreal", "blender", "server"]);
+const EXPECTED_TOOL_COUNT = 751;
 
 describe("smoke: full tool catalog", () => {
+  test("tool catalog size matches the current release baseline", () => {
+    expect(ALL_TOOL_DEFINITIONS.length).toBe(EXPECTED_TOOL_COUNT);
+  });
+
   test("every tool has required fields and a Zod-safeParse", () => {
     for (const t of ALL_TOOL_DEFINITIONS) {
       expect(typeof t.id).toBe("string");

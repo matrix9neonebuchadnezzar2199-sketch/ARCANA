@@ -5,7 +5,7 @@
 **Unity**、**Unreal Engine**、**Blender** を自然言語で操作。
 一言でシーン構築。ゲーム感覚でキャラクリエイト。オープンソース、永久無料。
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![832 Tools](https://img.shields.io/badge/Tools-832-blue.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![93 Categories](https://img.shields.io/badge/Categories-93-purple.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 4.2+](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![751 Tools](https://img.shields.io/badge/Tools-751-blue.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![112 Categories](https://img.shields.io/badge/Categories-112-purple.svg)](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7) [![Unity 2022.3+](https://img.shields.io/badge/Unity-2022.3%2B-black.svg)](https://unity.com/) [![UE 5.x](https://img.shields.io/badge/Unreal_Engine-5.x-black.svg)](https://unrealengine.com/) [![Blender 4.2+](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://blender.org/) [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/) [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 [English](README.md) | 日本語
 
@@ -13,11 +13,11 @@
 
 ## なぜ ARCANA？
 
-一般的なMCPエディタツールは1エディタ対応で20〜60ツール。ARCANAは**1サーバーで3エディタ、832ツール、94カテゴリ**を提供します。さらに**一言でシーン自動構築**、**ゲーム感覚のキャラクリエイト**が可能です。
+一般的なMCPエディタツールは1エディタ対応で20〜60ツール。ARCANAは**1サーバーで3エディタ、751ツール、112カテゴリ**を提供します。さらに**一言でシーン自動構築**、**ゲーム感覚のキャラクリエイト**が可能です。
 
 |  | ARCANA | 一般的なMCPツール |
 | --- | --- | --- |
-| **ツール数** | **832** | 20〜60 |
+| **ツール数** | **751** | 20〜60 |
 | **対応エディタ** | Unity + UE + Blender | 単一エディタ |
 | **シーン自動生成** | 一言で完了 | - |
 | **キャラクリエイト** | ゲーム感覚スライダー | - |
@@ -78,7 +78,7 @@ ARCANAはAIアシスタント（Claude, ChatGPT, Gemini, Copilot, Cursor）を [
 
 ## 主な特徴
 
-- **832ツール / 94カテゴリ** — Unity 358、Unreal Engine 192、Blender 238、クロスエディタ 40
+- **751ツール / 112カテゴリ** — Unity 325、Unreal Engine 162、Blender 220、クロスエディタ 40
 - **3エディタ対応** — 1サーバーでUnity、UE、Blenderを同時制御
 - **自然言語操作** — やりたいことを言葉で伝えるだけ
 - **あらゆるAIクライアント対応** — Claude Desktop, Cursor, VS Code, ChatGPT, Gemini CLI
@@ -180,13 +180,13 @@ MetaHuman生成、顔・体型・髪・肌・衣装設定、表情プリセッ�
 ```
 AIクライアント       MCP            ARCANAサーバー        エディタ
 Claude, Cursor  <==========>  Node.js/TypeScript  ----> Unity   :9877
-ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
+ChatGPT等       stdio/SSE    751ツール/112カテゴリ ----> UE 5    :9878
                                                   ----> Blender :9879
 ```
 
 ## ツール一覧
 
-### Unity ツール（358ツール / 53カテゴリ）
+### Unity ツール（325ツール / 58カテゴリ）
 
 <details>
 <summary>クリックして Unity ツール一覧を展開</summary>
@@ -253,7 +253,7 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 </details>
 
-### Unreal Engine ツール（192ツール / 27カテゴリ）
+### Unreal Engine ツール（162ツール / 24カテゴリ）
 
 <details>
 <summary>クリックして UE ツール一覧を展開</summary>
@@ -288,7 +288,7 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 </details>
 
-### Blender ツール（238ツール / 27カテゴリ）
+### Blender ツール（220ツール / 26カテゴリ）
 
 <details>
 <summary>クリックして Blender ツール一覧を展開</summary>
@@ -342,7 +342,7 @@ ChatGPT等       stdio/SSE    832ツール/94カテゴリ ----> UE 5    :9878
 
 ## SuperSave モード
 
-832ツール全部を登録する代わりに、**4つのメタツール**だけを公開：
+751ツール全部を登録する代わりに、**4つのメタツール**だけを公開：
 
 | メタツール | 機能 |
 | --- | --- |
@@ -803,7 +803,7 @@ Option A の Step 5 と同じ手順です。
 | 2 | 完了 | Unity 302ツール（46カテゴリ） |
 | 3 | 完了 | Unreal Engine 136ツール（20カテゴリ） |
 | 4 | 完了 | Blender 140ツール（15カテゴリ） |
-| 5 | **完了** | **832ツール、レシピシステム、キャラクリエイト、クロスエディタパイプライン** |
+| 5 | **完了** | **751ツール、レシピシステム、キャラクリエイト、クロスエディタパイプライン** |
 | 6 | **完了** | **UE C++プラグイン、Blender Pythonアドオン、WebSocketブリッジ、AIクライアント設定** |
 | 7 | 次 | E2Eテスト、CI/CD、コミュニティレシピ |
 

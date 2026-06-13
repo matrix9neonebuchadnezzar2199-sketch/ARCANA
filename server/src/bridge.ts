@@ -179,7 +179,7 @@ class ArcanaBridge {
    * Determine which editor a tool belongs to based on its ID prefix.
    */
   resolveEditor(toolId: string): string {
-    if (toolId.startsWith("bl_") || toolId.startsWith("bl_char_")) return "blender";
+    if (toolId.startsWith("bl_")) return "blender";
     if (toolId.startsWith("ue_")) return "unreal";
     // Unity tools have no prefix or various prefixes
     if (toolId.startsWith("recipe_") || toolId.startsWith("pipeline_") || toolId.startsWith("project_")) {
